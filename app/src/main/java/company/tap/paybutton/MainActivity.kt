@@ -3,10 +3,11 @@ package company.tap.paybutton
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.chillibits.simplesettings.tool.getPrefStringValue
 import com.example.tappaybutton.PayButtonType
-import com.example.tappaybutton.PayButton
+import company.tap.tappaybuttons.PayButton
 import company.tap.tappaybuttons.PayButtonStatusDelegate
 
 class MainActivity : AppCompatActivity() {
@@ -18,10 +19,16 @@ class MainActivity : AppCompatActivity() {
         /**
          * operator
          */
+        val publicKey = intent.getStringExtra("publicKey")
+        val hashStringKey = intent.getStringExtra("hashStringKey")
+        val buttonKey = intent.getStringExtra("buttonKey")
+
         val operator = HashMap<String,Any>()
 
         operator.put("publicKey","pk_test_6jdl4Qo0FYOSXmrZTR1U5EHp")
-        operator.put("hashString","")
+        operator.put("hashString",hashStringKey.toString())
+        Log.e("orderData","pbulc" + publicKey.toString() + " \nhash" + hashStringKey.toString())
+        Log.e("buttonKey","buttonKey" + buttonKey.toString())
 
         /**
          * metadata
@@ -32,14 +39,22 @@ class MainActivity : AppCompatActivity() {
         /**
          * order
          */
+        val ordrId =  intent.getStringExtra("orderIdKey")
+        val orderDescription =  intent.getStringExtra("orderDescKey")
+        val orderAmount =  intent.getStringExtra("amountKey")
+        val orderRefrence =  intent.getStringExtra("orderTransactionRefrence")
+        val selectedCurrency: String = intent.getStringExtra("selectedCurrencyKey").toString()
+
 
         val order = HashMap<String,Any>()
-        order.put("id","")
-        order.put("amount",  "1")
-        order.put("currency","KWD")
-        order.put("description", "")
-        order.put("reference", "")
+        order.put("id",ordrId.toString())
+        order.put("amount",  if (orderAmount?.isEmpty() == true)"1" else orderAmount.toString() )
+        order.put("currency",selectedCurrency)
+        order.put("description",orderDescription ?: "")
+        order.put("reference",orderRefrence ?: "")
         order.put("metadata",metada)
+        Log.e("orderData","id" + ordrId.toString() + "  \n dest" + orderDescription.toString() +" \n orderamount " + orderAmount.toString() +"  \n orderRef" + orderRefrence.toString() + "  \n currency " + selectedCurrency.toString())
+
 
         /**
          * merchant
@@ -77,7 +92,6 @@ class MainActivity : AppCompatActivity() {
         name.put("middle", "middle")
         name.put("last","last")
 
-
         /**
          * customer
          */
@@ -90,17 +104,26 @@ class MainActivity : AppCompatActivity() {
          * interface
          */
 
+        val selectedLanguage: String? =  intent.getStringExtra("selectedlangKey")
+        val selectedTheme: String? = intent.getStringExtra("selectedthemeKey")
+        val selectedCardEdge = intent.getStringExtra("selectedcardedgeKey")
+        val selectedColorStylee = intent.getStringExtra("selectedcolorstyleKey")
+        val loader = intent.getBooleanExtra("loaderKey",false)
 
+        Log.e("interfaceData",selectedTheme.toString() + "language" + selectedLanguage.toString() + "cardedge " + selectedCardEdge.toString() +" loader" + loader.toString() + "selectedColorStylee " + selectedColorStylee.toString())
         val interfacee = HashMap<String,Any>()
-        interfacee.put("locale", "en")
-        interfacee.put("theme", "light")
-        interfacee.put("edges", "curved")
-        interfacee.put("colorStyle","colored")
-        interfacee.put("loader",true)
+        interfacee.put("locale",selectedLanguage ?: "en")
+        interfacee.put("theme",selectedTheme ?: "light")
+        interfacee.put("edges",selectedCardEdge ?: "curved")
+        interfacee.put("colorStyle",selectedColorStylee ?:"colored")
+        interfacee.put("loader",loader)
+
+        val posturl =  intent.getStringExtra("posturlKey")
+        val redirectUrl =  intent.getStringExtra("redirectUrlKey")
 
 
         val post = HashMap<String,Any>()
-        post.put("url", "")
+        post.put("url",posturl?: "")
 
         val redirect = HashMap<String,Any>()
         redirect.put("url","onTapKnetRedirect://")
@@ -139,7 +162,7 @@ class MainActivity : AppCompatActivity() {
 
 
         findViewById<PayButton>(R.id.paybutton).initPayButton(this, configuration,
-            getPayButtonType("selectedPaybtnKey"),object :PayButtonStatusDelegate{
+            PayButtonType.valueOf(buttonKey.toString()),object :PayButtonStatusDelegate{
             override fun onSuccess(data: String) {
                 Toast.makeText(this@MainActivity,"success ${data}",Toast.LENGTH_SHORT).show()
             }
@@ -186,8 +209,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        //   val intent = Intent(this, SettingsActivity::class.java)
-
         val intent = Intent(this, SettingsActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         finish()

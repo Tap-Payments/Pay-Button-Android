@@ -16,7 +16,6 @@
 package com.example.tappaybutton
 
 enum class PayButtonType {
-
     BENEFIT_PAY,
     KNET,
     BENEFIT,

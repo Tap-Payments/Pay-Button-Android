@@ -91,12 +91,19 @@
     <string name="choose_theme">Choose Theme</string>
     <string name="payment_agreement_id">Payment agreement id </string>
     <string name="payment_agreement_contract">Payment agreement contract </string>
+    <string name="button_type">Button</string>
 
     <string-array name="ScopeList">
         <item>charge</item>
         <item>authorize</item>
     </string-array>
 
+
+    <string-array name="ButtonList">
+        <item>BENEFIT_PAY</item>
+        <item>KNET</item>
+        <item>BENEFIT</item>
+    </string-array>
     <string-array name="AuthorizeList">
         <item>VOID</item>
         <item>CAPTURE</item>
