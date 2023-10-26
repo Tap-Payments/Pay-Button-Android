@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "company.tap.paybutton"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "company.tap.paybutton"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
