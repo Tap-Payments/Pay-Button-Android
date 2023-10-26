@@ -2,7 +2,8 @@ package company.tap.paybutton
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import company.tap.tappaybuttons.PayButton
+import com.example.tappaybutton.PayButton
+import com.example.tappaybutton.PayButtonType
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,7 +134,7 @@ class MainActivity : AppCompatActivity() {
         configuration.put("transaction",transaction)
 
 
-        findViewById<PayButton>(R.id.paybutton).initPayButton(this,configuration)
+        findViewById<PayButton>(R.id.paybutton).initPayButton(this,configuration,PayButtonType.KNET)
 
 
     }

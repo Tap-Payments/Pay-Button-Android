@@ -5,8 +5,8 @@
  **
  */
 
-package company.tap.tappaybuttons
+package com.example.tappaybutton
 
-class PayButtonStatusDelegate {
+interface PayButtonStatusDelegate  {
 
 }

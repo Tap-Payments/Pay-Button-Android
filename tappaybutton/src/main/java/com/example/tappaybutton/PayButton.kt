@@ -7,13 +7,12 @@
  **
  */
 
-package company.tap.tappaybuttons
+package com.example.tappaybutton
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
-import com.example.tappaybutton.R
 import company.tap.tapcardformkit.open.KnetPayStatusDelegate
 import company.tap.tapcardformkit.open.web_wrapper.TapKnetConfiguration
 import company.tap.tapcardformkit.open.web_wrapper.TapKnetPay
@@ -47,6 +46,7 @@ class PayButton :LinearLayout {
         configuration: LinkedHashMap<String, Any>,
         payButton: PayButtonType
     ){
+
         TapKnetConfiguration.configureWithKnetDictionary(
             context,
             tapKnetPay,
