@@ -10,9 +10,15 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://jitpack.io" ) }
+        jcenter()
+
+
+
     }
 }
 
 rootProject.name = "Pay-Button-Android"
 include(":app")
 include(":tappaybuttons")
+include(":tappaybutton")
