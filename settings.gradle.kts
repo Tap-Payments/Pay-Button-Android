@@ -20,5 +20,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Pay-Button-Android"
 include(":app")
-include(":tappaybuttons")
 include(":tappaybutton")
