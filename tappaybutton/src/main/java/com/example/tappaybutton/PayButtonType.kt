@@ -13,7 +13,7 @@
  **
  */
 
-package company.tap.tappaybuttons
+package com.example.tappaybutton
 
 enum class PayButtonType {
 
