@@ -190,4 +190,10 @@
     <string-array name="PurposeList_default_values">
         <item>1</item>
     </string-array>
+
+    <string-array name="pay_button_types">
+        <item> KNET</item>
+        <item> BENEFIT</item>
+        <item>BENEFIT_PAY</item>
+    </string-array>
 </resources>

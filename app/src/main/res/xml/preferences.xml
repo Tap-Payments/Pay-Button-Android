@@ -155,6 +155,15 @@
             app:defaultValue="1"
             app:useSimpleSummaryProvider="true"/>
 
+        <DropDownPreference
+            app:key="selectedPaybtnKey"
+            app:title="Pay Button Type"
+
+            app:entries="@array/pay_button_types"
+            app:entryValues="@array/pay_button_types"
+            app:defaultValue="1"
+            app:useSimpleSummaryProvider="true"/>
+
         <CheckBoxPreference
             app:key="loaderKey"
             app:title="Loader"
