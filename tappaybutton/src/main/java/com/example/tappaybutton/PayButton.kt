@@ -45,6 +45,7 @@ class PayButton :LinearLayout {
     fun initPayButton(
         context: Context,
         configuration: LinkedHashMap<String, Any>,
+        payButton: PayButtonType
     ){
         TapKnetConfiguration.configureWithKnetDictionary(
             context,
