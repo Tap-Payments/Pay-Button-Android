@@ -8,18 +8,23 @@
  */
 
 package company.tap.tappaybuttons
-
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import com.example.tappaybutton.R
-import company.tap.tapcardformkit.open.KnetPayStatusDelegate
-import company.tap.tapcardformkit.open.web_wrapper.TapKnetConfiguration
-import company.tap.tapcardformkit.open.web_wrapper.TapKnetPay
+import company.tap.tapWebForm.open.KnetPayStatusDelegate
+import company.tap.tapWebForm.open.web_wrapper.TapKnetConfiguration
+import company.tap.tapWebForm.open.web_wrapper.TapKnetPay
+import company.tap.tapWebForm.open.web_wrapper.enums.PayButtonTypes
+import company.tap.tapcardformkit.open.TapBenefitPayStatusDelegate
+import company.tap.tapcardformkit.open.web_wrapper.BeneiftPayConfiguration
+import company.tap.tapcardformkit.open.web_wrapper.TapBenefitPay
 
 class PayButton :LinearLayout {
-    var tapKnetPay: TapKnetPay
+    lateinit var tapKnetPay: TapKnetPay
+    lateinit var tapBenefitPay: TapBenefitPay
+
     /**
      * Simple constructor to use when creating a TapPayCardSwitch from code.
      *  @param context The Context the view is running in, through which it can
@@ -37,31 +42,65 @@ class PayButton :LinearLayout {
 
     init {
         View.inflate(context, R.layout.pay_button_layout,this)
-        tapKnetPay = TapKnetPay(context)
-        this.addView(tapKnetPay)
+
     }
 
 
     fun initPayButton(
         context: Context,
         configuration: LinkedHashMap<String, Any>,
-        payButton: PayButtonType
+        payButton: PayButtonType,
+        payButtonStatusDelegate: PayButtonStatusDelegate
     ){
-        TapKnetConfiguration.configureWithKnetDictionary(
-            context,
-            tapKnetPay,
-            configuration,
-            object :KnetPayStatusDelegate{
-                override fun onError(error: String) {
+        when(payButton){
+            PayButtonType.BENEFIT_PAY ->{
+                tapBenefitPay = TapBenefitPay(context)
+                this.addView(tapBenefitPay)
+                BeneiftPayConfiguration.configureWithTapBenfitPayDictionaryConfiguration(context,tapBenefitPay,
+                    configuration,object :TapBenefitPayStatusDelegate{
+                        override fun onError(error: String) = payButtonStatusDelegate.onError(error)
 
-                }
+                        override fun onSuccess(data: String)  = payButtonStatusDelegate.onSuccess(data)
 
-                override fun onSuccess(data: String) {
+                        override fun onChargeCreated(data: String) = payButtonStatusDelegate.onChargeCreated(data)
 
-                }
+                        override fun onClick()  = payButtonStatusDelegate.onClick()
 
+                        override fun onReady()  = payButtonStatusDelegate.onReady()
+
+                        override fun onOrderCreated(data: String)  = payButtonStatusDelegate.onOrderCreated(data)
+
+                        override fun onCancel()  = payButtonStatusDelegate.onCancel()
+
+                })
             }
-        )
+            else ->{
+                tapKnetPay = TapKnetPay(context)
+                this.addView(tapKnetPay)
+                TapKnetConfiguration.configureWithKnetDictionary(
+                    context,
+                    tapKnetPay,
+                    configuration,
+                    object : KnetPayStatusDelegate {
+                        override fun onError(error: String) = payButtonStatusDelegate.onError(error)
+
+                        override fun onSuccess(data: String)  = payButtonStatusDelegate.onSuccess(data)
+
+                        override fun onChargeCreated(data: String) = payButtonStatusDelegate.onChargeCreated(data)
+
+                        override fun onClick()  = payButtonStatusDelegate.onClick()
+
+                        override fun onReady()  = payButtonStatusDelegate.onReady()
+
+                        override fun onOrderCreated(data: String)  = payButtonStatusDelegate.onOrderCreated(data)
+
+                        override fun cancel() = payButtonStatusDelegate.onCancel()
+                    },
+                    PayButtonTypes.valueOf(payButton.name.toUpperCase())
+                )
+            }
+        }
+
 
 
 

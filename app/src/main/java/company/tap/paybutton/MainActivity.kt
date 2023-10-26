@@ -2,7 +2,10 @@ package company.tap.paybutton
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import company.tap.tappaybuttons.PayButton
+import company.tap.tappaybuttons.PayButtonStatusDelegate
+import company.tap.tappaybuttons.PayButtonType
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,8 +136,50 @@ class MainActivity : AppCompatActivity() {
         configuration.put("transaction",transaction)
 
 
-        findViewById<PayButton>(R.id.paybutton).initPayButton(this,configuration)
+        findViewById<PayButton>(R.id.paybutton).initPayButton(this, configuration,PayButtonType.BENEFIT_PAY,object :PayButtonStatusDelegate{
+            override fun onSuccess(data: String) {
+                Toast.makeText(this@MainActivity,"success ${data}",Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onError(error: String) {
+                Toast.makeText(this@MainActivity,"error ${error}",Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onCancel() {
+                Toast.makeText(this@MainActivity,"cancel",Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onChargeCreated(data: String) {
+                Toast.makeText(this@MainActivity,"charge created ${data}",Toast.LENGTH_SHORT).show()
+
+            }
+
+            override fun onClick() {
+                Toast.makeText(this@MainActivity,"click",Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onReady() {
+                Toast.makeText(this@MainActivity,"ready",Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onOrderCreated(data: String) {
+                Toast.makeText(this@MainActivity,"order created ${data}",Toast.LENGTH_SHORT).show()
+            }
+
+        })
 
 
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        //   val intent = Intent(this, SettingsActivity::class.java)
+
+//        val intent = Intent(this, SettingsActivity::class.java)
+//        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//        finish()
+//        startActivity(intent)
+
+    }
+
 }
