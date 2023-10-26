@@ -12,6 +12,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
+import com.example.tappaybutton.PayButtonType
 import com.example.tappaybutton.R
 import company.tap.tapWebForm.open.KnetPayStatusDelegate
 import company.tap.tapWebForm.open.web_wrapper.TapKnetConfiguration
