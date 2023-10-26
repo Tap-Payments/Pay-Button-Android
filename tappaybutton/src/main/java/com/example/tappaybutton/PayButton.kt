@@ -7,13 +7,11 @@
  **
  */
 
-package company.tap.tappaybuttons
+package com.example.tappaybutton
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
-import com.example.tappaybutton.PayButtonType
-import com.example.tappaybutton.R
 import company.tap.tapWebForm.open.KnetPayStatusDelegate
 import company.tap.tapWebForm.open.web_wrapper.TapKnetConfiguration
 import company.tap.tapWebForm.open.web_wrapper.TapKnetPay
@@ -21,6 +19,8 @@ import company.tap.tapWebForm.open.web_wrapper.enums.PayButtonTypes
 import company.tap.tapcardformkit.open.TapBenefitPayStatusDelegate
 import company.tap.tapcardformkit.open.web_wrapper.BeneiftPayConfiguration
 import company.tap.tapcardformkit.open.web_wrapper.TapBenefitPay
+
+import company.tap.tappaybuttons.PayButtonStatusDelegate
 
 class PayButton :LinearLayout {
     lateinit var tapKnetPay: TapKnetPay

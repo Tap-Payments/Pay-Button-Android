@@ -4,8 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.chillibits.simplesettings.tool.getPrefStringValue
 import com.example.tappaybutton.PayButtonType
-import company.tap.tappaybuttons.PayButton
+import com.example.tappaybutton.PayButton
 import company.tap.tappaybuttons.PayButtonStatusDelegate
 
 class MainActivity : AppCompatActivity() {
@@ -138,7 +139,7 @@ class MainActivity : AppCompatActivity() {
 
 
         findViewById<PayButton>(R.id.paybutton).initPayButton(this, configuration,
-            PayButtonType.BENEFIT_PAY,object :PayButtonStatusDelegate{
+            getPayButtonType("selectedPaybtnKey"),object :PayButtonStatusDelegate{
             override fun onSuccess(data: String) {
                 Toast.makeText(this@MainActivity,"success ${data}",Toast.LENGTH_SHORT).show()
             }
@@ -171,6 +172,16 @@ class MainActivity : AppCompatActivity() {
         })
 
 
+    }
+
+    private fun getPayButtonType(key: String): PayButtonType {
+
+        return when (getPrefStringValue(key, PayButtonType.KNET.name)) {
+            PayButtonType.KNET.name-> PayButtonType.KNET
+            PayButtonType.BENEFIT_PAY.name -> PayButtonType.BENEFIT_PAY
+
+            else -> PayButtonType.KNET
+        }
     }
 
     override fun onBackPressed() {
