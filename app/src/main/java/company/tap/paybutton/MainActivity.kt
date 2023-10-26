@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         val operator = HashMap<String,Any>()
 
-        operator.put("publicKey","pk_test_6jdl4Qo0FYOSXmrZTR1U5EHp")
+        operator.put("publicKey",publicKey.toString())
         operator.put("hashString",hashStringKey.toString())
         Log.e("orderData","pbulc" + publicKey.toString() + " \nhash" + hashStringKey.toString())
         Log.e("buttonKey","buttonKey" + buttonKey.toString())
@@ -135,15 +135,19 @@ class MainActivity : AppCompatActivity() {
          */
 
 
-
-        val authorize = HashMap<String,Any>()
-        authorize.put("type","")
-        authorize.put("time","")
         val transaction = HashMap<String,Any>()
+        val scopeKey = intent.getStringExtra("scopeKey")
+        val transactionRefrenceKey = intent.getStringExtra("transactionRefrenceKey")
+        val transactionAuthroizeTypeKey = intent.getStringExtra("transactionAuthroizeTypeKey")
+        val transactionAuthroizeTimeKey = intent.getStringExtra("transactionAuthroizeTimeKey")
 
-        transaction.put("reference","")
-        transaction.put("authorize","")
+        Log.e("scope","scope is : " + scopeKey.toString() + " transactionRefrenceKey : " +  " " + transactionRefrenceKey.toString() +  " transactionAuthroizeTypeKey : " + transactionAuthroizeTypeKey.toString() + " transactionAuthroizeTimeKey : " + transactionAuthroizeTimeKey.toString())
+        val authorize = HashMap<String,Any>()
+        authorize.put("type",transactionAuthroizeTypeKey ?:"")
+        authorize.put("time",transactionAuthroizeTimeKey ?:"")
 
+        transaction.put("reference",transactionRefrenceKey?: "")
+        transaction.put("authorize",authorize?: "")
 
         /**
          * configuration
@@ -157,18 +161,18 @@ class MainActivity : AppCompatActivity() {
         configuration.put("interface",interfacee)
         configuration.put("post",post)
         configuration.put("redirect",redirect)
-        configuration.put("scope","charge")
+        configuration.put("scope",scopeKey.toString())
         configuration.put("transaction",transaction)
 
 
         findViewById<PayButton>(R.id.paybutton).initPayButton(this, configuration,
             PayButtonType.valueOf(buttonKey.toString()),object :PayButtonStatusDelegate{
             override fun onSuccess(data: String) {
-                Toast.makeText(this@MainActivity,"success ${data}",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity,"success $data",Toast.LENGTH_SHORT).show()
             }
 
             override fun onError(error: String) {
-                Toast.makeText(this@MainActivity,"error ${error}",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity,"error $error",Toast.LENGTH_SHORT).show()
             }
 
             override fun onCancel() {
@@ -176,7 +180,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onChargeCreated(data: String) {
-                Toast.makeText(this@MainActivity,"charge created ${data}",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity,"charge created $data",Toast.LENGTH_SHORT).show()
 
             }
 
@@ -189,7 +193,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onOrderCreated(data: String) {
-                Toast.makeText(this@MainActivity,"order created ${data}",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity,"order created $data",Toast.LENGTH_SHORT).show()
             }
 
         })

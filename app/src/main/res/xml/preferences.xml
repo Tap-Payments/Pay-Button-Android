@@ -24,7 +24,7 @@
 
         <EditTextPreference
             app:key="publicKey"
-            app:defaultValue="pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7"
+            app:defaultValue="pk_test_6jdl4Qo0FYOSXmrZTR1U5EHp"
             app:title="Public Key"
             app:useSimpleSummaryProvider="true"/>
 
