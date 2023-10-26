@@ -67,7 +67,7 @@ class SettingsActivity : AppCompatActivity(), SimpleSettingsConfig.PreferenceCal
         intent.putExtra("selectedcardedgeKey",if (getPrefStringValue("selectedcardedgeKey","") == "1")  "flat" else  getPrefStringValue("selectedcardedgeKey","flat"))
         intent.putExtra("selectedCardDirection", if (getPrefStringValue("selectedcardirectKey","") == "0") "ltr" else getPrefStringValue("selectedcardirectKey","dynamic"))
         intent.putExtra("selectedcolorstyleKey", getPrefStringValue("selectedcolorstyleKey","colored"))
-     //   intent.putExtra("selectedthemeKey", if (getPrefStringValue("selectedthemeKey","") == "1") TapTheme.light.name else  getPrefStringValue("selectedthemeKey","light"))
+        intent.putExtra("selectedthemeKey", if (getPrefStringValue("selectedthemeKey","") == "1") "light" else  getPrefStringValue("selectedthemeKey","light"))
         intent.putExtra("selectedlangKey", if (getPrefStringValue("selectedlangKey","") == "1") "en" else getPrefStringValue("selectedlangKey", default = "en"))
         intent.putExtra("loaderKey", getPrefBooleanValue("loaderKey",true))
 
