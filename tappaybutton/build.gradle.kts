@@ -12,7 +12,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.tappaybutton"
+    namespace = "company.tap.tappaybutton"
     compileSdk = 33
 
     defaultConfig {
