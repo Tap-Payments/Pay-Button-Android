@@ -170,6 +170,7 @@
         <DropDownPreference
             app:key="selectedPaybtnKey"
             app:title="Pay Button Type"
+            app:isPreferenceVisible="false"
 
             app:entries="@array/pay_button_types"
             app:entryValues="@array/pay_button_types"
