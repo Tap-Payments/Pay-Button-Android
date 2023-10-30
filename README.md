@@ -638,7 +638,6 @@ Below you will find more details about each parameter shared in the above tables
         - Definition: The scope/intention of the current order to authorize an amount from the customer.
   - Example: 
       ```kotlin
-        val configuration = LinkedHashMap<String,Any>()
         configuration.put("scope","charge")
 
       ```
