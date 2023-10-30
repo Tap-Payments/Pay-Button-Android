@@ -43,7 +43,7 @@ allprojects {
 Then get latest dependency  in your app module gradle
 ```kotlin
 dependencies {
-	        implementation 'com.github.Tap-Payments:Pay-Button-Android:project.ext.set('BUILD_NUMBER', System.getenv("BUILD_NUMBER") ?: "0")
+	        implementation 'com.github.Tap-Payments:Pay-Button-Android:0.0.1)
 '
 }
 ```
