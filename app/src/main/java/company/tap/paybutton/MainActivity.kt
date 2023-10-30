@@ -131,6 +131,7 @@ class MainActivity : AppCompatActivity() {
         val configuration = LinkedHashMap<String,Any>()
 
 
+
         /**
          * transaction && scope
          */
