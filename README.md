@@ -43,10 +43,10 @@ allprojects {
 Then get latest dependency  in your app module gradle
 ```kotlin
 dependencies {
-	        implementation 'com.github.Tap-Payments:Pay-Button-Android:0.0.1)
+	        implementation 'com.github.Tap-Payments:Pay-Button-Android:0.0.1'
 '
 }
-```
+```'
 
 # Step 4 :Integrating Pay-Button-Android
 This integration offers two distinct options: a [simple integration](https://register.tap.company/sell) designed for rapid development and streamlined merchant requirements, and an [advanced integration](https://register.tap.company/sell) that adds extra features for a more dynamic payment integration experience.
@@ -401,7 +401,7 @@ You can use a Hashmap to send data to our SDK. The benefit is that you can gener
         val paymentAgreement = HashMap<String,Any>()
         paymentAgreement.put("id","")
         paymentAgreement.put("contract",contract)
-
+        val transaction = HashMap<String,Any>()
         transaction.put("reference","TRX")
         transaction.put("authorize",authroize)
         transaction.put("authentication",true)
@@ -428,7 +428,6 @@ You can use a Hashmap to send data to our SDK. The benefit is that you can gener
         configuration.put("post",post)
         configuration.put("scope","charge")
         configuration.put("transaction",transaction)
-        configuration.put("redirect",redirect)
 
 
 ```
@@ -552,6 +551,26 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
         interfacee.put("colorStyle",selectedColorStylee ?:"colored")
         interfacee.put("loader",loader)
 
+       /** transaction **/
+
+
+        val authorize = HashMap<String,Any>()
+        authorize.put("type","VOID")
+        authorize.put("time","12")
+        val contract = HashMap<String,Any>()
+        contact.put("id","")
+
+        val paymentAgreement = HashMap<String,Any>()
+        paymentAgreement.put("id","")
+        paymentAgreement.put("contract",contract)
+        val transaction = HashMap<String,Any>()
+        transaction.put("reference","TRX")
+        transaction.put("authorize",authroize)
+        transaction.put("authentication",true)
+        transaction.put("paymentAgreement",paymentAgreement)
+        transaction.put("metadata",metada)
+
+
 
         val post = HashMap<String,Any>()
         post.put("url","")
@@ -567,7 +586,6 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
         configuration.put("post",post)
         configuration.put("scope","charge")
         configuration.put("transaction",transaction)
-        configuration.put("redirect",redirect)
 
 
  payButton.initPayButton(
