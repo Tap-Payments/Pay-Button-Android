@@ -46,7 +46,7 @@ dependencies {
 }
 ```
 
-# Step 3 :Integrating Pay-Button-Android
+# Step 4 :Integrating Pay-Button-Android
 This integration offers two distinct options: a [simple integration](https://register.tap.company/sell) designed for rapid development and streamlined merchant requirements, and an [advanced integration](https://register.tap.company/sell) that adds extra features for a more dynamic payment integration experience.
 
 # Integration Flow
@@ -303,6 +303,8 @@ Each parameter is linked to the reference section, which provides a more in dept
 |--|--|--| --|--|
 | operator| It has the key obtained after registering your package name, also known as Public key. Also, the [hashString](https://developers.tap.company/docs/webhook#validate-the-webhook-hashstring) value which is used to validate live charges | True  | String| `var operator=HashMap<String,Any>(),operator.put("publicKey","pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7"),operator.put("hashString","")` |
 | order| Order details linked to the charge. | True  | `Dictionary`| ` var order = HashMap<String, Any>(), order.put("id","") order.put("amount",1),order.put("currency","BHD"),order.put("description",""), order.put("reference":"A reference to this order in your system"))` |
+| scope |Intention of the pay button (optional.)  | False  | String| ` var configuration = Hashmap<String,String> , configuration.put("scope","charge") `|
+| transaction |Transaction details linked to the charge.| true  |  Dictionary | ` val transaction = HashMap<String,Any>(), val authorize = HashMap<String,Any>(), authorize.put("type","VOID"),   authorize.put("time", "12" ) , transaction.put("authorize",authroize), transaction.put("reference","Trx")` |
 | invoice|Invoice id to link to the order (optional). | False  | `Dictionary`| ` var invoice = HashMap<String,Any>.put("id","")` |
 | merchant| Merchant id obtained after registering your package name . | True  | `Dictionary`| ` var merchant = HashMap<String,Any>.put("id","")` |
 | customer| Customer details for charge process. | True  | `Dictionary`| ` var customer =  HashMap<String,Any> ,customer.put("id,""), customer.put("nameOnCard","Tap Payments"),customer.put("editable",true),) var name :HashMap<String,Any> = [["lang":"en","first":"TAP","middle":"","last":"PAYMENTS"]] "contact":["email":"tap@tap.company", "phone":["countryCode":"+965","number":"88888888"]]] customer.put("name",name) , customer.put("contact",contact)` |
@@ -377,11 +379,30 @@ You can use a Hashmap to send data to our SDK. The benefit is that you can gener
      /** interface **/
 
       val interfacee = HashMap<String,Any>()
-        interfacee.put("locale",selectedLanguage ?: "en")
-        interfacee.put("theme",selectedTheme ?: "light")
-        interfacee.put("edges",selectedCardEdge ?: "curved")
-        interfacee.put("colorStyle",selectedColorStylee ?:"colored")
-        interfacee.put("loader",loader)
+        interfacee.put("locale", "en")
+        interfacee.put("theme","light")
+        interfacee.put("edges", "curved")
+        interfacee.put("colorStyle","colored")
+        interfacee.put("loader",true)
+
+/** transaction **/
+
+
+   val transaction = HashMap<String,Any>()
+
+
+        val authorize = HashMap<String,Any>()
+        authorize.put("type","VOID")
+        authorize.put("time","12")
+
+        transaction.put("reference","TRX")
+        transaction.put("authorize",authorize)
+
+/** redirect **/
+
+        redirect.put("url","onTapKnetRedirect://")
+
+
 
      /** post  **/
 
@@ -401,6 +422,10 @@ You can use a Hashmap to send data to our SDK. The benefit is that you can gener
         configuration.put("invoice",invoice)
         configuration.put("interface",interfacee)
         configuration.put("post",post)
+        configuration.put("scope","charge")
+        configuration.put("transaction",transaction)
+        configuration.put("redirect",redirect)
+
 
 ```
 # Receiving Callback Notifications (Advanced Version)
@@ -532,6 +557,9 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
         configuration.put("invoice",invoice)
         configuration.put("interface",interfacee)
         configuration.put("post",post)
+        configuration.put("scope","charge")
+        configuration.put("transaction",transaction)
+        configuration.put("redirect",redirect)
 
 
  payButton.initPayButton(
@@ -591,6 +619,20 @@ Below you will find more details about each parameter shared in the above tables
         operator.put("publicKey","publickKeyValue")
         operator.put("hashString","hashstringValue")
       ```
+ # scope:
+  - Definition: The scope of the current charge.
+  - Type: string (optional)
+  - values:
+     - charge :
+        - Definition: The scope/intention of the current order to charge the customer. Default
+     - authorize :
+        - Definition: The scope/intention of the current order to authorize an amount from the customer.
+  - Example: 
+      ```kotlin
+        val configuration = LinkedHashMap<String,Any>()
+        configuration.put("scope","charge")
+
+      ```
 
 ## order:
   - Definition:This defined the details of the order that you are trying to purchase, in which you need to specify some details like the id, amount, currency ...
@@ -619,6 +661,38 @@ Below you will find more details about each parameter shared in the above tables
       order.put("currency","BHD")
       order.put("description", "")
       order.put("reference", "")
+      ```
+
+ # Transaction:
+  - Definition: This defined the details of the order that you are trying to purchase, in which you need to specify some details like the reference, scope...
+  - Type: Dictionary, (optional)
+  - Fields:
+     - authentication :
+        - Definition: If true, this means that the payment will not be accepted if it is card based and the card is not supporting 3DS.Note: Default is true.
+     - authorize :
+        - Definition: The scope/intention of the current order to authorize an amount from the customer.
+          - Fields:
+               - 1- type :  
+                           - VOID // Will release the held amount
+                           - CAPTURE // Will charge the held amount
+               - 2- time : Definition : An hour based time to perform the post authorize action
+
+
+     - paymentAgreement :
+        - Definition:  If you have created an agreement before, and you want to use it in this transaction pass its id here. Note: It can be empty. Only, related to card based buttons.         
+     - reference :
+        - Definition:  This will be the transaction reference present in your database in which the paying is being done for.          
+ 
+  
+  - Example: 
+      ```kotlin
+         val transaction = HashMap<String,Any>()
+        val authorize = HashMap<String,Any>()
+        authorize.put("type", "VOID")
+        authorize.put("time", "12")
+        transaction.put("reference", "TRX")
+        transaction.put("authorize",authorize )
+
       ```
 
 
@@ -750,8 +824,9 @@ Possible Values:
         interfacee.put("theme", "light")
         interfacee.put("edges", "curved")
         interfacee.put("colorStyle","colored")
-        interfacee.put("loader",loader)
+        interfacee.put("loader",true)
       ```      
+
 # Expected Callbacks Responses
 
 ## onError
@@ -989,6 +1064,10 @@ Possible Values:
 }
 ``` 
 
+# Available Button Types
+ 1.BenefitPay<br>
+ 2.KNEt<br>
+ 3.Benefit
 
 
 # Generate the hash string[](https://developers.tap.company/docs/benefit-pay-android#generate-the-hash-string)
