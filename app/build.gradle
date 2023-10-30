@@ -60,7 +60,7 @@ task incrementBetaVersion {
             fileset(dir: '.', includes: 'README.md')
         }
         // Gradle
-        ant.replaceregexp(match:'com\\.acme\\:mylibrary\\:([0-9\\.]+)', replace:"com.acme:mylibrary:${version}", flags:'g', byline:true) {
+        ant.replaceregexp(match:'com\\.github\\.Tap-Payments\\:Pay-Button-Android\\:([0-9\\.]+)', replace:"com.github.Tap-Payments:Pay-Button-Android:${version}", flags:'g', byline:true) {
             fileset(dir: '.', includes: 'README.md')
         }
     }
