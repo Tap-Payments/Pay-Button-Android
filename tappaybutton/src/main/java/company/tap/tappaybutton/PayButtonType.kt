@@ -19,6 +19,7 @@ enum class PayButtonType {
     BENEFIT_PAY,
     KNET,
     BENEFIT,
+    FAWRY,
     PAYPAL,
     TABBY
 

@@ -103,6 +103,9 @@
         <item>BENEFIT_PAY</item>
         <item>KNET</item>
         <item>BENEFIT</item>
+        <item>FAWRY</item>
+        <item>PAYPAL</item>
+
     </string-array>
     <string-array name="AuthorizeList">
         <item>VOID</item>

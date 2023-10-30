@@ -75,7 +75,7 @@ class PayButton :LinearLayout {
 
                 })
             }
-            PayButtonType.KNET,PayButtonType.BENEFIT,PayButtonType.PAYPAL,PayButtonType.TABBY-> {
+            PayButtonType.KNET,PayButtonType.BENEFIT,PayButtonType.PAYPAL,PayButtonType.TABBY,PayButtonType.FAWRY-> {
 
                     tapKnetPay = TapKnetPay(context)
                     this.addView(tapKnetPay)

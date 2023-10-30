@@ -147,9 +147,19 @@ class MainActivity : AppCompatActivity() {
         val authorize = HashMap<String,Any>()
         authorize.put("type",transactionAuthroizeTypeKey ?:"")
         authorize.put("time",transactionAuthroizeTimeKey ?:"")
+        val contract = HashMap<String,Any>()
+        contact.put("id","")
+
+        val paymentAgreement = HashMap<String,Any>()
+        paymentAgreement.put("id","")
+        paymentAgreement.put("contract",contract)
 
         transaction.put("reference",transactionRefrenceKey?: "")
         transaction.put("authorize",authorize?: "")
+        transaction.put("authentication",true)
+        transaction.put("paymentAgreement",paymentAgreement)
+        transaction.put("metadata",metada)
+
 
         /**
          * configuration
