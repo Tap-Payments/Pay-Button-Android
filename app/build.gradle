@@ -51,4 +51,21 @@ dependencies {
     implementation (project(":tappaybutton"))
 
 
+
 }
+
+task incrementBetaVersion {
+    doLast {
+        ant.replaceregexp(match:'<version>([0-9\\.]+)</version>', replace:"<version>${version}</version>", flags:'g', byline:true) {
+            fileset(dir: '.', includes: 'README.md')
+        }
+        // Gradle
+        ant.replaceregexp(match:'com\\.acme\\:mylibrary\\:([0-9\\.]+)', replace:"com.acme:mylibrary:${version}", flags:'g', byline:true) {
+            fileset(dir: '.', includes: 'README.md')
+        }
+    }
+}
+//task replaceVersionInREADME << {
+//    // Maven
+//
+//}
