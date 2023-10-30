@@ -45,7 +45,7 @@ Then get latest dependency  in your app module gradle
 dependencies {
 	        implementation 'com.github.Tap-Payments:Pay-Button-Android:0.0.1'
 }
-```'
+```
 
 # Step 4 :Integrating Pay-Button-Android
 This integration offers two distinct options: a [simple integration](https://register.tap.company/sell) designed for rapid development and streamlined merchant requirements, and an [advanced integration](https://register.tap.company/sell) that adds extra features for a more dynamic payment integration experience.
