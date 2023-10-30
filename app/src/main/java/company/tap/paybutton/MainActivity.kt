@@ -185,6 +185,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onError(error: String) {
                 Toast.makeText(this@MainActivity,"error $error",Toast.LENGTH_SHORT).show()
+                Log.e("error",error.toString())
             }
 
             override fun onCancel() {
