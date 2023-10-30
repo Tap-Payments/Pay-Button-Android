@@ -695,8 +695,6 @@ Below you will find more details about each parameter shared in the above tables
   
   - Example: 
       ```kotlin
-          val metada = HashMap<String,Any>()
-        metada.put("id","")
           val transaction = HashMap<String,Any>()
           val authorize = HashMap<String,Any>()
           authorize.put("type","VOID")
@@ -707,7 +705,8 @@ Below you will find more details about each parameter shared in the above tables
           val paymentAgreement = HashMap<String,Any>()
            paymentAgreement.put("id","")
            paymentAgreement.put("contract",contract)
-
+         val metada = HashMap<String,Any>()
+        metada.put("id","")
           transaction.put("reference","TRX")
           transaction.put("authorize",authorize)
           transaction.put("authentication",true)
