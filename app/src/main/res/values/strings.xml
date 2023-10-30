@@ -195,6 +195,8 @@
         <item>KWD</item>
         <item>AED</item>
         <item>SAR</item>
+        <item>USD</item>
+        <item>EGP</item>
 
     </string-array>
     <string-array name="PurposeList_default_values">
