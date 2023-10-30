@@ -13,7 +13,7 @@
  **
  */
 
-package com.example.tappaybutton
+package company.tap.tappaybutton
 
 enum class PayButtonType {
     BENEFIT_PAY,

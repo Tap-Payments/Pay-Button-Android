@@ -6,7 +6,7 @@
  *
  */
 
-package com.example.tappaybutton
+package company.tap.tappaybutton
 
 import org.junit.Test
 

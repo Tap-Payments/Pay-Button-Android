@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.chillibits.simplesettings.tool.getPrefStringValue
-import com.example.tappaybutton.PayButtonType
-import company.tap.tappaybuttons.PayButton
-import company.tap.tappaybuttons.PayButtonStatusDelegate
+import company.tap.tappaybutton.PayButtonType
+import company.tap.tappaybutton.PayButton
+import company.tap.tappaybutton.PayButtonStatusDelegate
 
 class MainActivity : AppCompatActivity() {
     lateinit var payButton: PayButton
@@ -167,7 +167,7 @@ class MainActivity : AppCompatActivity() {
 
 
         findViewById<PayButton>(R.id.paybutton).initPayButton(this, configuration,
-            PayButtonType.valueOf(buttonKey.toString()),object :PayButtonStatusDelegate{
+            PayButtonType.valueOf(buttonKey.toString()),object : PayButtonStatusDelegate {
             override fun onSuccess(data: String) {
                 Toast.makeText(this@MainActivity,"success $data",Toast.LENGTH_SHORT).show()
             }

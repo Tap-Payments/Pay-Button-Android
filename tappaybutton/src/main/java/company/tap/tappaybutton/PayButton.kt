@@ -7,14 +7,12 @@
  **
  */
 
-package company.tap.tappaybuttons
+package company.tap.tappaybutton
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
-import com.example.tappaybutton.PayButtonType
-import com.example.tappaybutton.R
 import company.tap.tapWebForm.open.KnetPayStatusDelegate
 import company.tap.tapWebForm.open.web_wrapper.TapKnetConfiguration
 import company.tap.tapWebForm.open.web_wrapper.TapKnetPay
