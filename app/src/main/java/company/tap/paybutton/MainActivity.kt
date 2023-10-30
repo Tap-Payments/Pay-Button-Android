@@ -11,6 +11,7 @@ import company.tap.tappaybuttons.PayButton
 import company.tap.tappaybuttons.PayButtonStatusDelegate
 
 class MainActivity : AppCompatActivity() {
+    lateinit var payButton: PayButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

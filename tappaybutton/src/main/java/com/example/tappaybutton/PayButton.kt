@@ -18,7 +18,7 @@ import com.example.tappaybutton.R
 import company.tap.tapWebForm.open.KnetPayStatusDelegate
 import company.tap.tapWebForm.open.web_wrapper.TapKnetConfiguration
 import company.tap.tapWebForm.open.web_wrapper.TapKnetPay
-import company.tap.tapWebForm.open.web_wrapper.enums.PayButtonTypes
+import company.tap.tapWebForm.open.web_wrapper.enums.ThreeDsPayButtonType
 import company.tap.tapcardformkit.open.TapBenefitPayStatusDelegate
 import company.tap.tapcardformkit.open.web_wrapper.BeneiftPayConfiguration
 import company.tap.tapcardformkit.open.web_wrapper.TapBenefitPay
@@ -99,7 +99,7 @@ class PayButton :LinearLayout {
 
                             override fun cancel() = payButtonStatusDelegate.onCancel()
                         },
-                        PayButtonTypes.valueOf(payButton.name.toUpperCase())
+                        ThreeDsPayButtonType.valueOf(payButton.name.toUpperCase())
                     )
                 }
             else ->{
