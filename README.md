@@ -307,7 +307,7 @@ Each parameter is linked to the reference section, which provides a more in dept
 |--|--|--| --|--|
 | operator| It has the key obtained after registering your package name, also known as Public key. Also, the [hashString](https://developers.tap.company/docs/webhook#validate-the-webhook-hashstring) value which is used to validate live charges | True  | String| `var operator=HashMap<String,Any>(),operator.put("publicKey","pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7"),operator.put("hashString","")` |
 | order| Order details linked to the charge. | True  | `Dictionary`| ` var order = HashMap<String, Any>(), order.put("id","") order.put("amount",1),order.put("currency","BHD"),order.put("description",""), order.put("reference":"A reference to this order in your system"))` |
-| scope |Intention of the pay button (optional.)  | False  | String| ` var configuration = Hashmap<String,String> , configuration.put("scope","charge") `|
+| scope |Intention of the pay button (optional.)  | False  | String| ` configuration.put("scope","charge") `|
 | transaction |Transaction details linked to the charge.| true  |  Dictionary | ` val transaction = HashMap<String,Any>(), val authorize = HashMap<String,Any>(),val metada = HashMap<String,Any>(),val contract = HashMap<String,Any>(),val paymentAgreement = HashMap<String,Any>(),contact.put("id",""),paymentAgreement.put("id",""),paymentAgreement.put("contract",contract),authorize.put("type","VOID"),authorize.put("time", "12" ),transaction.put("authorize",authroize), transaction.put("reference","Trx"),transaction.put("authentication",true),transaction.put("paymentAgreement",paymentAgreement), transaction.put("metadata",metada)` |
 | invoice|Invoice id to link to the order (optional). | False  | `Dictionary`| ` var invoice = HashMap<String,Any>.put("id","")` |
 | merchant| Merchant id obtained after registering your package name . | True  | `Dictionary`| ` var merchant = HashMap<String,Any>.put("id","")` |
@@ -392,21 +392,21 @@ You can use a Hashmap to send data to our SDK. The benefit is that you can gener
 /** transaction **/
 
 
-   val transaction = HashMap<String,Any>()
-
-
-        val authorize = HashMap<String,Any>()
+      val authorize = HashMap<String,Any>()
         authorize.put("type","VOID")
         authorize.put("time","12")
+        val contract = HashMap<String,Any>()
+        contact.put("id","")
+
+        val paymentAgreement = HashMap<String,Any>()
+        paymentAgreement.put("id","")
+        paymentAgreement.put("contract",contract)
 
         transaction.put("reference","TRX")
-        transaction.put("authorize",authorize)
-
-/** redirect **/
-
-        redirect.put("url","onTapKnetRedirect://")
-
-
+        transaction.put("authorize",authroize)
+        transaction.put("authentication",true)
+        transaction.put("paymentAgreement",paymentAgreement)
+        transaction.put("metadata",metada)
 
      /** post  **/
 
@@ -695,12 +695,25 @@ Below you will find more details about each parameter shared in the above tables
   
   - Example: 
       ```kotlin
-         val transaction = HashMap<String,Any>()
-        val authorize = HashMap<String,Any>()
-        authorize.put("type", "VOID")
-        authorize.put("time", "12")
-        transaction.put("reference", "TRX")
-        transaction.put("authorize",authorize )
+          val metada = HashMap<String,Any>()
+        metada.put("id","")
+          val transaction = HashMap<String,Any>()
+          val authorize = HashMap<String,Any>()
+          authorize.put("type","VOID")
+          authorize.put("time","12")
+          val contract = HashMap<String,Any>()
+            contact.put("id","")
+
+          val paymentAgreement = HashMap<String,Any>()
+           paymentAgreement.put("id","")
+           paymentAgreement.put("contract",contract)
+
+          transaction.put("reference","TRX")
+          transaction.put("authorize",authorize)
+          transaction.put("authentication",true)
+          transaction.put("paymentAgreement",paymentAgreement)
+          transaction.put("metadata",metada)
+
 
       ```
 
