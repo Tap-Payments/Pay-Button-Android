@@ -196,6 +196,7 @@ First, let us create the required parameters:
      payButton.initPayButton(
             this, 
             configuration,
+        PayButtonType.KNET,
             PayButtonStatusDelegate)
 ```
 
@@ -265,7 +266,8 @@ override fun onCreate(savedInstanceState: Bundle?) {
      payButton.initPayButton(
             this, 
             configuration,
-            PayButtonStatusDelegate)
+        PayButtonType.KNET,
+            PayButtonStatusDelegate,)
 }
 ```
 # Receiving Callback Notifications
@@ -566,6 +568,7 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
  payButton.initPayButton(
             this, 
             configuration,
+        PayButtonType.KNET,
             PayButtonStatusDelegate)
 
 
