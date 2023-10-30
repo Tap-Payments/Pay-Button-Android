@@ -43,7 +43,8 @@ allprojects {
 Then get latest dependency  in your app module gradle
 ```kotlin
 dependencies {
-	        implementation 'com.github.Tap-Payments:Pay-Button-Android:0.0.1'
+	        implementation 'com.github.Tap-Payments:Pay-Button-Android:project.ext.set('BUILD_NUMBER', System.getenv("BUILD_NUMBER") ?: "0")
+'
 }
 ```
 
@@ -455,6 +456,10 @@ The below will allow the integrators to get notified from events fired from the 
     override fun onCancel() {
            print("\n\n========\n\nonCancel")
     }
+  override fun onSuccess() {
+           print("\n\n========\n\nonSuccess")
+    }
+
 
     override fun onError(error: String) {
            print("\n\n========\n\nonError")
@@ -831,242 +836,6 @@ Possible Values:
         interfacee.put("loader",true)
       ```      
 
-# Expected Callbacks Responses
-
-## onError
-``` kotlin 
-{
-    "error":""
-}
-``` 
-## onOrderCreated
-``` kotlin 
-{
-    "ord_uAx145231127yHYS19Ou9B126"
-
-}
-``` 
-## onChargeCreated
-``` kotlin 
-{
-    {
-    "id": "chg_TS07A5220231433Ql241910314",
-    "object": "charge",
-    "live_mode": false,
-    "customer_initiated": true,
-    "api_version": "V2",
-    "method": "CREATE",
-    "status": "INITIATED",
-    "amount": 0.1,
-    "currency": "BHD",
-    "threeDSecure": true,
-    "card_threeDSecure": false,
-    "save_card": false,
-    "order_id": "ord_uAx145231127yHYS19Ou9B126",
-    "product": "GOSELL",
-    "order": {
-        "id": "ord_uAx145231127yHYS19Ou9B126"
-    },
-    "transaction": {
-        "timezone": "UTC+03:00",
-        "created": "1697726033236",
-        "url": "",
-        "expiry": {
-            "period": 30,
-            "type": "MINUTE"
-        },
-        "asynchronous": false,
-        "amount": 0.1,
-        "currency": "BHD"
-    },
-    "response": {
-        "code": "100",
-        "message": "Initiated"
-    },
-    "receipt": {
-        "email": true,
-        "sms": true
-    },
-    "customer": {
-        "first_name": "TAP",
-        "last_name": "PAYMENTS",
-        "email": "tap@tap.company",
-        "phone": {
-            "country_code": " 965",
-            "number": "88888888"
-        }
-    },
-    "merchant": {
-        "country": "KW",
-        "currency": "KWD",
-        "id": "599424"
-    },
-    "source": {
-        "object": "source",
-        "id": ""
-    },
-    "redirect": {
-        "status": "PENDING",
-        "url": ""
-    },
-    "post": {
-        "status": "PENDING",
-        "url": ""
-    },
-    "activities": [
-        {
-            "id": "activity_TS02A5420231433Mx4g1910470",
-            "object": "activity",
-            "created": 1697726033236,
-            "status": "INITIATED",
-            "currency": "BHD",
-            "amount": 0.1,
-            "remarks": "charge - created"
-        }
-    ],
-    "auto_reversed": false,
-    "gateway_response": {
-        "name": "BENEFITPAY",
-        "request": {
-            "amount": "0.100",
-            "currency": "BHD",
-            "hash": "gMjpC12Ffz+CMhyvm+/jdYJmqbPdgAhHJvvGBABYhCI=",
-            "reference": {
-                "transaction": "chg_TS07A5220231433Ql241910314"
-            },
-            "merchant": {
-                "id": "00000101"
-            },
-            "application": {
-                "id": "4530082749"
-            },
-            "configuration": {
-                "show_result": "0",
-                "hide_mobile_qr": "0",
-                "frequency": {
-                    "start": 120,
-                    "interval": 60,
-                    "count": 10,
-                    "type": "SECOND"
-                }
-            }
-        }
-    }
-}
-
-}
-``` 
-## onSuccess
-``` kotlin 
-{
-   {
-    "id": "chg_TS07A5220231433Ql241910314",
-    "object": "charge",
-    "live_mode": false,
-    "customer_initiated": true,
-    "api_version": "V2",
-    "method": "UPDATE",
-    "status": "INITIATED",
-    "amount": 0.1,
-    "currency": "BHD",
-    "threeDSecure": true,
-    "card_threeDSecure": false,
-    "save_card": false,
-    "order_id": "ord_uAx145231127yHYS19Ou9B126",
-    "product": "GOSELL",
-    "description": "",
-    "order": {
-        "id": "ord_uAx145231127yHYS19Ou9B126"
-    },
-    "transaction": {
-        "timezone": "UTC+03:00",
-        "created": "1697726033236",
-        "url": "https://sandbox.payments.tap.company/test_gosell/v2/payment/tap_process.aspx?chg=8D9e9fdEo5N03hWrGnROvEEFw4DfqYVFv8R7R34GITc%3d",
-        "expiry": {
-            "period": 30,
-            "type": "MINUTE"
-        },
-        "asynchronous": false,
-        "amount": 0.1,
-        "currency": "BHD"
-    },
-    "response": {
-        "code": "100",
-        "message": "Initiated"
-    },
-    "receipt": {
-        "email": true,
-        "sms": true
-    },
-    "customer": {
-        "first_name": "TAP",
-        "last_name": "PAYMENTS",
-        "email": "tap@tap.company",
-        "phone": {
-            "country_code": " 965",
-            "number": "88888888"
-        }
-    },
-    "merchant": {
-        "country": "KW",
-        "currency": "KWD",
-        "id": "599424"
-    },
-    "source": {
-        "object": "source",
-        "id": "src_benefit_pay"
-    },
-    "redirect": {
-        "status": "PENDING",
-        "url": ""
-    },
-    "post": {
-        "status": "PENDING",
-        "url": ""
-    },
-    "activities": [
-        {
-            "id": "activity_TS02A5420231433Mx4g1910470",
-            "object": "activity",
-            "created": 1697726033236,
-            "status": "INITIATED",
-            "currency": "BHD",
-            "amount": 0.1,
-            "remarks": "charge - created"
-        }
-    ],
-    "auto_reversed": false,
-    "gateway_response": {
-        "name": "",
-        "request": {
-            "amount": "0.100",
-            "currency": "BHD",
-            "hash": "gMjpC12Ffz+CMhyvm+/jdYJmqbPdgAhHJvvGBABYhCI=",
-            "reference": {
-                "transaction": "chg_TS07A5220231433Ql241910314"
-            },
-            "merchant": {
-                "id": "00000101"
-            },
-            "application": {
-                "id": "4530082749"
-            },
-            "configuration": {
-                "show_result": "0",
-                "hide_mobile_qr": "0",
-                "frequency": {
-                    "start": 120,
-                    "interval": 60,
-                    "count": 10,
-                    "type": "SECOND"
-                }
-            }
-        }
-    }
-}
-
-}
-``` 
 
 # Available Button Types
  1.BenefitPay<br>
