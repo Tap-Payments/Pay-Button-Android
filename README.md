@@ -11,6 +11,8 @@ Before diving into the development process, it's essential to establish the prer
 [![SDK Version](https://img.shields.io/badge/targetSdkVersion-33-informational.svg)](https://stuff.mit.edu/afs/sipb/project/android/docs/reference/packages.html)
 [![SDK Version](https://img.shields.io/badge/latestVersion-0.0.1-informational.svg)](https://stuff.mit.edu/afs/sipb/project/android/docs/reference/packages.html)
 
+# Sample Demo
+![Imgur](https://imgur.com/Xmw7DDI.gif)
 
 
 # Step 1 :Requirements
