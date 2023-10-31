@@ -34,9 +34,15 @@ object PayButtonConfig {
                 val layout2 = LinearLayout(context)
                 layout2.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
                 layout2.orientation = LinearLayout.VERTICAL
-                layout2.addView(tapBenefitPay)
-                layout2.invalidate()
-                payButtonView.addView(layout2)
+                layout2.post {
+                    layout2.addView(tapBenefitPay)
+                    layout2.invalidate()
+                }
+                payButtonView.post {
+                    payButtonView.addView(layout2)
+
+                }
+
                 BeneiftPayConfiguration.configureWithTapBenfitPayDictionaryConfiguration(context,tapBenefitPay,
                     configuration,object : TapBenefitPayStatusDelegate {
                         override fun onError(error: String) =  getPayButtonStatusDelegate()?.onError(error) ?: Unit
@@ -61,8 +67,14 @@ object PayButtonConfig {
                 val layout2 = LinearLayout(context)
                 layout2.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
                 layout2.orientation = LinearLayout.VERTICAL
-                layout2.addView(tapKnetPay)
-                layout2.invalidate()
+                layout2.post {
+                    layout2.addView(tapKnetPay)
+                    layout2.invalidate()
+                }
+                payButtonView.post {
+                    payButtonView.addView(layout2)
+
+                }
                 payButtonView.addView(layout2)
                 TapKnetConfiguration.configureWithKnetDictionary(
                     context,
