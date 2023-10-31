@@ -1,17 +1,10 @@
 package company.tap.tappaybutton
 
-import Customer
-import TapAuthentication
-import TapCardConfigurations
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
-import android.content.res.Resources
-import android.util.Log
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
-import company.tap.tapWebForm.R
-import company.tap.tapWebForm.open.DataConfiguration
 import company.tap.tapWebForm.open.KnetPayStatusDelegate
 import company.tap.tapWebForm.open.web_wrapper.TapKnetConfiguration
 import company.tap.tapWebForm.open.web_wrapper.TapKnetPay
@@ -19,10 +12,7 @@ import company.tap.tapWebForm.open.web_wrapper.enums.ThreeDsPayButtonType
 import company.tap.tapcardformkit.open.TapBenefitPayStatusDelegate
 import company.tap.tapcardformkit.open.web_wrapper.BeneiftPayConfiguration
 import company.tap.tapcardformkit.open.web_wrapper.TapBenefitPay
-import company.tap.taplocalizationkit.LocalizationManager
-import company.tap.tapuilibrary.themekit.ThemeManager
 import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * Created by AhlaamK on 3/23/22.
@@ -36,18 +26,20 @@ object PayButtonConfig {
     private lateinit var tapBenefitPay: TapBenefitPay
     private  var payButtonStatusDelegate: PayButtonStatusDelegate ?=null
 
-    fun initPayButton(activity: Activity, configuration: HashMap<String,Any>, payButton:PayButtonType, view:PayButton){
-      addPayButtonStatusDelegate(payButtonStatusDelegate)
+    fun initPayButton(context: Context, configuration: HashMap<String,Any>, payButton:PayButtonType,payButtonView:PayButton){
         when(payButton){
             PayButtonType.BENEFIT_PAY ->{
-                tapBenefitPay = TapBenefitPay(activity)
+                tapBenefitPay = TapBenefitPay(context)
                 tapBenefitPay.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT)
-                view.addView(tapBenefitPay)
-                view.invalidate()
-                BeneiftPayConfiguration.configureWithTapBenfitPayDictionaryConfiguration(activity,tapBenefitPay,
+                val layout2 = LinearLayout(context)
+                layout2.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                layout2.orientation = LinearLayout.VERTICAL
+                layout2.addView(tapBenefitPay)
+                layout2.invalidate()
+                payButtonView.addView(layout2)
+                BeneiftPayConfiguration.configureWithTapBenfitPayDictionaryConfiguration(context,tapBenefitPay,
                     configuration,object : TapBenefitPayStatusDelegate {
                         override fun onError(error: String) =  getPayButtonStatusDelegate()?.onError(error) ?: Unit
-
 
                         override fun onSuccess(data: String)  =  getPayButtonStatusDelegate()?.onSuccess(data) ?: Unit
 
@@ -64,12 +56,16 @@ object PayButtonConfig {
                     })
             }
             PayButtonType.KNET,PayButtonType.BENEFIT,PayButtonType.PAYPAL,PayButtonType.TABBY,PayButtonType.FAWRY-> {
-                tapKnetPay = TapKnetPay(activity)
+                tapKnetPay = TapKnetPay(context)
                 tapKnetPay.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT)
-                view.addView(tapKnetPay)
-                view.invalidate()
+                val layout2 = LinearLayout(context)
+                layout2.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                layout2.orientation = LinearLayout.VERTICAL
+                layout2.addView(tapKnetPay)
+                layout2.invalidate()
+                payButtonView.addView(layout2)
                 TapKnetConfiguration.configureWithKnetDictionary(
-                    activity,
+                    context,
                     tapKnetPay,
                     configuration,
                     object : KnetPayStatusDelegate {
@@ -91,12 +87,12 @@ object PayButtonConfig {
                 )
             }
             else ->{
-                Toast.makeText(activity,"Check your Payment Button name", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Check your Payment Button name", Toast.LENGTH_SHORT).show()
 
             }
 
         }
-        TapKnetConfiguration.configureWithKnetDictionary(activity,tapKnetPay,configuration)
+        TapKnetConfiguration.configureWithKnetDictionary(context,tapKnetPay,configuration)
     }
 
     fun addPayButtonStatusDelegate(payButtonStatusDelegate: PayButtonStatusDelegate?){

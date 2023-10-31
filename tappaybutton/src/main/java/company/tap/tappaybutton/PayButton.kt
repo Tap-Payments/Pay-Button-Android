@@ -41,11 +41,6 @@ class PayButton :LinearLayout {
      */
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    init {
-        View.inflate(context, R.layout.pay_button_layout,this)
-
-    }
-
 
     fun initPayButton(
         context: Context,
