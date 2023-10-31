@@ -92,7 +92,6 @@ object PayButtonConfig {
             }
 
         }
-        TapKnetConfiguration.configureWithKnetDictionary(context,tapKnetPay,configuration)
     }
 
     fun addPayButtonStatusDelegate(payButtonStatusDelegate: PayButtonStatusDelegate?){
