@@ -8,8 +8,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.util.Log
+import android.widget.LinearLayout
 import android.widget.Toast
 import company.tap.tapWebForm.R
+import company.tap.tapWebForm.open.DataConfiguration
 import company.tap.tapWebForm.open.KnetPayStatusDelegate
 import company.tap.tapWebForm.open.web_wrapper.TapKnetConfiguration
 import company.tap.tapWebForm.open.web_wrapper.TapKnetPay
@@ -32,54 +34,58 @@ All rights reserved.
 object PayButtonConfig {
     private lateinit var tapKnetPay: TapKnetPay
     private lateinit var tapBenefitPay: TapBenefitPay
-    private lateinit  var payButtonStatusDelegate: PayButtonStatusDelegate
+    private  var payButtonStatusDelegate: PayButtonStatusDelegate ?=null
 
-    fun initPayButton(activity: Activity,
-                      configuration: HashMap<String,Any>, payButton:PayButtonType, view:PayButton){
-        if (::payButtonStatusDelegate.isInitialized) this.addPayButtonStatusDelegate(payButtonStatusDelegate)
+    fun initPayButton(activity: Activity, configuration: HashMap<String,Any>, payButton:PayButtonType, view:PayButton){
+      addPayButtonStatusDelegate(payButtonStatusDelegate)
         when(payButton){
             PayButtonType.BENEFIT_PAY ->{
                 tapBenefitPay = TapBenefitPay(activity)
+                tapBenefitPay.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT)
                 view.addView(tapBenefitPay)
+                view.invalidate()
                 BeneiftPayConfiguration.configureWithTapBenfitPayDictionaryConfiguration(activity,tapBenefitPay,
                     configuration,object : TapBenefitPayStatusDelegate {
-                        override fun onError(error: String) = payButtonStatusDelegate.onError(error)
+                        override fun onError(error: String) =  getPayButtonStatusDelegate()?.onError(error) ?: Unit
 
-                        override fun onSuccess(data: String)  = payButtonStatusDelegate.onSuccess(data)
 
-                        override fun onChargeCreated(data: String) = payButtonStatusDelegate.onChargeCreated(data)
+                        override fun onSuccess(data: String)  =  getPayButtonStatusDelegate()?.onSuccess(data) ?: Unit
 
-                        override fun onClick()  = payButtonStatusDelegate.onClick()
+                        override fun onChargeCreated(data: String) =  getPayButtonStatusDelegate()?.onChargeCreated(data) ?: Unit
 
-                        override fun onReady()  = payButtonStatusDelegate.onReady()
+                        override fun onClick()  =  getPayButtonStatusDelegate()?.onClick()?: Unit
 
-                        override fun onOrderCreated(data: String)  = payButtonStatusDelegate.onOrderCreated(data)
+                        override fun onReady()  =  getPayButtonStatusDelegate()?.onReady()?: Unit
 
-                        override fun onCancel()  = payButtonStatusDelegate.onCancel()
+                        override fun onOrderCreated(data: String)  =  getPayButtonStatusDelegate()?.onOrderCreated(data)?: Unit
+
+                        override fun onCancel()  =  getPayButtonStatusDelegate()?.onCancel()?: Unit
 
                     })
             }
             PayButtonType.KNET,PayButtonType.BENEFIT,PayButtonType.PAYPAL,PayButtonType.TABBY,PayButtonType.FAWRY-> {
                 tapKnetPay = TapKnetPay(activity)
+                tapKnetPay.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT)
                 view.addView(tapKnetPay)
+                view.invalidate()
                 TapKnetConfiguration.configureWithKnetDictionary(
                     activity,
                     tapKnetPay,
                     configuration,
                     object : KnetPayStatusDelegate {
-                        override fun onError(error: String) = payButtonStatusDelegate.onError(error)
+                        override fun onError(error: String) =  getPayButtonStatusDelegate()?.onError(error) ?: Unit
 
-                        override fun onSuccess(data: String)  = payButtonStatusDelegate.onSuccess(data)
+                        override fun onSuccess(data: String)  =  getPayButtonStatusDelegate()?.onSuccess(data)?: Unit
 
-                        override fun onChargeCreated(data: String) = payButtonStatusDelegate.onChargeCreated(data)
+                        override fun onChargeCreated(data: String) =  getPayButtonStatusDelegate()?.onChargeCreated(data)?: Unit
 
-                        override fun onClick()  = payButtonStatusDelegate.onClick()
+                        override fun onClick()  =  getPayButtonStatusDelegate()?.onClick()?: Unit
 
-                        override fun onReady()  = payButtonStatusDelegate.onReady()
+                        override fun onReady()  =  getPayButtonStatusDelegate()?.onReady()?: Unit
 
-                        override fun onOrderCreated(data: String)  = payButtonStatusDelegate.onOrderCreated(data)
+                        override fun onOrderCreated(data: String)  =  getPayButtonStatusDelegate()?.onOrderCreated(data)?: Unit
 
-                        override fun cancel() = payButtonStatusDelegate.onCancel()
+                        override fun cancel() =  getPayButtonStatusDelegate()?.onCancel()?: Unit
                     },
                     ThreeDsPayButtonType.valueOf(payButton.name.toUpperCase())
                 )
@@ -93,8 +99,12 @@ object PayButtonConfig {
         TapKnetConfiguration.configureWithKnetDictionary(activity,tapKnetPay,configuration)
     }
 
-    fun addPayButtonStatusDelegate(payButtonStatusDelegate: PayButtonStatusDelegate){
+    fun addPayButtonStatusDelegate(payButtonStatusDelegate: PayButtonStatusDelegate?){
         this.payButtonStatusDelegate = payButtonStatusDelegate
+    }
+
+    fun getPayButtonStatusDelegate(): PayButtonStatusDelegate? {
+        return payButtonStatusDelegate
     }
 
 

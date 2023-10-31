@@ -56,7 +56,9 @@ class PayButton :LinearLayout {
         when(payButton){
             PayButtonType.BENEFIT_PAY ->{
                 tapBenefitPay = TapBenefitPay(context)
+                tapBenefitPay.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
                 this.addView(tapBenefitPay)
+                this.invalidate()
                 BeneiftPayConfiguration.configureWithTapBenfitPayDictionaryConfiguration(context,tapBenefitPay,
                     configuration,object :TapBenefitPayStatusDelegate{
                         override fun onError(error: String) = payButtonStatusDelegate.onError(error)
@@ -76,9 +78,10 @@ class PayButton :LinearLayout {
                 })
             }
             PayButtonType.KNET,PayButtonType.BENEFIT,PayButtonType.PAYPAL,PayButtonType.TABBY,PayButtonType.FAWRY-> {
-
                     tapKnetPay = TapKnetPay(context)
-                    this.addView(tapKnetPay)
+                    tapKnetPay.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+                this.addView(tapKnetPay)
+                this.invalidate()
                     TapKnetConfiguration.configureWithKnetDictionary(
                         context,
                         tapKnetPay,
