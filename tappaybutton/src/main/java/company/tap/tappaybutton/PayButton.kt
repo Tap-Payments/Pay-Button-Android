@@ -42,6 +42,7 @@ class PayButton :LinearLayout {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
 
+
     fun initPayButton(
         context: Context,
         configuration: HashMap<String, Any>,
@@ -50,6 +51,9 @@ class PayButton :LinearLayout {
     ){
         when(payButton){
             PayButtonType.BENEFIT_PAY ->{
+
+
+
                 tapBenefitPay = TapBenefitPay(context)
                 tapBenefitPay.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
                 this.post(Runnable {

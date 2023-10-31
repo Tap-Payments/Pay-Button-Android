@@ -175,7 +175,7 @@ class MainActivity : AppCompatActivity() {
         configuration.put("post",post)
         configuration.put("scope",scopeKey.toString())
         configuration.put("transaction",transaction)
-        PayButtonConfig.initPayButton(this,configuration,PayButtonType.BENEFIT_PAY,findViewById<PayButton>(R.id.paybutton))
+        PayButtonConfig.initPayButton(this,configuration,PayButtonType.KNET,findViewById<PayButton>(R.id.paybutton))
         PayButtonConfig.addPayButtonStatusDelegate(object :PayButtonStatusDelegate{
             override fun onSuccess(data: String) {
                 Toast.makeText(this@MainActivity,"ready",Toast.LENGTH_SHORT).show()

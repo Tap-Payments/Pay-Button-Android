@@ -1,10 +1,13 @@
 package company.tap.tappaybutton
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
+import com.example.tappaybutton.R
 import company.tap.tapWebForm.open.KnetPayStatusDelegate
 import company.tap.tapWebForm.open.web_wrapper.TapKnetConfiguration
 import company.tap.tapWebForm.open.web_wrapper.TapKnetPay
@@ -29,20 +32,8 @@ object PayButtonConfig {
     fun initPayButton(context: Context, configuration: HashMap<String,Any>, payButton:PayButtonType,payButtonView:PayButton){
         when(payButton){
             PayButtonType.BENEFIT_PAY ->{
-                tapBenefitPay = TapBenefitPay(context)
-                tapBenefitPay.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT)
-                val layout2 = LinearLayout(context)
-                layout2.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-                layout2.orientation = LinearLayout.VERTICAL
-                layout2.post {
-                    layout2.addView(tapBenefitPay)
-                    layout2.invalidate()
-                }
-                payButtonView.post {
-                    payButtonView.addView(layout2)
-
-                }
-
+                val view = LayoutInflater.from(context).inflate(R.layout.benefit_pay,payButtonView)
+                tapBenefitPay = view.findViewById<TapBenefitPay>(R.id.benefit)
                 BeneiftPayConfiguration.configureWithTapBenfitPayDictionaryConfiguration(context,tapBenefitPay,
                     configuration,object : TapBenefitPayStatusDelegate {
                         override fun onError(error: String) =  getPayButtonStatusDelegate()?.onError(error) ?: Unit
@@ -62,20 +53,8 @@ object PayButtonConfig {
                     })
             }
             PayButtonType.KNET,PayButtonType.BENEFIT,PayButtonType.PAYPAL,PayButtonType.TABBY,PayButtonType.FAWRY-> {
-                tapKnetPay = TapKnetPay(context)
-                tapKnetPay.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT)
-                val layout2 = LinearLayout(context)
-                layout2.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-                layout2.orientation = LinearLayout.VERTICAL
-                layout2.post {
-                    layout2.addView(tapKnetPay)
-                    layout2.invalidate()
-                }
-                payButtonView.post {
-                    payButtonView.addView(layout2)
-
-                }
-                payButtonView.addView(layout2)
+                val view = LayoutInflater.from(context).inflate(R.layout.knet_pay,payButtonView)
+                tapKnetPay = view.findViewById<TapKnetPay>(R.id.tapKnet)
                 TapKnetConfiguration.configureWithKnetDictionary(
                     context,
                     tapKnetPay,
