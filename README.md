@@ -76,7 +76,7 @@ Once you create the variable in any way, you will have to follow these steps:
     android:layout_height="match_parent"
     tools:context=".main_activity.MainActivity">
 
-   <company.tap.tappaybuttons.PayButton
+   <company.tap.tappaybutton.PayButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/paybutton"
