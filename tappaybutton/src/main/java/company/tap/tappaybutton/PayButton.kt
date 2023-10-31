@@ -49,7 +49,7 @@ class PayButton :LinearLayout {
 
     fun initPayButton(
         context: Context,
-        configuration: LinkedHashMap<String, Any>,
+        configuration: HashMap<String, Any>,
         payButton: PayButtonType,
         payButtonStatusDelegate: PayButtonStatusDelegate
     ){

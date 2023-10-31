@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.chillibits.simplesettings.tool.getPrefStringValue
 import company.tap.tappaybutton.PayButtonType
 import company.tap.tappaybutton.PayButton
+import company.tap.tappaybutton.PayButtonConfig
 import company.tap.tappaybutton.PayButtonStatusDelegate
 
 class MainActivity : AppCompatActivity() {
@@ -128,7 +129,7 @@ class MainActivity : AppCompatActivity() {
 
         val redirect = HashMap<String,Any>()
         redirect.put("url","onTapKnetRedirect://")
-        val configuration = LinkedHashMap<String,Any>()
+        val configuration = HashMap<String,Any>()
 
 
 
@@ -211,6 +212,41 @@ class MainActivity : AppCompatActivity() {
 
         })
 
+
+//        //PayButtonConfig.addPayButtonStatusDelegate(object : PayButtonStatusDelegate {
+//            override fun onSuccess(data: String) {
+//                Toast.makeText(this@MainActivity,"success $data",Toast.LENGTH_SHORT).show()
+//            }
+//
+//            override fun onError(error: String) {
+//                Toast.makeText(this@MainActivity,"error $error",Toast.LENGTH_SHORT).show()
+//                Log.e("error",error.toString())
+//            }
+//
+//            override fun onCancel() {
+//                Toast.makeText(this@MainActivity,"cancel",Toast.LENGTH_SHORT).show()
+//            }
+//
+//            override fun onChargeCreated(data: String) {
+//                Toast.makeText(this@MainActivity,"charge created $data",Toast.LENGTH_SHORT).show()
+//
+//            }
+//
+//            override fun onClick() {
+//                Toast.makeText(this@MainActivity,"click",Toast.LENGTH_SHORT).show()
+//            }
+//
+//            override fun onReady() {
+//                Toast.makeText(this@MainActivity,"ready",Toast.LENGTH_SHORT).show()
+//            }
+//
+//            override fun onOrderCreated(data: String) {
+//                Toast.makeText(this@MainActivity,"order created $data",Toast.LENGTH_SHORT).show()
+//            }
+//
+//        })
+
+      //  PayButtonConfig.initPayButton(this,configuration, PayButtonType.valueOf(buttonKey.toString()), findViewById(R.id.paybutton))
 
     }
 
