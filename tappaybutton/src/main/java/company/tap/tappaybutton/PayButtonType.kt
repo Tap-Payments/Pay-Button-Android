@@ -16,11 +16,12 @@
 package company.tap.tappaybutton
 
 enum class PayButtonType {
-    BENEFIT_PAY,
+    BENEFITPAY,
     KNET,
     BENEFIT,
     FAWRY,
     PAYPAL,
-    TABBY
+    TABBY,
+    GOOGLEPAY
 
 }

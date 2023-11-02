@@ -11,10 +11,12 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.preference.Preference
 import com.chillibits.simplesettings.core.SimpleSettings
 import com.chillibits.simplesettings.core.SimpleSettingsConfig
 import com.chillibits.simplesettings.tool.getPrefBooleanValue
+import com.chillibits.simplesettings.tool.getPrefStringSetValue
 import com.chillibits.simplesettings.tool.getPrefStringValue
 
 class SettingsActivity : AppCompatActivity(), SimpleSettingsConfig.PreferenceCallback  {
@@ -80,7 +82,6 @@ class SettingsActivity : AppCompatActivity(), SimpleSettingsConfig.PreferenceCal
         intent.putExtra("posturlKey", getPrefStringValue("posturlKey",""))
         intent.putExtra("redirectUrlKey", getPrefStringValue("redirectUrlKey",""))
 
-
         /**
          * scope && transaction
          */
@@ -90,6 +91,15 @@ class SettingsActivity : AppCompatActivity(), SimpleSettingsConfig.PreferenceCal
         intent.putExtra("transactionAuthroizeTypeKey", getPrefStringValue("transactionAuthroizeTypeKey",""))
         intent.putExtra("transactionAuthroizeTimeKey", getPrefStringValue("transactionAuthroizeTimeKey",""))
         intent.putExtra("buttonKey", getPrefStringValue("buttonKey",""))
+
+
+        /**
+         * acceptance
+         */
+        intent.putExtra("supportedFundSourceKey", getPrefStringSetValue("supportedFundSourceKey", emptySet()).toTypedArray())
+        Log.e("suppored",getPrefStringSetValue("supportedFundSourceKey", emptySet()).toString())
+        intent.putExtra("supportedPaymentAuthenticationsKey", getPrefStringSetValue("supportedPaymentAuthenticationsKey", emptySet()).toTypedArray())
+        intent.putExtra("supportedSchemesKey", getPrefStringSetValue("supportedSchemesKey", emptySet()).toTypedArray())
 
 
         finish()

@@ -120,6 +120,39 @@
     </PreferenceCategory>
 
 
+    <PreferenceCategory
+        app:title="@string/acceptance">
+
+        <MultiSelectListPreference
+            app:key="supportedFundSourceKey"
+            app:title="supportedFundSource"
+            android:entries="@array/SupportedFundSource"
+            android:entryValues="@array/SupportedFundSource"
+            app:useSimpleSummaryProvider="true"/>
+
+        <MultiSelectListPreference
+            app:key="supportedPaymentAuthenticationsKey"
+            app:title="supportedPaymentAuthentications"
+            android:entries="@array/SupportedPaymentAuthentication"
+            android:entryValues="@array/SupportedPaymentAuthentication"
+
+            app:useSimpleSummaryProvider="true"/>
+
+
+        <MultiSelectListPreference
+            app:key="supportedSchemesKey"
+            android:entries="@array/SupportedSchemes"
+            app:title="supportedSchemes"
+            android:entryValues="@array/SupportedSchemes"
+
+            app:useSimpleSummaryProvider="true"/>
+
+
+
+
+    </PreferenceCategory>
+
+
 
 
 
@@ -141,6 +174,7 @@
             app:entryValues="@array/Theme"
             app:defaultValue="1"
             app:useSimpleSummaryProvider="true"/>
+
 
         <DropDownPreference
             app:key="selectedcardedgeKey"
@@ -167,15 +201,6 @@
             app:defaultValue="1"
             app:useSimpleSummaryProvider="true"/>
 
-        <DropDownPreference
-            app:key="selectedPaybtnKey"
-            app:title="Pay Button Type"
-            app:isPreferenceVisible="false"
-
-            app:entries="@array/pay_button_types"
-            app:entryValues="@array/pay_button_types"
-            app:defaultValue="1"
-            app:useSimpleSummaryProvider="true"/>
 
         <CheckBoxPreference
             app:key="loaderKey"

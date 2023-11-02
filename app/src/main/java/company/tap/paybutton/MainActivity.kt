@@ -163,6 +163,16 @@ class MainActivity : AppCompatActivity() {
 
 
         /**
+         * acceptance
+         */
+        val supportedFund =  intent.getSerializableExtra("supportedFundSourceKey")
+        val supportedPaymentAuthentications =  intent.getStringArrayExtra("supportedPaymentAuthenticationsKey")
+        val supportedSchemes =  intent.getStringArrayExtra("supportedSchemesKey")
+        Log.e("acceptance","suppored fund is : " + supportedFund.toString() + " supportedPaymentAuthentications : " +  " " + supportedPaymentAuthentications.toString() +  " supportedSchemes : " + supportedSchemes.toString())
+
+
+
+        /**
          * configuration
          */
 
@@ -175,60 +185,60 @@ class MainActivity : AppCompatActivity() {
         configuration.put("post",post)
         configuration.put("scope",scopeKey.toString())
         configuration.put("transaction",transaction)
-        PayButtonConfig.initPayButton(this,configuration,PayButtonType.KNET,findViewById<PayButton>(R.id.paybutton))
-        PayButtonConfig.addPayButtonStatusDelegate(object :PayButtonStatusDelegate{
-            override fun onSuccess(data: String) {
-                Toast.makeText(this@MainActivity,"ready",Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onError(error: String) {
-                Toast.makeText(this@MainActivity,"erorr",Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onReady() {
-                Toast.makeText(this@MainActivity,"ready",Toast.LENGTH_SHORT).show()
-
-            }
-
-            override fun onOrderCreated(data: String) {
-                Toast.makeText(this@MainActivity,"order created",Toast.LENGTH_SHORT).show()
-            }
-
-        })
-//
-//        findViewById<PayButton>(R.id.paybutton).initPayButton(this, configuration,
-//            PayButtonType.valueOf(buttonKey.toString()),object : PayButtonStatusDelegate {
+     //   PayButtonConfig.initPayButton(this,configuration,PayButtonType.valueOf(buttonKey.toString()),findViewById<PayButton>(R.id.paybutton))
+//        PayButtonConfig.addPayButtonStatusDelegate(object :PayButtonStatusDelegate{
 //            override fun onSuccess(data: String) {
-//                Toast.makeText(this@MainActivity,"success $data",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@MainActivity,"ready",Toast.LENGTH_SHORT).show()
 //            }
 //
 //            override fun onError(error: String) {
-//                Toast.makeText(this@MainActivity,"error $error",Toast.LENGTH_SHORT).show()
-//                Log.e("error",error.toString())
-//            }
-//
-//            override fun onCancel() {
-//                Toast.makeText(this@MainActivity,"cancel",Toast.LENGTH_SHORT).show()
-//            }
-//
-//            override fun onChargeCreated(data: String) {
-//                Toast.makeText(this@MainActivity,"charge created $data",Toast.LENGTH_SHORT).show()
-//
-//            }
-//
-//            override fun onClick() {
-//                Toast.makeText(this@MainActivity,"click",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@MainActivity,"erorr",Toast.LENGTH_SHORT).show()
 //            }
 //
 //            override fun onReady() {
 //                Toast.makeText(this@MainActivity,"ready",Toast.LENGTH_SHORT).show()
+//
 //            }
 //
 //            override fun onOrderCreated(data: String) {
-//                Toast.makeText(this@MainActivity,"order created $data",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@MainActivity,"order created",Toast.LENGTH_SHORT).show()
 //            }
 //
 //        })
+
+        findViewById<PayButton>(R.id.paybutton).initPayButton(this, configuration,
+            PayButtonType.valueOf(buttonKey.toString()),object : PayButtonStatusDelegate {
+            override fun onSuccess(data: String) {
+                Toast.makeText(this@MainActivity,"success $data",Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onError(error: String) {
+                Toast.makeText(this@MainActivity,"error $error",Toast.LENGTH_SHORT).show()
+                Log.e("error",error.toString())
+            }
+
+            override fun onCancel() {
+                Toast.makeText(this@MainActivity,"cancel",Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onChargeCreated(data: String) {
+                Toast.makeText(this@MainActivity,"charge created $data",Toast.LENGTH_SHORT).show()
+
+            }
+
+            override fun onClick() {
+                Toast.makeText(this@MainActivity,"click",Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onReady() {
+                Toast.makeText(this@MainActivity,"ready",Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onOrderCreated(data: String) {
+                Toast.makeText(this@MainActivity,"order created $data",Toast.LENGTH_SHORT).show()
+            }
+
+        })
 
 
 
@@ -238,7 +248,7 @@ class MainActivity : AppCompatActivity() {
 
         return when (getPrefStringValue(key, PayButtonType.KNET.name)) {
             PayButtonType.KNET.name-> PayButtonType.KNET
-            PayButtonType.BENEFIT_PAY.name -> PayButtonType.BENEFIT_PAY
+            PayButtonType.BENEFITPAY.name -> PayButtonType.BENEFITPAY
 
             else -> PayButtonType.KNET
         }

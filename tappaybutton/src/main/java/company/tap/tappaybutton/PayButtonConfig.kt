@@ -1,11 +1,8 @@
 package company.tap.tappaybutton
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.LinearLayout
 import android.widget.Toast
 import com.example.tappaybutton.R
 import company.tap.tapWebForm.open.KnetPayStatusDelegate
@@ -31,7 +28,7 @@ object PayButtonConfig {
 
     fun initPayButton(context: Context, configuration: HashMap<String,Any>, payButton:PayButtonType,payButtonView:PayButton){
         when(payButton){
-            PayButtonType.BENEFIT_PAY ->{
+            PayButtonType.BENEFITPAY ->{
                 val view = LayoutInflater.from(context).inflate(R.layout.benefit_pay,payButtonView)
                 tapBenefitPay = view.findViewById<TapBenefitPay>(R.id.benefit)
                 BeneiftPayConfiguration.configureWithTapBenfitPayDictionaryConfiguration(context,tapBenefitPay,
@@ -52,7 +49,7 @@ object PayButtonConfig {
 
                     })
             }
-            PayButtonType.KNET,PayButtonType.BENEFIT,PayButtonType.PAYPAL,PayButtonType.TABBY,PayButtonType.FAWRY-> {
+            else ->{
                 val view = LayoutInflater.from(context).inflate(R.layout.knet_pay,payButtonView)
                 tapKnetPay = view.findViewById<TapKnetPay>(R.id.tapKnet)
                 TapKnetConfiguration.configureWithKnetDictionary(
@@ -76,10 +73,6 @@ object PayButtonConfig {
                     },
                     ThreeDsPayButtonType.valueOf(payButton.name.toUpperCase())
                 )
-            }
-            else ->{
-                Toast.makeText(context,"Check your Payment Button name", Toast.LENGTH_SHORT).show()
-
             }
 
         }

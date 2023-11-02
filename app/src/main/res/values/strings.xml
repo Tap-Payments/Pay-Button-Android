@@ -96,15 +96,20 @@
     <string-array name="ScopeList">
         <item>charge</item>
         <item>authorize</item>
+        <item>taptoken</item>
+        <item>googlepaytoken</item>
+
     </string-array>
 
 
     <string-array name="ButtonList">
-        <item>BENEFIT_PAY</item>
+        <item>BENEFITPAY</item>
         <item>KNET</item>
         <item>BENEFIT</item>
         <item>FAWRY</item>
         <item>PAYPAL</item>
+        <item>TABBY</item>
+        <item>GOOGLEPAY</item>
 
     </string-array>
     <string-array name="AuthorizeList">
@@ -203,9 +208,4 @@
         <item>1</item>
     </string-array>
 
-    <string-array name="pay_button_types">
-        <item> KNET</item>
-        <item> BENEFIT</item>
-        <item>BENEFIT_PAY</item>
-    </string-array>
 </resources>
