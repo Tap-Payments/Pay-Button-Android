@@ -9,7 +9,7 @@ Before diving into the development process, it's essential to establish the prer
 [![Documentation](https://img.shields.io/badge/documentation-100%25-bright%20green.svg)](https://tap-payments.github.io/goSellSDK-Android/)
 [![SDK Version](https://img.shields.io/badge/minSdkVersion-24-blue.svg)](https://stuff.mit.edu/afs/sipb/project/android/docs/reference/packages.html)
 [![SDK Version](https://img.shields.io/badge/targetSdkVersion-33-informational.svg)](https://stuff.mit.edu/afs/sipb/project/android/docs/reference/packages.html)
-[![SDK Version](https://img.shields.io/badge/latestVersion-0.0.2-informational.svg)](https://stuff.mit.edu/afs/sipb/project/android/docs/reference/packages.html)
+[![SDK Version](https://img.shields.io/badge/latestVersion-0.0.4-informational.svg)](https://stuff.mit.edu/afs/sipb/project/android/docs/reference/packages.html)
 
 # Sample Demo
 ![Imgur](https://imgur.com/Xmw7DDI.gif)
@@ -45,7 +45,7 @@ allprojects {
 Then get latest dependency  in your app module gradle
 ```kotlin
 dependencies {
-	        implementation 'com.github.Tap-Payments:Pay-Button-Android:0.0.2'
+	        implementation 'com.github.Tap-Payments:Pay-Button-Android:0.0.4'
 }
 ```
 
