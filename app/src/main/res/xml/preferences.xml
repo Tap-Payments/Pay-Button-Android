@@ -245,6 +245,6 @@
     <Preference
         app:key="dialog_preference"
         android:title="Done"
-        app:summary="Tap to show Card" />
+        app:summary="Tap to show Button" />
 
 </PreferenceScreen>
