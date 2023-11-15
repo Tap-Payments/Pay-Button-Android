@@ -870,7 +870,13 @@ Possible Values:
 # Available Button Types
  1.BenefitPay<br>
  2.KNEt<br>
- 3.Benefit
+ 3.Benefit<br>
+ 4.Fawry<br>
+ 5.Paypal<br>
+ 6.Tabby<br>
+ 7.GooglePay
+
+
 
 
 # Generate the hash string[](https://developers.tap.company/docs/benefit-pay-android#generate-the-hash-string)
