@@ -1,22 +1,45 @@
 package company.tap.paybutton
 
+import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.Window
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import com.chillibits.simplesettings.tool.getPrefStringValue
+import com.example.knet_android.cardSdk.model.CardResponse
+import com.google.gson.Gson
+import company.tap.tapcardformkit.open.TapCardStatusDelegate
+import company.tap.tapcardformkit.open.web_wrapper.TapCardConfiguration
+import company.tap.tapcardformkit.open.web_wrapper.TapCardKit
 import company.tap.tappaybutton.PayButtonType
 import company.tap.tappaybutton.PayButton
 import company.tap.tappaybutton.PayButtonConfig
 import company.tap.tappaybutton.PayButtonStatusDelegate
 
 class MainActivity : AppCompatActivity() {
-    lateinit var payButton: PayButton
+    var authenticatedToken:String?=""
+    var sourceId:String?=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        configureSdk()
+        findViewById<TextView>(R.id.auth_token).setOnClickListener {
+            createDialogAndConfigureCardSdk()
+        }
 
+
+
+
+
+
+    }
+
+    private fun configureSdk(authenticatedToken: String?="", sourceId: String?=""){
 
         /**
          * operator
@@ -144,6 +167,19 @@ class MainActivity : AppCompatActivity() {
         val transactionAuthroizeTypeKey = intent.getStringExtra("transactionAuthroizeTypeKey")
         val transactionAuthroizeTimeKey = intent.getStringExtra("transactionAuthroizeTimeKey")
 
+
+        /**
+         * authenticate for Card buttons
+         */
+        val authenticate = HashMap<String,Any>()
+        authenticate.put("id", authenticatedToken ?: "")
+        authenticate.put("required",true)
+        /**
+         * source for Card buttons
+         */
+        val source = HashMap<String,Any>()
+        source.put("id", sourceId ?: "")
+
         Log.e("scope","scope is : " + scopeKey.toString() + " transactionRefrenceKey : " +  " " + transactionRefrenceKey.toString() +  " transactionAuthroizeTypeKey : " + transactionAuthroizeTypeKey.toString() + " transactionAuthroizeTimeKey : " + transactionAuthroizeTimeKey.toString())
         val authorize = HashMap<String,Any>()
         authorize.put("type",transactionAuthroizeTypeKey ?:"")
@@ -158,9 +194,10 @@ class MainActivity : AppCompatActivity() {
         transaction.put("reference",transactionRefrenceKey?: "")
         transaction.put("authorize",authorize?: "")
         transaction.put("authentication",true)
-        transaction.put("paymentAgreement",paymentAgreement)
+     //   transaction.put("paymentAgreement",paymentAgreement)
         transaction.put("metadata",metada)
-
+        transaction.put("authenticate",authenticate)
+        transaction.put("source",source)
 
         /**
          * acceptance
@@ -185,10 +222,10 @@ class MainActivity : AppCompatActivity() {
         configuration.put("post",post)
         configuration.put("scope",scopeKey.toString())
         configuration.put("transaction",transaction)
-     //   PayButtonConfig.initPayButton(this,configuration,PayButtonType.valueOf(buttonKey.toString()),findViewById<PayButton>(R.id.paybutton))
+//        PayButtonConfig.initPayButton(this,configuration,PayButtonType.valueOf(buttonKey.toString()),findViewById<PayButton>(R.id.paybutton))
 //        PayButtonConfig.addPayButtonStatusDelegate(object :PayButtonStatusDelegate{
 //            override fun onSuccess(data: String) {
-//                Toast.makeText(this@MainActivity,"ready",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@MainActivity,"success",Toast.LENGTH_SHORT).show()
 //            }
 //
 //            override fun onError(error: String) {
@@ -206,53 +243,160 @@ class MainActivity : AppCompatActivity() {
 //
 //        })
 
+        when(PayButtonType.valueOf(buttonKey.toString())){
+            PayButtonType.VISA,PayButtonType.AMERICANEXPRESS,PayButtonType.MASTERCARD,PayButtonType.MADA, ->  findViewById<TextView>(R.id.auth_token).visibility = View.VISIBLE
+            else ->findViewById<TextView>(R.id.auth_token).visibility = View.GONE
+        }
+
         findViewById<PayButton>(R.id.paybutton).initPayButton(this, configuration,
             PayButtonType.valueOf(buttonKey.toString()),object : PayButtonStatusDelegate {
-            override fun onSuccess(data: String) {
-                Toast.makeText(this@MainActivity,"success $data",Toast.LENGTH_SHORT).show()
-            }
+                override fun onSuccess(data: String) {
+                    Toast.makeText(this@MainActivity,"success $data",Toast.LENGTH_SHORT).show()
+                }
 
-            override fun onError(error: String) {
-                Toast.makeText(this@MainActivity,"error $error",Toast.LENGTH_SHORT).show()
-                Log.e("error",error.toString())
-            }
+                override fun onError(error: String) {
+                    Toast.makeText(this@MainActivity,"error $error",Toast.LENGTH_SHORT).show()
+                    Log.e("error",error.toString())
+                }
 
-            override fun onCancel() {
-                Toast.makeText(this@MainActivity,"cancel",Toast.LENGTH_SHORT).show()
-            }
+                override fun onCancel() {
+                    Toast.makeText(this@MainActivity,"cancel",Toast.LENGTH_SHORT).show()
+                }
 
-            override fun onChargeCreated(data: String) {
-                Toast.makeText(this@MainActivity,"charge created $data",Toast.LENGTH_SHORT).show()
+                override fun onChargeCreated(data: String) {
+                    Toast.makeText(this@MainActivity,"charge created $data",Toast.LENGTH_SHORT).show()
 
-            }
+                }
 
-            override fun onClick() {
-                Toast.makeText(this@MainActivity,"click",Toast.LENGTH_SHORT).show()
-            }
+                override fun onClick() {
+                    Toast.makeText(this@MainActivity,"click",Toast.LENGTH_SHORT).show()
+                }
 
-            override fun onReady() {
-                Toast.makeText(this@MainActivity,"ready",Toast.LENGTH_SHORT).show()
-            }
+                override fun onReady() {
+                    Toast.makeText(this@MainActivity,"ready",Toast.LENGTH_SHORT).show()
+                }
 
-            override fun onOrderCreated(data: String) {
-                Toast.makeText(this@MainActivity,"order created $data",Toast.LENGTH_SHORT).show()
-            }
+                override fun onOrderCreated(data: String) {
+                    Toast.makeText(this@MainActivity,"order created $data",Toast.LENGTH_SHORT).show()
+                }
 
-        })
-
-
+            })
 
     }
 
-    private fun getPayButtonType(key: String): PayButtonType {
 
-        return when (getPrefStringValue(key, PayButtonType.KNET.name)) {
-            PayButtonType.KNET.name-> PayButtonType.KNET
-            PayButtonType.BENEFITPAY.name -> PayButtonType.BENEFITPAY
+    private fun createDialogAndConfigureCardSdk() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.alert_card_sdk)
+        val tapCard = dialog.findViewById<TapCardKit>(R.id.tapCardForm)
+        dialog.show()
+        val window: Window? = dialog.window
+        window?.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
-            else -> PayButtonType.KNET
-        }
+        /**
+         * operator
+         */
+        val operator = HashMap<String, Any>()
+        operator.put("publicKey", "pk_test_6jdl4Qo0FYOSXmrZTR1U5EHp")
+        /**
+         * order
+         */
+        val order = HashMap<String, Any>()
+        order.put("id", "")
+        order.put("amount", 1)
+        order.put("currency", "KWD")
+        order.put("description", "")
+        order.put("reference", "")
+
+
+        /**
+         * phone
+         */
+        val phone = HashMap<String, Any>()
+        phone.put("countryCode", "+20")
+        phone.put("number", "011")
+
+        /**
+         * contact
+         */
+        val contact = HashMap<String, Any>()
+        contact.put("email", "test@gmail.com")
+        contact.put("phone", phone)
+        /**
+         * name
+         */
+        val name = HashMap<String, Any>()
+        name.put("lang", "en")
+        name.put("first", "Tap")
+        name.put("middle", "")
+        name.put("last", "Payment")
+
+        /**
+         * customer
+         */
+        val customer = HashMap<String, Any>()
+        customer.put("nameOnCard", "")
+        customer.put("editable", true)
+        customer.put("contact", contact)
+        customer.put("name", listOf(name))
+
+        /**
+         * features
+         */
+        val features = HashMap<String,Any>()
+        features.put("acceptanceBadge",true)
+
+        /**
+         * configuration
+         */
+        val configuration = LinkedHashMap<String, Any>()
+
+        configuration.put("operator", operator)
+        configuration.put("scope", "AuthenticatedToken")
+        configuration.put("order", order)
+        configuration.put("customer", customer)
+        configuration.put("features",features)
+
+
+
+
+
+        TapCardConfiguration.configureWithTapCardDictionaryConfiguration(
+            context = this,
+            cardNumber = "4111111111111111",
+            cardExpiry = "10/24",
+            tapCardInputViewWeb = tapCard,
+            tapMapConfiguration = configuration,
+            tapCardStatusDelegate = object : TapCardStatusDelegate {
+                override fun onError(error: String) {
+                    Log.e("error", error.toString())
+                }
+
+                override fun onSuccess(data: String) {
+                    // authenticateID = data
+                    val gson = Gson()
+                    val neededData = gson.fromJson(data, CardResponse::class.java)
+                    authenticatedToken = neededData.id
+                    sourceId = neededData.source.id
+                    Log.e("authToken", neededData.id.toString())
+                    Log.e("sourceID", sourceId.toString())
+                    dialog.dismiss()
+                    configureSdk(authenticatedToken,sourceId)
+                    findViewById<PayButton>(R.id.paybutton).invalidate()
+
+
+
+                }
+
+                override fun onValidInput(isValid: String) {
+                    Log.e("isValid", isValid.toString())
+                    tapCard.generateTapToken()
+
+                }
+
+            })
     }
+
 
     override fun onBackPressed() {
         super.onBackPressed()

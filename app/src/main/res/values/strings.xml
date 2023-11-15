@@ -92,6 +92,7 @@
     <string name="payment_agreement_id">Payment agreement id </string>
     <string name="payment_agreement_contract">Payment agreement contract </string>
     <string name="button_type">Button</string>
+    <string name="generate_authenticate_token">generate authorization token</string>
 
     <string-array name="ScopeList">
         <item>charge</item>
@@ -110,6 +111,11 @@
         <item>PAYPAL</item>
         <item>TABBY</item>
         <item>GOOGLEPAY</item>
+        <item>CAREEMPAY</item>
+        <item>VISA</item>
+        <item>AMERICANEXPRESS</item>
+        <item>MADA</item>
+        <item>MASTERCARD</item>
 
     </string-array>
     <string-array name="AuthorizeList">

@@ -22,6 +22,7 @@ enum class PayButtonType {
     FAWRY,
     PAYPAL,
     TABBY,
-    GOOGLEPAY
+    GOOGLEPAY,
+    CAREEMPAY, VISA, AMERICANEXPRESS, MADA, MASTERCARD
 
 }

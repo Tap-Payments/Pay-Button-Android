@@ -9,7 +9,9 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14802ee0-ba66-4d91-be76-302fa753c99e" name="Changes" comment="-">
+    <list default="true" id="14802ee0-ba66-4d91-be76-302fa753c99e" name="Changes" comment="updated enums">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/model/CardResponse.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/alert_card_sdk.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/md5-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/sha1-checksums.bin" afterDir="false" />
@@ -22,14 +24,17 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/SettingsActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/SettingsActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/xml/preferences.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/xml/preferences.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tappaybutton/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonConfig.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/benefit_pay.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/benefit_pay.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/knet_pay.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/knet_pay.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,12 +101,14 @@
     "SHOW_ALL_PROCESSES": "false",
     "ScreenRecorder.SavePath": "/Users/macbookpro/Desktop/paypal.mp4",
     "android-custom-view/Users/akazi/Documents/TapProjects/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED": "PayButton",
+    "android-custom-view/Users/macbookpro/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/BenefitPay-Android/0.0.0.6/dd8cf1046c7418dd4df647c05dd823acfb160824/BenefitPay-Android-0.0.0.6-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/TapBenefitPay.kt_SELECTED": "TapBenefitPay",
+    "android-custom-view/Users/macbookpro/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/BenefitPay-Android/0.0.8/2cdd28f86e41aef29f20abdc5094868e53fcb3b8/BenefitPay-Android-0.0.8-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/TapBenefitPay.kt_SELECTED": "TapBenefitPay",
     "android-custom-view/Users/macbookpro/Library/Android/sdk/sources/android-33/android/widget/LinearLayout.java_SELECTED": "LinearLayout",
     "android-custom-view/Users/macbookpro/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED": "PayButton",
     "cidr.known.project.marker": "true",
     "com.google.services.firebase.aqiPopupShown": "true",
     "dart.analysis.tool.window.visible": "false",
-    "last_opened_file_path": "/Users/macbookpro/Pay-Button-Android/tappaybutton/src/main/res/layout",
+    "last_opened_file_path": "/Users/macbookpro/Pay-Button-Android/app/src/main/java/company/tap/paybutton",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.2",
@@ -110,6 +117,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton" />
+      <recent name="$PROJECT_DIR$/app/src/main/res/layout" />
       <recent name="$PROJECT_DIR$/tappaybutton/src/main/res/layout" />
       <recent name="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton" />
     </key>
@@ -260,7 +269,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698774008583</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="updated enums">
+      <created>1698923915431</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1698923915431</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -283,14 +299,15 @@
     <MESSAGE value="added layout Params and invalidation" />
     <MESSAGE value="added payButtons checker" />
     <MESSAGE value="-" />
-    <option name="LAST_COMMIT_MESSAGE" value="-" />
+    <MESSAGE value="updated enums" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated enums" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt</url>
-          <line>54</line>
+          <line>52</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
@@ -300,8 +317,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt</url>
-          <line>50</line>
+          <line>49</line>
           <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/MainActivity.kt</url>
+          <line>197</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/BenefitPay-Android/0.0.8/2cdd28f86e41aef29f20abdc5094868e53fcb3b8/BenefitPay-Android-0.0.8-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/TapBenefitPay.kt</url>
+          <line>96</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

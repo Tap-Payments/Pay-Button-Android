@@ -14,9 +14,9 @@ import company.tap.tapWebForm.open.KnetPayStatusDelegate
 import company.tap.tapWebForm.open.web_wrapper.TapKnetConfiguration
 import company.tap.tapWebForm.open.web_wrapper.TapKnetPay
 import company.tap.tapWebForm.open.web_wrapper.enums.ThreeDsPayButtonType
-import company.tap.tapcardformkit.open.TapBenefitPayStatusDelegate
-import company.tap.tapcardformkit.open.web_wrapper.BeneiftPayConfiguration
-import company.tap.tapcardformkit.open.web_wrapper.TapBenefitPay
+import company.tap.tapbenefitpay.open.TapBenefitPayStatusDelegate
+import company.tap.tapbenefitpay.open.web_wrapper.BeneiftPayConfiguration
+import company.tap.tapbenefitpay.open.web_wrapper.TapBenefitPay
 
 class PayButton : LinearLayout {
     lateinit var tapKnetPay: TapKnetPay
@@ -47,10 +47,8 @@ class PayButton : LinearLayout {
         when (payButton) {
             PayButtonType.BENEFITPAY -> {
 
-
                 tapBenefitPay = TapBenefitPay(context)
-                tapBenefitPay.layoutParams =
-                    LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+                tapBenefitPay.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
                 this.post(Runnable {
                     this.addView(tapBenefitPay)
                     this.invalidate()
@@ -84,6 +82,7 @@ class PayButton : LinearLayout {
                 tapKnetPay.layoutParams =
                     LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
                 this.post(Runnable {
+                    this.removeAllViews()
                     this.addView(tapKnetPay)
                     this.invalidate()
                 })
@@ -112,10 +111,6 @@ class PayButton : LinearLayout {
                     ThreeDsPayButtonType.valueOf(payButton.name.toUpperCase())
                 )
             }
-//            else -> {
-//                Toast.makeText(context, "Check your Payment Button name", Toast.LENGTH_SHORT).show()
-//
-//            }
 
         }
     }
