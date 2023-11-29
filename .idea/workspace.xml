@@ -9,12 +9,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14802ee0-ba66-4d91-be76-302fa753c99e" name="Changes" comment="updated enums">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/model/CardResponse.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/alert_card_sdk.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/sha1-checksums.bin" afterDir="false" />
+    <list default="true" id="14802ee0-ba66-4d91-be76-302fa753c99e" name="Changes" comment="updated enums to match aMex, visa , mastercard, mada">
       <change beforePath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.bin" afterDir="false" />
@@ -24,24 +19,16 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tappaybutton/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonConfig.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonType.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/benefit_pay.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/benefit_pay.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/knet_pay.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/knet_pay.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/benefit_pay.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/benefit_pay_pay_button.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[RQCW8093VJW]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[adb-RQCW8093VJW-eqeAwe._adb-tls-connect._tcp.]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -103,6 +90,7 @@
     "android-custom-view/Users/akazi/Documents/TapProjects/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED": "PayButton",
     "android-custom-view/Users/macbookpro/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/BenefitPay-Android/0.0.0.6/dd8cf1046c7418dd4df647c05dd823acfb160824/BenefitPay-Android-0.0.0.6-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/TapBenefitPay.kt_SELECTED": "TapBenefitPay",
     "android-custom-view/Users/macbookpro/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/BenefitPay-Android/0.0.8/2cdd28f86e41aef29f20abdc5094868e53fcb3b8/BenefitPay-Android-0.0.8-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/TapBenefitPay.kt_SELECTED": "TapBenefitPay",
+    "android-custom-view/Users/macbookpro/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.13/7392e6a192756fe40cce43543b24535dda75b577/Knet-Android-0.0.0.13-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_SELECTED": "TapKnetPay",
     "android-custom-view/Users/macbookpro/Library/Android/sdk/sources/android-33/android/widget/LinearLayout.java_SELECTED": "LinearLayout",
     "android-custom-view/Users/macbookpro/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED": "PayButton",
     "cidr.known.project.marker": "true",
@@ -113,6 +101,12 @@
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.2",
     "show.migrate.to.gradle.popup": "false"
+  },
+  "keyToStringList": {
+    "android-custom-view/Users/macbookpro/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.13/7392e6a192756fe40cce43543b24535dda75b577/Knet-Android-0.0.0.13-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_TapKnetPay_DIMENSIONS": [
+      "1080",
+      "1920"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
@@ -276,7 +270,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698923915431</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="updated enums to match aMex, visa , mastercard, mada">
+      <created>1700048029908</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1700048029908</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -300,7 +301,8 @@
     <MESSAGE value="added payButtons checker" />
     <MESSAGE value="-" />
     <MESSAGE value="updated enums" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated enums" />
+    <MESSAGE value="updated enums to match aMex, visa , mastercard, mada" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated enums to match aMex, visa , mastercard, mada" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -3,7 +3,6 @@ package company.tap.tappaybutton
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
-import android.widget.LinearLayout
 import com.example.tappaybutton.R
 import company.tap.tapWebForm.open.KnetPayStatusDelegate
 import company.tap.tapWebForm.open.web_wrapper.TapKnetConfiguration
@@ -29,7 +28,7 @@ object PayButtonConfig {
     fun initPayButton(context: Context, configuration: HashMap<String,Any>, payButton:PayButtonType,payButtonView:PayButton){
         when(payButton){
             PayButtonType.BENEFITPAY ->{
-                val view = LayoutInflater.from(context).inflate(R.layout.benefit_pay,payButtonView)
+                val view = LayoutInflater.from(context).inflate(R.layout.benefit_pay_pay_button,payButtonView)
                 tapBenefitPay = view.findViewById<TapBenefitPay>(R.id.benefit)
                 BeneiftPayConfiguration.configureWithTapBenfitPayDictionaryConfiguration(context,tapBenefitPay,
                     configuration,object : TapBenefitPayStatusDelegate {
