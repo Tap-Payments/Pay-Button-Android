@@ -32,11 +32,6 @@ class MainActivity : AppCompatActivity() {
             createDialogAndConfigureCardSdk()
         }
 
-
-
-
-
-
     }
 
     private fun configureSdk(authenticatedToken: String?="", sourceId: String?=""){

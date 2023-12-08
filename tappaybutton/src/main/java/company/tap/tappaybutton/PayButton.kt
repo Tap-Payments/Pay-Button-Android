@@ -42,7 +42,7 @@ class PayButton : LinearLayout {
         context: Context,
         configuration: HashMap<String, Any>,
         payButton: PayButtonType,
-        payButtonStatusDelegate: PayButtonStatusDelegate
+        payButtonStatusDelegate: PayButtonStatusDelegate,
     ) {
         when (payButton) {
             PayButtonType.BENEFITPAY -> {

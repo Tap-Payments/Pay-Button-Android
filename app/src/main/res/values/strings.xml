@@ -112,10 +112,12 @@
         <item>TABBY</item>
         <item>GOOGLEPAY</item>
         <item>CAREEMPAY</item>
-        <item>VISA</item>
-        <item>AMERICANEXPRESS</item>
-        <item>MADA</item>
-        <item>MASTERCARD</item>
+<!--        <item>VISA</item>-->
+<!--        <item>AMERICANEXPRESS</item>-->
+<!--        <item>MADA</item>-->
+<!--        <item>MASTERCARD</item>-->
+        <item>CARD</item>
+
 
     </string-array>
     <string-array name="AuthorizeList">

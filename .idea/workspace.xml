@@ -9,7 +9,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14802ee0-ba66-4d91-be76-302fa753c99e" name="Changes" comment="updated enums to match aMex, visa , mastercard, mada">
+    <list default="true" id="14802ee0-ba66-4d91-be76-302fa753c99e" name="Changes" comment="update tap pay button to latest">
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.bin" afterDir="false" />
@@ -18,15 +21,25 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tappaybutton/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonConfig.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/benefit_pay.xml" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/benefit_pay_pay_button.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonType.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[adb-RQCW8093VJW-eqeAwe._adb-tls-connect._tcp.]" />
   <component name="ExternalProjectsData">
@@ -76,39 +89,40 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DEBUGGABLE_DEVICE": "samsung-sm_a546e-RQCW8093VJW",
-    "DEBUGGABLE_PROCESS": "company.tap.paybutton",
-    "DEBUGGER_ID": "Auto",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "SHOW_ALL_PROCESSES": "false",
-    "ScreenRecorder.SavePath": "/Users/macbookpro/Desktop/paypal.mp4",
-    "android-custom-view/Users/akazi/Documents/TapProjects/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED": "PayButton",
-    "android-custom-view/Users/macbookpro/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/BenefitPay-Android/0.0.0.6/dd8cf1046c7418dd4df647c05dd823acfb160824/BenefitPay-Android-0.0.0.6-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/TapBenefitPay.kt_SELECTED": "TapBenefitPay",
-    "android-custom-view/Users/macbookpro/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/BenefitPay-Android/0.0.8/2cdd28f86e41aef29f20abdc5094868e53fcb3b8/BenefitPay-Android-0.0.8-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/TapBenefitPay.kt_SELECTED": "TapBenefitPay",
-    "android-custom-view/Users/macbookpro/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.13/7392e6a192756fe40cce43543b24535dda75b577/Knet-Android-0.0.0.13-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_SELECTED": "TapKnetPay",
-    "android-custom-view/Users/macbookpro/Library/Android/sdk/sources/android-33/android/widget/LinearLayout.java_SELECTED": "LinearLayout",
-    "android-custom-view/Users/macbookpro/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED": "PayButton",
-    "cidr.known.project.marker": "true",
-    "com.google.services.firebase.aqiPopupShown": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "last_opened_file_path": "/Users/macbookpro/Pay-Button-Android/app/src/main/java/company/tap/paybutton",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.2",
-    "show.migrate.to.gradle.popup": "false"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DEBUGGABLE_DEVICE&quot;: &quot;samsung-sm_a546e-RQCW8093VJW&quot;,
+    &quot;DEBUGGABLE_PROCESS&quot;: &quot;company.tap.paybutton&quot;,
+    &quot;DEBUGGER_ID&quot;: &quot;Auto&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;SHOW_ALL_PROCESSES&quot;: &quot;false&quot;,
+    &quot;ScreenRecorder.SavePath&quot;: &quot;/Users/macbookpro/Desktop/paypal.mp4&quot;,
+    &quot;android-custom-view/Users/akazi/Documents/TapProjects/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED&quot;: &quot;PayButton&quot;,
+    &quot;android-custom-view/Users/macbookpro/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/BenefitPay-Android/0.0.0.6/dd8cf1046c7418dd4df647c05dd823acfb160824/BenefitPay-Android-0.0.0.6-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/TapBenefitPay.kt_SELECTED&quot;: &quot;TapBenefitPay&quot;,
+    &quot;android-custom-view/Users/macbookpro/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/BenefitPay-Android/0.0.8/2cdd28f86e41aef29f20abdc5094868e53fcb3b8/BenefitPay-Android-0.0.8-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/TapBenefitPay.kt_SELECTED&quot;: &quot;TapBenefitPay&quot;,
+    &quot;android-custom-view/Users/macbookpro/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.13/7392e6a192756fe40cce43543b24535dda75b577/Knet-Android-0.0.0.13-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_SELECTED&quot;: &quot;TapKnetPay&quot;,
+    &quot;android-custom-view/Users/macbookpro/Library/Android/sdk/sources/android-33/android/widget/LinearLayout.java_SELECTED&quot;: &quot;LinearLayout&quot;,
+    &quot;android-custom-view/Users/macbookpro/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED&quot;: &quot;PayButton&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/macbookpro/Pay-Button-Android/app/src/main/java/company/tap/paybutton&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   },
-  "keyToStringList": {
-    "android-custom-view/Users/macbookpro/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.13/7392e6a192756fe40cce43543b24535dda75b577/Knet-Android-0.0.0.13-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_TapKnetPay_DIMENSIONS": [
-      "1080",
-      "1920"
+  &quot;keyToStringList&quot;: {
+    &quot;android-custom-view/Users/macbookpro/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.13/7392e6a192756fe40cce43543b24535dda75b577/Knet-Android-0.0.0.13-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_TapKnetPay_DIMENSIONS&quot;: [
+      &quot;1080&quot;,
+      &quot;1920&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton" />
@@ -144,6 +158,8 @@
         <option name="WORKING_DIR" value="" />
         <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
         <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
       </Auto>
       <Hybrid>
         <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
@@ -151,14 +167,21 @@
         <option name="WORKING_DIR" value="" />
         <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
         <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
       </Hybrid>
-      <Java />
+      <Java>
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Java>
       <Native>
         <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
         <option name="SHOW_STATIC_VARS" value="true" />
         <option name="WORKING_DIR" value="" />
         <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
         <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
       </Native>
       <Profilers>
         <option name="ADVANCED_PROFILING_ENABLED" value="false" />
@@ -277,7 +300,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700048029908</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="update tap pay button to latest">
+      <created>1701265824484</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1701265824484</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -302,7 +332,8 @@
     <MESSAGE value="-" />
     <MESSAGE value="updated enums" />
     <MESSAGE value="updated enums to match aMex, visa , mastercard, mada" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated enums to match aMex, visa , mastercard, mada" />
+    <MESSAGE value="update tap pay button to latest" />
+    <option name="LAST_COMMIT_MESSAGE" value="update tap pay button to latest" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -324,7 +355,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/MainActivity.kt</url>
-          <line>197</line>
+          <line>192</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">

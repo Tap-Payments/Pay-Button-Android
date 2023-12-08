@@ -20,6 +20,12 @@ Copyright (c) 2022    Tap Payments.
 All rights reserved.
  **/
 @SuppressLint("StaticFieldLeak")
+
+
+
+/**
+ * specifically for flutter
+ */
 object PayButtonConfig {
     private lateinit var tapKnetPay: TapKnetPay
     private lateinit var tapBenefitPay: TapBenefitPay
