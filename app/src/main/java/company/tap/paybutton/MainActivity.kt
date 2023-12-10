@@ -231,6 +231,23 @@ class MainActivity : AppCompatActivity() {
 
 
         /**
+         * customerCards
+         */
+        val customerCards = HashMap<String,Any>()
+        val saveCard =  intent.getBooleanExtra("saveCard",true)
+        val autoSaveCard =  intent.getBooleanExtra("autoSaveCard",true)
+        customerCards.put("saveCard",saveCard)
+        customerCards.put("autoSaveCard",autoSaveCard)
+
+
+        /**
+         * features
+         */
+        val features = HashMap<String,Any>()
+        val showCardBrands: Boolean = intent.getBooleanExtra("selectedCardBrand", true)
+        features.put("acceptanceBadge",showCardBrands)
+        features.put("customerCards",customerCards)
+        /**
          * configuration
          */
 
@@ -244,7 +261,7 @@ class MainActivity : AppCompatActivity() {
         configuration.put("scope",scopeKey.toString())
         configuration.put("transaction",transaction)
         configuration.put("fieldVisibility",fieldVisibility)
-
+        configuration.put("features",features)
 //        PayButtonConfig.initPayButton(this,configuration,PayButtonType.valueOf(buttonKey.toString()),findViewById<PayButton>(R.id.paybutton))
 //        PayButtonConfig.addPayButtonStatusDelegate(object :PayButtonStatusDelegate{
 //            override fun onSuccess(data: String) {
@@ -363,28 +380,8 @@ class MainActivity : AppCompatActivity() {
         customer.put("contact", contact)
         customer.put("name", listOf(name))
 
-        /**
-         * features
-         */
-        val features = HashMap<String,Any>()
-        features.put("acceptanceBadge",true)
 
-        /**
-         * fields
-         */
-        val fieldVisibility = HashMap<String,Any>()
 
-        /**
-         * Fields visibility **/
-        val cardHolder =  intent.getBooleanExtra("cardHolder",true)
-        val cvv =  intent.getBooleanExtra("cvv",true)
-        /**
-         * card
-         */
-        val card = HashMap<String,Any>()
-        card.put("cvv",cvv)
-        card.put("cardHolder",cardHolder)
-        fieldVisibility.put("card",card)
 
 
         /**
@@ -396,9 +393,6 @@ class MainActivity : AppCompatActivity() {
         configuration.put("scope", "AuthenticatedToken")
         configuration.put("order", order)
         configuration.put("customer", customer)
-        configuration.put("features",features)
-        configuration.put("fieldVisibility",fieldVisibility)
-
 
 
         TapCardConfiguration.configureWithTapCardDictionaryConfiguration(

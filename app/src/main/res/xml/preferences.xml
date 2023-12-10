@@ -172,7 +172,27 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        app:title="@string/features">
+        <CheckBoxPreference
+            app:key="displayPymtBrndKey"
+            app:title="@string/display_payment_brands"
+            android:defaultValue="true"
+            />
 
+        <CheckBoxPreference
+            app:key="displaySaveCardKey"
+            app:title="@string/saveCard"
+            android:defaultValue="true"
+            />
+
+
+        <CheckBoxPreference
+            app:key="displayAutosaveCardKey"
+            app:title="@string/autoSaveCard"
+            android:defaultValue="true"
+            />
+    </PreferenceCategory>
 
     <PreferenceCategory
         app:title="@string/interface_">

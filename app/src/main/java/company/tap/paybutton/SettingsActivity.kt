@@ -107,6 +107,13 @@ class SettingsActivity : AppCompatActivity(), SimpleSettingsConfig.PreferenceCal
         intent.putExtra("cardHolder",  getPrefBooleanValue("displayHoldernameKey",true))
         intent.putExtra("cvv",getPrefBooleanValue("displayCVVKey",true))
 
+        /**
+         * Features
+         ***/
+        intent.putExtra("selectedCardBrand", getPrefBooleanValue("displayPymtBrndKey",true))
+        intent.putExtra("saveCard", getPrefBooleanValue("displaySaveCardKey",true))
+        intent.putExtra("autoSaveCard", getPrefBooleanValue("displayAutosaveCardKey",true))
+
         finish()
         startActivity(intent)
 
