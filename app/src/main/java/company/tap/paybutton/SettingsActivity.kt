@@ -101,6 +101,11 @@ class SettingsActivity : AppCompatActivity(), SimpleSettingsConfig.PreferenceCal
         intent.putExtra("supportedPaymentAuthenticationsKey", getPrefStringSetValue("supportedPaymentAuthenticationsKey", emptySet()).toTypedArray())
         intent.putExtra("supportedSchemesKey", getPrefStringSetValue("supportedSchemesKey", emptySet()).toTypedArray())
 
+        /**
+         * Fields Visibility
+         ***/
+        intent.putExtra("cardHolder",  getPrefBooleanValue("displayHoldernameKey",true))
+        intent.putExtra("cvv",getPrefBooleanValue("displayCVVKey",true))
 
         finish()
         startActivity(intent)

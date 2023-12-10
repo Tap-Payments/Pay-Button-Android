@@ -152,7 +152,25 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        app:title="@string/fields">
+        <CheckBoxPreference
+            app:key="displayHoldernameKey"
+            app:title="Card Holder"
+            android:defaultValue="true"
+            />
 
+        <CheckBoxPreference
+            app:key="displayCVVKey"
+            app:title="@string/card_cvv"
+            android:defaultValue="true"
+            />
+
+
+
+
+
+    </PreferenceCategory>
 
 
 

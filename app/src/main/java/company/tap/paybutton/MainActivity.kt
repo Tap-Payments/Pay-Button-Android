@@ -25,7 +25,7 @@ import company.tap.tappaybutton.PayButtonStatusDelegate
 class MainActivity : AppCompatActivity() {
     var authenticatedToken:String?=""
     var sourceId:String?=""
- 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -169,6 +169,7 @@ class MainActivity : AppCompatActivity() {
         val transactionAuthroizeTimeKey = intent.getStringExtra("transactionAuthroizeTimeKey")
 
 
+
         /**
          * authenticate for Card buttons
          */
@@ -211,6 +212,25 @@ class MainActivity : AppCompatActivity() {
 
 
         /**
+         * fields
+         */
+        val fieldVisibility = HashMap<String,Any>()
+
+        /**
+         * Fields visibility **/
+        val cardHolder =  intent.getBooleanExtra("cardHolder",true)
+        val cvv =  intent.getBooleanExtra("cvv",true)
+        /**
+         * card
+         */
+        val card = HashMap<String,Any>()
+        card.put("cvv",cvv)
+        card.put("cardHolder",cardHolder)
+        fieldVisibility.put("card",card)
+
+
+
+        /**
          * configuration
          */
 
@@ -223,6 +243,8 @@ class MainActivity : AppCompatActivity() {
         configuration.put("post",post)
         configuration.put("scope",scopeKey.toString())
         configuration.put("transaction",transaction)
+        configuration.put("fieldVisibility",fieldVisibility)
+
 //        PayButtonConfig.initPayButton(this,configuration,PayButtonType.valueOf(buttonKey.toString()),findViewById<PayButton>(R.id.paybutton))
 //        PayButtonConfig.addPayButtonStatusDelegate(object :PayButtonStatusDelegate{
 //            override fun onSuccess(data: String) {
@@ -348,6 +370,24 @@ class MainActivity : AppCompatActivity() {
         features.put("acceptanceBadge",true)
 
         /**
+         * fields
+         */
+        val fieldVisibility = HashMap<String,Any>()
+
+        /**
+         * Fields visibility **/
+        val cardHolder =  intent.getBooleanExtra("cardHolder",true)
+        val cvv =  intent.getBooleanExtra("cvv",true)
+        /**
+         * card
+         */
+        val card = HashMap<String,Any>()
+        card.put("cvv",cvv)
+        card.put("cardHolder",cardHolder)
+        fieldVisibility.put("card",card)
+
+
+        /**
          * configuration
          */
         val configuration = LinkedHashMap<String, Any>()
@@ -357,8 +397,7 @@ class MainActivity : AppCompatActivity() {
         configuration.put("order", order)
         configuration.put("customer", customer)
         configuration.put("features",features)
-
-
+        configuration.put("fieldVisibility",fieldVisibility)
 
 
 
