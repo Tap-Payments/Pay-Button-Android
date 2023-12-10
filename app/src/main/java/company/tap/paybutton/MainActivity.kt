@@ -2,6 +2,7 @@ package company.tap.paybutton
 
 import android.app.Dialog
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -24,15 +25,20 @@ import company.tap.tappaybutton.PayButtonStatusDelegate
 class MainActivity : AppCompatActivity() {
     var authenticatedToken:String?=""
     var sourceId:String?=""
+ 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
         configureSdk()
-        findViewById<TextView>(R.id.auth_token).setOnClickListener {
-            createDialogAndConfigureCardSdk()
-        }
+            findViewById<TextView>(R.id.auth_token).setOnClickListener {
+                createDialogAndConfigureCardSdk()
+            }
+
+
 
     }
+
 
     private fun configureSdk(authenticatedToken: String?="", sourceId: String?=""){
 
