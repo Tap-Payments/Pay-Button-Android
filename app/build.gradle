@@ -50,7 +50,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation (project(":tappaybutton"))
 
-    implementation 'com.github.Tap-Payments:Card-Android:0.0.52'
+   // implementation 'com.github.Tap-Payments:Card-Android:0.0.52'
 
 //    implementation 'com.github.Tap-Payments:Pay-Button-Android:0.0.4'
 

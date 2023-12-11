@@ -13,10 +13,10 @@ import android.widget.TextView
 import android.widget.Toast
 import com.chillibits.simplesettings.tool.getPrefStringValue
 import com.example.knet_android.cardSdk.model.CardResponse
-import com.google.gson.Gson
+/*import com.google.gson.Gson
 import company.tap.tapcardformkit.open.TapCardStatusDelegate
 import company.tap.tapcardformkit.open.web_wrapper.TapCardConfiguration
-import company.tap.tapcardformkit.open.web_wrapper.TapCardKit
+import company.tap.tapcardformkit.open.web_wrapper.TapCardKit*/
 import company.tap.tappaybutton.PayButtonType
 import company.tap.tappaybutton.PayButton
 import company.tap.tappaybutton.PayButtonConfig
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         configureSdk()
             findViewById<TextView>(R.id.auth_token).setOnClickListener {
-                createDialogAndConfigureCardSdk()
+                //createDialogAndConfigureCardSdk()
             }
 
 
@@ -325,7 +325,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun createDialogAndConfigureCardSdk() {
+   /* private fun createDialogAndConfigureCardSdk() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.alert_card_sdk)
         val tapCard = dialog.findViewById<TapCardKit>(R.id.tapCardForm)
@@ -333,14 +333,14 @@ class MainActivity : AppCompatActivity() {
         val window: Window? = dialog.window
         window?.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
-        /**
+        *//**
          * operator
-         */
+         *//*
         val operator = HashMap<String, Any>()
         operator.put("publicKey", "pk_test_6jdl4Qo0FYOSXmrZTR1U5EHp")
-        /**
+        *//**
          * order
-         */
+         *//*
         val order = HashMap<String, Any>()
         order.put("id", "")
         order.put("amount", 1)
@@ -349,31 +349,31 @@ class MainActivity : AppCompatActivity() {
         order.put("reference", "")
 
 
-        /**
+        *//**
          * phone
-         */
+         *//*
         val phone = HashMap<String, Any>()
         phone.put("countryCode", "+20")
         phone.put("number", "011")
 
-        /**
+        *//**
          * contact
-         */
+         *//*
         val contact = HashMap<String, Any>()
         contact.put("email", "test@gmail.com")
         contact.put("phone", phone)
-        /**
+        *//**
          * name
-         */
+         *//*
         val name = HashMap<String, Any>()
         name.put("lang", "en")
         name.put("first", "Tap")
         name.put("middle", "")
         name.put("last", "Payment")
 
-        /**
+        *//**
          * customer
-         */
+         *//*
         val customer = HashMap<String, Any>()
         customer.put("nameOnCard", "")
         customer.put("editable", true)
@@ -384,9 +384,9 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        /**
+        *//**
          * configuration
-         */
+         *//*
         val configuration = LinkedHashMap<String, Any>()
 
         configuration.put("operator", operator)
@@ -429,7 +429,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
             })
-    }
+    }*/
 
 
     override fun onBackPressed() {
