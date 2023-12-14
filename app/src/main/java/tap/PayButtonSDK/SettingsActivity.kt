@@ -20,7 +20,7 @@ import com.chillibits.simplesettings.tool.getPrefBooleanValue
 import com.chillibits.simplesettings.tool.getPrefStringSetValue
 import com.chillibits.simplesettings.tool.getPrefStringValue
 
-class SettingsActivity : AppCompatActivity(), SimpleSettingsConfig.PreferenceCallback  {
+class SettingsActivity : AppCompatActivity(), SimpleSettingsConfig.PreferenceCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -36,44 +36,89 @@ class SettingsActivity : AppCompatActivity(), SimpleSettingsConfig.PreferenceCal
     }
 
 
-    override fun onPreferenceClick(context: Context, key: String): Preference.OnPreferenceClickListener? {
-        return when(key) {
+    override fun onPreferenceClick(
+        context: Context,
+        key: String
+    ): Preference.OnPreferenceClickListener? {
+        return when (key) {
             "dialog_preference" -> Preference.OnPreferenceClickListener {
                 navigateToMainActivity()
                 true
             }
+
             else -> super.onPreferenceClick(context, key)
         }
     }
-    fun navigateToMainActivity(){
+
+    fun navigateToMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
         /**
          * operator
          */
-        intent.putExtra("publicKey", getPrefStringValue("publicKey","pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7"))
-        intent.putExtra("hashStringKey", getPrefStringValue("hashStringKey","pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7"))
-        intent.putExtra("useLiveKey", getPrefBooleanValue("useLiveKey",false))
+        intent.putExtra(
+            "publicKey",
+            getPrefStringValue("publicKey", "pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7")
+        )
+        intent.putExtra(
+            "hashStringKey",
+            getPrefStringValue("hashStringKey", "pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7")
+        )
+        intent.putExtra("useLiveKey", getPrefBooleanValue("useLiveKey", false))
 
         /**
          * order
          */
-        intent.putExtra("orderIdKey", getPrefStringValue("orderIdKey",""))
-        intent.putExtra("orderDescKey", getPrefStringValue("orderDescKey","test"))
-        intent.putExtra("amountKey", getPrefStringValue("amountKey","1"))
-        intent.putExtra("orderTransactionRefrence", getPrefStringValue("orderTransactionRefrence","test"))
-        intent.putExtra("selectedCurrencyKey", getPrefStringValue("selectedCurrencyKey","test"))
+        intent.putExtra("orderIdKey", getPrefStringValue("orderIdKey", ""))
+        intent.putExtra("orderDescKey", getPrefStringValue("orderDescKey", "test"))
+        intent.putExtra("amountKey", getPrefStringValue("amountKey", "1"))
+        intent.putExtra(
+            "orderTransactionRefrence",
+            getPrefStringValue("orderTransactionRefrence", "test")
+        )
+        intent.putExtra("selectedCurrencyKey", getPrefStringValue("selectedCurrencyKey", "test"))
 
 
         /**
          * interface
          */
 
-        intent.putExtra("selectedcardedgeKey",if (getPrefStringValue("selectedcardedgeKey","") == "1")  "flat" else  getPrefStringValue("selectedcardedgeKey","flat"))
-        intent.putExtra("selectedCardDirection", if (getPrefStringValue("selectedcardirectKey","") == "0") "ltr" else getPrefStringValue("selectedcardirectKey","dynamic"))
-        intent.putExtra("selectedcolorstyleKey", getPrefStringValue("selectedcolorstyleKey","colored"))
-        intent.putExtra("selectedthemeKey", if (getPrefStringValue("selectedthemeKey","") == "1") "light" else  getPrefStringValue("selectedthemeKey","light"))
-        intent.putExtra("selectedlangKey", if (getPrefStringValue("selectedlangKey","") == "1") "en" else getPrefStringValue("selectedlangKey", default = "en"))
-        intent.putExtra("loaderKey", getPrefBooleanValue("loaderKey",true))
+        intent.putExtra(
+            "selectedcardedgeKey",
+            if (getPrefStringValue(
+                    "selectedcardedgeKey",
+                    ""
+                ) == "1"
+            ) "flat" else getPrefStringValue("selectedcardedgeKey", "flat")
+        )
+        intent.putExtra(
+            "selectedCardDirection",
+            if (getPrefStringValue(
+                    "selectedcardirectKey",
+                    ""
+                ) == "0"
+            ) "ltr" else getPrefStringValue("selectedcardirectKey", "dynamic")
+        )
+        intent.putExtra(
+            "selectedcolorstyleKey",
+            getPrefStringValue("selectedcolorstyleKey", "colored")
+        )
+        intent.putExtra(
+            "selectedthemeKey",
+            if (getPrefStringValue(
+                    "selectedthemeKey",
+                    ""
+                ) == "1"
+            ) "light" else getPrefStringValue("selectedthemeKey", "light")
+        )
+        intent.putExtra(
+            "selectedlangKey",
+            if (getPrefStringValue(
+                    "selectedlangKey",
+                    ""
+                ) == "1"
+            ) "en" else getPrefStringValue("selectedlangKey", default = "en")
+        )
+        intent.putExtra("loaderKey", getPrefBooleanValue("loaderKey", true))
 
 
         /**
@@ -81,40 +126,55 @@ class SettingsActivity : AppCompatActivity(), SimpleSettingsConfig.PreferenceCal
          */
 
 
-        intent.putExtra("posturlKey", getPrefStringValue("posturlKey",""))
-        intent.putExtra("redirectUrlKey", getPrefStringValue("redirectUrlKey",""))
+        intent.putExtra("posturlKey", getPrefStringValue("posturlKey", ""))
+        intent.putExtra("redirectUrlKey", getPrefStringValue("redirectUrlKey", ""))
 
         /**
          * scope && transaction
          */
 
-        intent.putExtra("scopeKey", getPrefStringValue("scopeKey","Token"))
-        intent.putExtra("transactionRefrenceKey", getPrefStringValue("transactionRefrenceKey",""))
-        intent.putExtra("transactionAuthroizeTypeKey", getPrefStringValue("transactionAuthroizeTypeKey",""))
-        intent.putExtra("transactionAuthroizeTimeKey", getPrefStringValue("transactionAuthroizeTimeKey",""))
-        intent.putExtra("buttonKey", getPrefStringValue("buttonKey",""))
+        intent.putExtra("scopeKey", getPrefStringValue("scopeKey", "Token"))
+        intent.putExtra("transactionRefrenceKey", getPrefStringValue("transactionRefrenceKey", ""))
+        intent.putExtra(
+            "transactionAuthroizeTypeKey",
+            getPrefStringValue("transactionAuthroizeTypeKey", "")
+        )
+        intent.putExtra(
+            "transactionAuthroizeTimeKey",
+            getPrefStringValue("transactionAuthroizeTimeKey", "")
+        )
+        intent.putExtra("buttonKey", getPrefStringValue("buttonKey", ""))
 
 
         /**
          * acceptance
          */
-        intent.putExtra("supportedFundSourceKey", getPrefStringSetValue("supportedFundSourceKey", emptySet()).toTypedArray())
-        Log.e("suppored",getPrefStringSetValue("supportedFundSourceKey", emptySet()).toString())
-        intent.putExtra("supportedPaymentAuthenticationsKey", getPrefStringSetValue("supportedPaymentAuthenticationsKey", emptySet()).toTypedArray())
-        intent.putExtra("supportedSchemesKey", getPrefStringSetValue("supportedSchemesKey", emptySet()).toTypedArray())
+        intent.putExtra(
+            "supportedFundSourceKey",
+            getPrefStringSetValue("supportedFundSourceKey", emptySet()).toTypedArray()
+        )
+        Log.e("suppored", getPrefStringSetValue("supportedFundSourceKey", emptySet()).toString())
+        intent.putExtra(
+            "supportedPaymentAuthenticationsKey",
+            getPrefStringSetValue("supportedPaymentAuthenticationsKey", emptySet()).toTypedArray()
+        )
+        intent.putExtra(
+            "supportedSchemesKey",
+            getPrefStringSetValue("supportedSchemesKey", emptySet()).toTypedArray()
+        )
 
         /**
          * Fields Visibility
          ***/
-        intent.putExtra("cardHolder",  getPrefBooleanValue("displayHoldernameKey",true))
-        intent.putExtra("cvv",getPrefBooleanValue("displayCVVKey",true))
+        intent.putExtra("cardHolder", getPrefBooleanValue("displayHoldernameKey", true))
+        intent.putExtra("cvv", getPrefBooleanValue("displayCVVKey", true))
 
         /**
          * Features
          ***/
-        intent.putExtra("selectedCardBrand", getPrefBooleanValue("displayPymtBrndKey",true))
-        intent.putExtra("saveCard", getPrefBooleanValue("displaySaveCardKey",true))
-        intent.putExtra("autoSaveCard", getPrefBooleanValue("displayAutosaveCardKey",true))
+        intent.putExtra("selectedCardBrand", getPrefBooleanValue("displayPymtBrndKey", true))
+        intent.putExtra("saveCard", getPrefBooleanValue("displaySaveCardKey", true))
+        intent.putExtra("autoSaveCard", getPrefBooleanValue("displayAutosaveCardKey", true))
 
         finish()
         startActivity(intent)

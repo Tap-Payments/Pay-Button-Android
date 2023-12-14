@@ -48,7 +48,8 @@ class PayButton : LinearLayout {
             PayButtonType.BENEFITPAY -> {
 
                 tapBenefitPay = TapBenefitPay(context)
-                tapBenefitPay.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+                tapBenefitPay.layoutParams =
+                    LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
                 this.post(Runnable {
                     this.addView(tapBenefitPay)
                     this.invalidate()
@@ -76,7 +77,8 @@ class PayButton : LinearLayout {
 
                     })
             }
-            else ->  {
+
+            else -> {
 
                 tapKnetPay = TapKnetPay(context)
                 tapKnetPay.layoutParams =
