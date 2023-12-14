@@ -1,4 +1,5 @@
-package company.tap.paybutton
+package tap.PayButtonSDK
+
 
 import android.app.Dialog
 import android.content.Intent
@@ -11,8 +12,8 @@ import android.view.Window
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import com.chillibits.simplesettings.tool.getPrefStringValue
-import com.example.knet_android.cardSdk.model.CardResponse
+import com.chillibits.simplesettings.tool.getPrefBooleanValue
+
 /*import com.google.gson.Gson
 import company.tap.tapcardformkit.open.TapCardStatusDelegate
 import company.tap.tapcardformkit.open.web_wrapper.TapCardConfiguration
@@ -21,6 +22,7 @@ import company.tap.tappaybutton.PayButtonType
 import company.tap.tappaybutton.PayButton
 import company.tap.tappaybutton.PayButtonConfig
 import company.tap.tappaybutton.PayButtonStatusDelegate
+
 
 class MainActivity : AppCompatActivity() {
     var authenticatedToken:String?=""
@@ -48,10 +50,18 @@ class MainActivity : AppCompatActivity() {
         val publicKey = intent.getStringExtra("publicKey")
         val hashStringKey = intent.getStringExtra("hashStringKey")
         val buttonKey = intent.getStringExtra("buttonKey")
+        val useLiveKey :Boolean =  intent.getBooleanExtra("useLiveKey", false)
 
         val operator = HashMap<String,Any>()
 
-        operator.put("publicKey","pk_test_6jdl4Qo0FYOSXmrZTR1U5EHp")
+        if(useLiveKey){
+            operator.put("publicKey","pk_live_I8aWfZkiGtw9HYsRCcAgQzS6")
+        }
+        else{
+            operator.put("publicKey","pk_test_6jdl4Qo0FYOSXmrZTR1U5EHp")
+        }
+
+
         operator.put("hashString",hashStringKey.toString())
         Log.e("orderData","pbulc" + publicKey.toString() + " \nhash" + hashStringKey.toString())
         Log.e("buttonKey","buttonKey" + buttonKey.toString())
@@ -296,7 +306,7 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onError(error: String) {
                     Toast.makeText(this@MainActivity,"error $error",Toast.LENGTH_SHORT).show()
-                    Log.e("error",error.toString())
+                    Log.e("error Here",error.toString())
                 }
 
                 override fun onCancel() {

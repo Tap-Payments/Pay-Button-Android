@@ -28,6 +28,13 @@
             app:title="Public Key"
             app:useSimpleSummaryProvider="true"/>
 
+        <CheckBoxPreference
+            app:key="useLiveKey"
+            app:title="Select Live Key"
+            android:defaultValue="false"
+            />
+
+
         <EditTextPreference
             app:key="hashStringKey"
             app:defaultValue=""

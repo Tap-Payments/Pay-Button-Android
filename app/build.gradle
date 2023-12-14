@@ -5,11 +5,12 @@ plugins {
 }
 
 android {
-    namespace = "company.tap.paybutton"
+   // namespace = "company.tap.paybutton"
+    namespace = "tap.PayButtonSDK"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "company.tap.paybutton"
+        applicationId = "tap.PayButtonSDK"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

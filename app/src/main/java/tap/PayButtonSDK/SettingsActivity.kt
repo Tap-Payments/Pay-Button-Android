@@ -5,7 +5,8 @@
  **
  */
 
-package company.tap.paybutton
+package tap.PayButtonSDK
+
 
 import android.content.Context
 import android.content.Intent
@@ -51,6 +52,7 @@ class SettingsActivity : AppCompatActivity(), SimpleSettingsConfig.PreferenceCal
          */
         intent.putExtra("publicKey", getPrefStringValue("publicKey","pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7"))
         intent.putExtra("hashStringKey", getPrefStringValue("hashStringKey","pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7"))
+        intent.putExtra("useLiveKey", getPrefBooleanValue("useLiveKey",false))
 
         /**
          * order
