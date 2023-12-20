@@ -83,11 +83,11 @@ class PayButton : LinearLayout {
                 tapKnetPay = TapKnetPay(context)
                 tapKnetPay.layoutParams =
                     LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                this.post(Runnable {
+                this.post {
                     this.removeAllViews()
                     this.addView(tapKnetPay)
                     this.invalidate()
-                })
+                }
                 TapKnetConfiguration.configureWithKnetDictionary(
                     context,
                     tapKnetPay,
