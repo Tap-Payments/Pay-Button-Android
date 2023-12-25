@@ -172,15 +172,21 @@
     <string-array name="Lanugages">
         <item>English</item>
         <item>Arabic</item>
+        <item>dynamic</item>
+
     </string-array>
     <string-array name="LanugagesValues">
         <item>en</item>
         <item>ar</item>
+        <item>dynamic</item>
+
     </string-array>
 
     <string-array name="Theme">
         <item>light</item>
         <item>dark</item>
+        <item>dynamic</item>
+
     </string-array>
 
     <string-array name="Edges">

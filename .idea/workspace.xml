@@ -4,18 +4,62 @@
     <shared>
       <config />
     </shared>
+    <layouts>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/xml/preferences.xml">
+        <config>
+          <theme>@style/Theme.PayButtonAndroid</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/tappaybutton/src/main/res/layout/benefit_pay_pay_button.xml">
+        <config>
+          <theme>@android:style/Theme.Material.Light</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/tappaybutton/src/main/res/layout/knet_pay.xml">
+        <config>
+          <theme>@android:style/Theme.Material.Light</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/tappaybutton/src/main/res/layout/pay_button_layout.xml">
+        <config>
+          <theme>@android:style/Theme.Material.Light</theme>
+        </config>
+      </layout>
+    </layouts>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a8c419cc-56a5-486e-ae52-b0512d4d58ed" name="Changes" comment="" />
+    <list default="true" id="a8c419cc-56a5-486e-ae52-b0512d4d58ed" name="Changes" comment="update paybuttons to use card">
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/sha1-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/dependencies-accessors/dependencies-accessors.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/dependencies-accessors/dependencies-accessors.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tappaybutton/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/build.gradle" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[R9PT508HDZR]" />
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[RQCW8093VJW]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -50,21 +94,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;android-custom-view/Users/akazi/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.19/eabcf1d7753c009d198916059ef33f14a8e1f1b/Knet-Android-0.0.0.19-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_SELECTED&quot;: &quot;TapKnetPay&quot;,
-    &quot;android-custom-view/Users/akazi/Documents/TapProjects/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED&quot;: &quot;PayButton&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDK Location&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "android-custom-view/Users/akazi/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.19/eabcf1d7753c009d198916059ef33f14a8e1f1b/Knet-Android-0.0.0.19-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_SELECTED": "TapKnetPay",
+    "android-custom-view/Users/akazi/Documents/TapProjects/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED": "PayButton",
+    "android-custom-view/Users/macbookpro/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED": "PayButton",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "project.structure.last.edited": "SDK Location",
+    "project.structure.proportion": "0.17",
+    "project.structure.side.proportion": "0.2",
+    "show.migrate.to.gradle.popup": "false"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="Pay-Button-Android.app.main" />
@@ -76,6 +122,7 @@
       <option name="ALL_USERS" value="false" />
       <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
       <option name="CLEAR_APP_STORAGE" value="false" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
       <option name="ACTIVITY_EXTRA_FLAGS" value="" />
       <option name="MODE" value="default_activity" />
       <option name="CLEAR_LOGCAT" value="false" />
@@ -148,32 +195,32 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Card-Android/0.0.52/376d8bf81ff067c845f9bde87349476061aeb7be/Card-Android-0.0.52-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/pref/Pref.kt</url>
+          <url>jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Card-Android/0.0.52/376d8bf81ff067c845f9bde87349476061aeb7be/Card-Android-0.0.52-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/pref/Pref.kt</url>
           <line>15</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Card-Android/0.0.52/376d8bf81ff067c845f9bde87349476061aeb7be/Card-Android-0.0.52-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/pref/Pref.kt</url>
+          <url>jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Card-Android/0.0.52/376d8bf81ff067c845f9bde87349476061aeb7be/Card-Android-0.0.52-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/pref/Pref.kt</url>
           <line>17</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Card-Android/0.0.52/376d8bf81ff067c845f9bde87349476061aeb7be/Card-Android-0.0.52-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/pref/Pref.kt</url>
+          <url>jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Card-Android/0.0.52/376d8bf81ff067c845f9bde87349476061aeb7be/Card-Android-0.0.52-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/pref/Pref.kt</url>
           <line>26</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Card-Android/0.0.52/376d8bf81ff067c845f9bde87349476061aeb7be/Card-Android-0.0.52-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/pref/Pref.kt</url>
+          <url>jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Card-Android/0.0.52/376d8bf81ff067c845f9bde87349476061aeb7be/Card-Android-0.0.52-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/pref/Pref.kt</url>
           <line>23</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Card-Android/0.0.52/376d8bf81ff067c845f9bde87349476061aeb7be/Card-Android-0.0.52-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/pref/Pref.kt</url>
+          <url>jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Card-Android/0.0.52/376d8bf81ff067c845f9bde87349476061aeb7be/Card-Android-0.0.52-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/pref/Pref.kt</url>
           <line>10</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.19/eabcf1d7753c009d198916059ef33f14a8e1f1b/Knet-Android-0.0.0.19-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt</url>
+          <url>jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.19/eabcf1d7753c009d198916059ef33f14a8e1f1b/Knet-Android-0.0.0.19-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt</url>
           <line>239</line>
           <properties>
             <option name="lambda-ordinal" value="-1" />
@@ -181,12 +228,12 @@
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.19/eabcf1d7753c009d198916059ef33f14a8e1f1b/Knet-Android-0.0.0.19-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt</url>
+          <url>jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.19/eabcf1d7753c009d198916059ef33f14a8e1f1b/Knet-Android-0.0.0.19-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt</url>
           <line>238</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.19/eabcf1d7753c009d198916059ef33f14a8e1f1b/Knet-Android-0.0.0.19-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt</url>
+          <url>jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.19/eabcf1d7753c009d198916059ef33f14a8e1f1b/Knet-Android-0.0.0.19-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt</url>
           <line>237</line>
           <properties>
             <option name="lambda-ordinal" value="-1" />
@@ -194,7 +241,7 @@
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.19/eabcf1d7753c009d198916059ef33f14a8e1f1b/Knet-Android-0.0.0.19-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt</url>
+          <url>jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.19/eabcf1d7753c009d198916059ef33f14a8e1f1b/Knet-Android-0.0.0.19-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt</url>
           <line>234</line>
           <properties>
             <option name="lambda-ordinal" value="-1" />
