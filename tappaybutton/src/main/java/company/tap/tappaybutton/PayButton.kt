@@ -57,22 +57,22 @@ class PayButton : LinearLayout {
                     tapBenefitPay,
                     configuration,
                     object : TapBenefitPayStatusDelegate {
-                        override fun onError(error: String) = payButtonStatusDelegate.onError(error)
+                        override fun onBenefitPayError(error: String) = payButtonStatusDelegate.onError(error)
 
-                        override fun onSuccess(data: String) =
+                        override fun onBenefitPaySuccess(data: String) =
                             payButtonStatusDelegate.onSuccess(data)
 
-                        override fun onChargeCreated(data: String) =
+                        override fun onBenefitPayChargeCreated(data: String) =
                             payButtonStatusDelegate.onChargeCreated(data)
 
-                        override fun onClick() = payButtonStatusDelegate.onClick()
+                        override fun onBenefitPayClick() = payButtonStatusDelegate.onClick()
 
-                        override fun onReady() = payButtonStatusDelegate.onReady()
+                        override fun onBenefitPayReady() = payButtonStatusDelegate.onReady()
 
-                        override fun onOrderCreated(data: String) =
+                        override fun onBenefitPayOrderCreated(data: String) =
                             payButtonStatusDelegate.onOrderCreated(data)
 
-                        override fun onCancel() = payButtonStatusDelegate.onCancel()
+                        override fun onBenefitPayCancel() = payButtonStatusDelegate.onCancel()
 
                     })
             }
@@ -91,22 +91,22 @@ class PayButton : LinearLayout {
                     tapKnetPay,
                     configuration,
                     object : KnetPayStatusDelegate {
-                        override fun onError(error: String) = payButtonStatusDelegate.onError(error)
+                        override fun onKnetError(error: String) = payButtonStatusDelegate.onError(error)
 
-                        override fun onSuccess(data: String) =
+                        override fun onKnetSuccess(data: String) =
                             payButtonStatusDelegate.onSuccess(data)
 
-                        override fun onChargeCreated(data: String) =
+                        override fun onKnetChargeCreated(data: String) =
                             payButtonStatusDelegate.onChargeCreated(data)
 
-                        override fun onClick() = payButtonStatusDelegate.onClick()
+                        override fun onKnetClick() = payButtonStatusDelegate.onClick()
 
-                        override fun onReady() = payButtonStatusDelegate.onReady()
+                        override fun onKnetReady() = payButtonStatusDelegate.onReady()
 
-                        override fun onOrderCreated(data: String) =
+                        override fun onKnetOrderCreated(data: String) =
                             payButtonStatusDelegate.onOrderCreated(data)
 
-                        override fun cancel() = payButtonStatusDelegate.onCancel()
+                        override fun onKnetcancel() = payButtonStatusDelegate.onCancel()
                     },
                     ThreeDsPayButtonType.valueOf(payButton.name.toUpperCase())
                 )

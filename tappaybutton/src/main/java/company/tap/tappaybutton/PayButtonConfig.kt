@@ -38,19 +38,19 @@ object PayButtonConfig {
                 tapBenefitPay = view.findViewById<TapBenefitPay>(R.id.benefit)
                 BeneiftPayConfiguration.configureWithTapBenfitPayDictionaryConfiguration(context,tapBenefitPay,
                     configuration,object : TapBenefitPayStatusDelegate {
-                        override fun onError(error: String) =  getPayButtonStatusDelegate()?.onError(error) ?: Unit
+                        override fun onBenefitPayError(error: String) =  getPayButtonStatusDelegate()?.onError(error) ?: Unit
 
-                        override fun onSuccess(data: String)  =  getPayButtonStatusDelegate()?.onSuccess(data) ?: Unit
+                        override fun onBenefitPaySuccess(data: String)  =  getPayButtonStatusDelegate()?.onSuccess(data) ?: Unit
 
-                        override fun onChargeCreated(data: String) =  getPayButtonStatusDelegate()?.onChargeCreated(data) ?: Unit
+                        override fun onBenefitPayChargeCreated(data: String) =  getPayButtonStatusDelegate()?.onChargeCreated(data) ?: Unit
 
-                        override fun onClick()  =  getPayButtonStatusDelegate()?.onClick()?: Unit
+                        override fun onBenefitPayClick()  =  getPayButtonStatusDelegate()?.onClick()?: Unit
 
-                        override fun onReady()  =  getPayButtonStatusDelegate()?.onReady()?: Unit
+                        override fun onBenefitPayReady()  =  getPayButtonStatusDelegate()?.onReady()?: Unit
 
-                        override fun onOrderCreated(data: String)  =  getPayButtonStatusDelegate()?.onOrderCreated(data)?: Unit
+                        override fun onBenefitPayOrderCreated(data: String)  =  getPayButtonStatusDelegate()?.onOrderCreated(data)?: Unit
 
-                        override fun onCancel()  =  getPayButtonStatusDelegate()?.onCancel()?: Unit
+                        override fun onBenefitPayCancel()  =  getPayButtonStatusDelegate()?.onCancel()?: Unit
 
                     })
             }
@@ -62,19 +62,19 @@ object PayButtonConfig {
                     tapKnetPay,
                     configuration,
                     object : KnetPayStatusDelegate {
-                        override fun onError(error: String) =  getPayButtonStatusDelegate()?.onError(error) ?: Unit
+                        override fun onKnetError(error: String) =  getPayButtonStatusDelegate()?.onError(error) ?: Unit
 
-                        override fun onSuccess(data: String)  =  getPayButtonStatusDelegate()?.onSuccess(data)?: Unit
+                        override fun onKnetSuccess(data: String)  =  getPayButtonStatusDelegate()?.onSuccess(data)?: Unit
 
-                        override fun onChargeCreated(data: String) =  getPayButtonStatusDelegate()?.onChargeCreated(data)?: Unit
+                        override fun onKnetChargeCreated(data: String) =  getPayButtonStatusDelegate()?.onChargeCreated(data)?: Unit
 
-                        override fun onClick()  =  getPayButtonStatusDelegate()?.onClick()?: Unit
+                        override fun onKnetClick()  =  getPayButtonStatusDelegate()?.onClick()?: Unit
 
-                        override fun onReady()  =  getPayButtonStatusDelegate()?.onReady()?: Unit
+                        override fun onKnetReady()  =  getPayButtonStatusDelegate()?.onReady()?: Unit
 
-                        override fun onOrderCreated(data: String)  =  getPayButtonStatusDelegate()?.onOrderCreated(data)?: Unit
+                        override fun onKnetOrderCreated(data: String)  =  getPayButtonStatusDelegate()?.onOrderCreated(data)?: Unit
 
-                        override fun cancel() =  getPayButtonStatusDelegate()?.onCancel()?: Unit
+                        override fun onKnetcancel() =  getPayButtonStatusDelegate()?.onCancel()?: Unit
                     },
                     ThreeDsPayButtonType.valueOf(payButton.name.toUpperCase())
                 )
