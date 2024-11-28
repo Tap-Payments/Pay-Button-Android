@@ -9,11 +9,11 @@ package company.tap.tappaybutton
 
 
 interface PayButtonStatusDelegate {
-    fun onSuccess(data: String)
-    fun onReady(){}
-    fun onClick(){}
-    fun onOrderCreated(data: String){}
-    fun onChargeCreated(data:String){}
-    fun onError(error: String)
-    fun onCancel(){}
+    fun onPayButtonSuccess(data: String)
+    fun onPayButtonReady(){}
+    fun onPayButtonClick(){}
+    fun onPayButtonOrderCreated(data: String){}
+    fun onPayButtonChargeCreated(data:String){}
+    fun onPayButtonError(error: String)
+    fun onPayButtonCancel(){}
 }

@@ -238,7 +238,15 @@ class MainActivity : AppCompatActivity() {
         val autoSaveCard =  intent.getBooleanExtra("autoSaveCard",true)
         customerCards.put("saveCard",saveCard)
         customerCards.put("autoSaveCard",autoSaveCard)
+        val acceptance = HashMap<String,Any>()
+        /* acceptance.put("supportedFundSource",supportedFund)
+          acceptance.put("supportedPaymentAuthentications",supportedPaymentAuthentications)
+          acceptance.put("supportedSchemes",supportedSchemes) */
 
+        acceptance.put("supportedPaymentMethod",buttonKey?.toLowerCase().toString()) //TODO check what has to be passed dynamic
+        if (supportedSchemes != null) {
+            acceptance.put("supportedSchemes",supportedSchemes)
+        }
 
         /**
          * features
@@ -251,17 +259,24 @@ class MainActivity : AppCompatActivity() {
          * configuration
          */
 
-        configuration.put("operator",operator)
-        configuration.put("order",order)
-        configuration.put("customer",customer)
-        configuration.put("merchant",merchant)
-        configuration.put("invoice",invoice)
-        configuration.put("interface",interfacee)
-        configuration.put("post",post)
         configuration.put("scope",scopeKey.toString())
+        configuration.put("operator",operator)
+        configuration.put("acceptance",acceptance)
+        configuration.put("debug",true)
+        configuration.put("merchant",merchant)
+        configuration.put("order",order)
         configuration.put("transaction",transaction)
-        configuration.put("fieldVisibility",fieldVisibility)
+        configuration.put("customer",customer)
+        configuration.put("interface",interfacee)
         configuration.put("features",features)
+        configuration.put("redirect_url","https://demo.dev.tap.company/v2/sdk/button?paymentMethod=knet") // TODO what will be in this
+        configuration.put("data-testid","TapButton")
+        configuration.put("platform","mobile")
+        configuration.put("language",selectedLanguage ?: "dynamic")
+        configuration.put("themeMode",selectedTheme ?:"dynamic")
+        configuration.put("edges",selectedCardEdge ?:"dynamic")
+        configuration.put("paymentMethod",buttonKey?.toLowerCase().toString()) //TODO what has to be sent here
+
 //        PayButtonConfig.initPayButton(this,configuration,PayButtonType.valueOf(buttonKey.toString()),findViewById<PayButton>(R.id.paybutton))
 //        PayButtonConfig.addPayButtonStatusDelegate(object :PayButtonStatusDelegate{
 //            override fun onSuccess(data: String) {
@@ -290,33 +305,37 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<PayButton>(R.id.paybutton).initPayButton(this, configuration,
             PayButtonType.valueOf(buttonKey.toString()),object : PayButtonStatusDelegate {
-                override fun onSuccess(data: String) {
+                override fun onPayButtonSuccess(data: String) {
                     Toast.makeText(this@MainActivity,"success $data",Toast.LENGTH_SHORT).show()
+                    findViewById<TextView>(R.id.charge_respText).setText("onPayButtonSuccess>>"+data)
                 }
 
-                override fun onError(error: String) {
+                override fun onPayButtonError(error: String) {
                     Toast.makeText(this@MainActivity,"error $error",Toast.LENGTH_SHORT).show()
+                    findViewById<TextView>(R.id.charge_respText).setText("onPayButtonError>>"+error)
                     Log.e("error",error.toString())
                 }
 
-                override fun onCancel() {
+                override fun onPayButtonCancel() {
                     Toast.makeText(this@MainActivity,"cancel",Toast.LENGTH_SHORT).show()
+                    findViewById<TextView>(R.id.charge_respText).setText("onPayButtonCancel")
                 }
 
-                override fun onChargeCreated(data: String) {
+                override fun onPayButtonChargeCreated(data: String) {
                     Toast.makeText(this@MainActivity,"charge created $data",Toast.LENGTH_SHORT).show()
+                    findViewById<TextView>(R.id.charge_respText).setText("onPayButtonChargeCreated>>"+data)
 
                 }
 
-                override fun onClick() {
+                override fun onPayButtonClick() {
                     Toast.makeText(this@MainActivity,"click",Toast.LENGTH_SHORT).show()
                 }
 
-                override fun onReady() {
+                override fun onPayButtonReady() {
                     Toast.makeText(this@MainActivity,"ready",Toast.LENGTH_SHORT).show()
                 }
 
-                override fun onOrderCreated(data: String) {
+                override fun onPayButtonOrderCreated(data: String) {
                     Toast.makeText(this@MainActivity,"order created $data",Toast.LENGTH_SHORT).show()
                 }
 

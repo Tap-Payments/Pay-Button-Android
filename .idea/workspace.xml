@@ -35,17 +35,14 @@
       <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/md5-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tappaybutton/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonConfig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonStatusDelegate.kt" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonStatusDelegate.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +52,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[adb-R9PT508HDZR-wEoLyP._adb-tls-connect._tcp.]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[R9PT508HDZR]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -102,6 +99,8 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;ScreenRecorder.SavePath&quot;: &quot;/Users/macbookpro/Desktop&quot;,
     &quot;ScreenshotViewer.SavePath&quot;: &quot;/Users/macbookpro/Desktop/portfolio/apps_screenshots/payment_button&quot;,
+    &quot;android-custom-view/Users/ahlaam/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.27/42ef21d79e41c59f61c75ee6fe564bbdb939258c/Knet-Android-0.0.0.27-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_SELECTED&quot;: &quot;TapKnetPay&quot;,
+    &quot;android-custom-view/Users/ahlaam/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.3/f2006ec922d500fea9bbf0cc604d0a24047f47ca/Knet-Android-0.0.3-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_SELECTED&quot;: &quot;TapKnetPay&quot;,
     &quot;android-custom-view/Users/ahlaam/Documents/AndroidProjects/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED&quot;: &quot;PayButton&quot;,
     &quot;android-custom-view/Users/akazi/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.19/eabcf1d7753c009d198916059ef33f14a8e1f1b/Knet-Android-0.0.0.19-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_SELECTED&quot;: &quot;TapKnetPay&quot;,
     &quot;android-custom-view/Users/akazi/Documents/TapProjects/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED&quot;: &quot;PayButton&quot;,
@@ -203,8 +202,27 @@
       <option name="project" value="LOCAL" />
       <updated>1703489956300</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="update payButton to latest Kned SDK">
+      <option name="closed" value="true" />
+      <created>1727619918315</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1727619918315</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update payButton to latest Kned SDK" />

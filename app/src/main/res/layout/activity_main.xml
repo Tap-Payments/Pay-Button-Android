@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+android:orientation="vertical"
     android:gravity="center"
     android:layout_gravity="center"
     tools:context=".MainActivity">
@@ -12,7 +12,7 @@
     <company.tap.tappaybutton.PayButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:id="@+id/paybutton"
 
         />
@@ -28,7 +28,16 @@
         android:text="@string/generate_authenticate_token"
         android:id="@+id/auth_token"
         />
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textStyle="bold|italic"
+        android:textColor="@color/black_color"
+        android:layout_marginTop="@dimen/_100sdp"
+        android:textIsSelectable="true"
+        android:id="@+id/charge_respText"
+        />
 
 
 </LinearLayout>
