@@ -117,7 +117,7 @@
 <!--        <item>AMERICANEXPRESS</item>-->
 <!--        <item>MADA</item>-->
 <!--        <item>MASTERCARD</item>-->
-        <item>CARD</item>
+     <!--   <item>CARD</item>-->
 
 
     </string-array>
