@@ -4,13 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import com.example.tappaybutton.R
-import company.tap.tapWebForm.open.KnetPayStatusDelegate
-import company.tap.tapWebForm.open.web_wrapper.TapKnetConfiguration
-import company.tap.tapWebForm.open.web_wrapper.TapKnetPay
-import company.tap.tapWebForm.open.web_wrapper.enums.ThreeDsPayButtonType
-import company.tap.tapbenefitpay.open.TapBenefitPayStatusDelegate
-import company.tap.tapbenefitpay.open.web_wrapper.BeneiftPayConfiguration
-import company.tap.tapbenefitpay.open.web_wrapper.TapBenefitPay
+
+
 import java.util.*
 
 /**
@@ -27,14 +22,14 @@ All rights reserved.
  * specifically for flutter
  */
 object PayButtonConfig {
-    private lateinit var tapKnetPay: TapKnetPay
-    private lateinit var tapBenefitPay: TapBenefitPay
+   // private lateinit var tapKnetPay: TapKnetPay
+  //  private lateinit var tapBenefitPay: TapBenefitPay
     private  var payButtonStatusDelegate: PayButtonStatusDelegate ?=null
 
-    fun initPayButton(context: Context, configuration: HashMap<String,Any>, payButton:PayButtonType,payButtonView:PayButton){
+    fun initPayButton(context: Context, configuration: HashMap<String,Any>, payButton: PayButtonType){
         when(payButton){
             PayButtonType.BENEFITPAY ->{
-                val view = LayoutInflater.from(context).inflate(R.layout.benefit_pay_pay_button,payButtonView)
+               /* val view = LayoutInflater.from(context).inflate(R.layout.benefit_pay_pay_button,payButtonView)
                 tapBenefitPay = view.findViewById<TapBenefitPay>(R.id.benefit)
                 BeneiftPayConfiguration.configureWithTapBenfitPayDictionaryConfiguration(context,tapBenefitPay,
                     configuration,object : TapBenefitPayStatusDelegate {
@@ -52,10 +47,10 @@ object PayButtonConfig {
 
                         override fun onBenefitPayCancel()  =  getPayButtonStatusDelegate()?.onPayButtonCancel()?: Unit
 
-                    })
+                    })*/
             }
             else ->{
-                val view = LayoutInflater.from(context).inflate(R.layout.knet_pay,payButtonView)
+         /*       val view = LayoutInflater.from(context).inflate(R.layout.knet_pay,payButtonView)
                 tapKnetPay = view.findViewById<TapKnetPay>(R.id.tapKnet)
                 TapKnetConfiguration.configureWithKnetDictionary(
                     context,
@@ -77,7 +72,7 @@ object PayButtonConfig {
                         override fun onKnetcancel() =  getPayButtonStatusDelegate()?.onPayButtonCancel()?: Unit
                     },
                     ThreeDsPayButtonType.valueOf(payButton.name.toUpperCase())
-                )
+                )*/
             }
 
         }

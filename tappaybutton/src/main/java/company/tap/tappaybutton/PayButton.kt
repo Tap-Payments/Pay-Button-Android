@@ -3,38 +3,37 @@
  *   Copyright (c) 2023 .
  *   All rights reserved Tap Payments.
  **
- */
+ *//*
+
 
 package company.tap.tappaybutton
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
-import company.tap.tapWebForm.open.KnetPayStatusDelegate
-import company.tap.tapWebForm.open.web_wrapper.TapKnetConfiguration
-import company.tap.tapWebForm.open.web_wrapper.TapKnetPay
-import company.tap.tapWebForm.open.web_wrapper.enums.ThreeDsPayButtonType
-import company.tap.tapbenefitpay.open.TapBenefitPayStatusDelegate
-import company.tap.tapbenefitpay.open.web_wrapper.BeneiftPayConfiguration
-import company.tap.tapbenefitpay.open.web_wrapper.TapBenefitPay
+
 
 class PayButton : LinearLayout {
-    lateinit var tapKnetPay: TapKnetPay
-    lateinit var tapBenefitPay: TapBenefitPay
+   // lateinit var tapKnetPay: TapKnetPay
+   // lateinit var tapBenefitPay: TapBenefitPay
 
-    /**
+    */
+/**
      * Simple constructor to use when creating a TapPayCardSwitch from code.
      *  @param context The Context the view is running in, through which it can
      *  access the current theme, resources, etc.
-     **/
+     **//*
+
     constructor(context: Context) : super(context)
 
-    /**
+    */
+/**
      *  @param context The Context the view is running in, through which it can
      *  access the current theme, resources, etc.
      *  @param attrs The attributes of the XML Button tag being used to inflate the view.
      *
-     */
+     *//*
+
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
 
@@ -115,4 +114,4 @@ class PayButton : LinearLayout {
         }
     }
 
-}
+}*/

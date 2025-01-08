@@ -1,28 +1,19 @@
 package company.tap.paybutton
 
-import android.app.Dialog
 import android.content.Intent
-import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.Window
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import com.chillibits.simplesettings.tool.getPrefStringValue
-import com.example.knet_android.cardSdk.model.CardResponse
-/*import com.google.gson.Gson
-import company.tap.tapcardformkit.open.TapCardStatusDelegate
-import company.tap.tapcardformkit.open.web_wrapper.TapCardConfiguration
-import company.tap.tapcardformkit.open.web_wrapper.TapCardKit*/
-import company.tap.tappaybutton.PayButtonType
-import company.tap.tappaybutton.PayButton
-import company.tap.tappaybutton.PayButtonConfig
-import company.tap.tappaybutton.PayButtonStatusDelegate
 
-class MainActivity : AppCompatActivity() {
+
+import company.tap.tappaybutton.PayButtonStatusDelegate
+import company.tap.tappaybutton.RedirectPayStatusDelegate
+import company.tap.tappaybutton.TapRedirectConfiguration
+
+class MainActivity : AppCompatActivity() , RedirectPayStatusDelegate {
     var authenticatedToken:String?=""
     var sourceId:String?=""
 
@@ -40,11 +31,11 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun configureSdk(authenticatedToken: String?="", sourceId: String?=""){
+   /* private fun configureSdk(authenticatedToken: String?="", sourceId: String?=""){
 
-        /**
+        *//**
          * operator
-         */
+         *//*
         val publicKey = intent.getStringExtra("publicKey")
         val hashStringKey = intent.getStringExtra("hashStringKey")
         val buttonKey = intent.getStringExtra("buttonKey")
@@ -56,15 +47,15 @@ class MainActivity : AppCompatActivity() {
         Log.e("orderData","pbulc" + publicKey.toString() + " \nhash" + hashStringKey.toString())
         Log.e("buttonKey","buttonKey" + buttonKey.toString())
 
-        /**
+        *//**
          * metadata
-         */
+         *//*
         val metada = HashMap<String,Any>()
         metada.put("id","")
 
-        /**
+        *//**
          * order
-         */
+         *//*
         val ordrId =  intent.getStringExtra("orderIdKey")
         val orderDescription =  intent.getStringExtra("orderDescKey")
         val orderAmount =  intent.getStringExtra("amountKey")
@@ -82,53 +73,53 @@ class MainActivity : AppCompatActivity() {
         Log.e("orderData","id" + ordrId.toString() + "  \n dest" + orderDescription.toString() +" \n orderamount " + orderAmount.toString() +"  \n orderRef" + orderRefrence.toString() + "  \n currency " + selectedCurrency.toString())
 
 
-        /**
+        *//**
          * merchant
-         */
+         *//*
         val merchant = HashMap<String,Any>()
         merchant.put("id", "")
 
-        /**
+        *//**
          * invoice
-         */
+         *//*
         val invoice = HashMap<String,Any>()
         invoice.put("id","")
 
 
-        /**
+        *//**
          * phone
-         */
+         *//*
         val phone = java.util.HashMap<String,Any>()
         phone.put("countryCode","+20")
         phone.put("number","011")
 
 
-        /**
+        *//**
          * contact
-         */
+         *//*
         val contact = java.util.HashMap<String,Any>()
         contact.put("email","test@gmail.com")
         contact.put("phone",phone)
-        /**
+        *//**
          * name
-         */
+         *//*
         val name = java.util.HashMap<String,Any>()
         name.put("lang","en")
         name.put("first", "first")
         name.put("middle", "middle")
         name.put("last","last")
 
-        /**
+        *//**
          * customer
-         */
+         *//*
         val customer = java.util.HashMap<String,Any>()
         customer.put("id", "")
         customer.put("contact",contact)
         customer.put("name", listOf(name))
 
-        /**
+        *//**
          * interface
-         */
+         *//*
 
         val selectedLanguage: String? =  intent.getStringExtra("selectedlangKey")
         val selectedTheme: String? = intent.getStringExtra("selectedthemeKey")
@@ -157,9 +148,9 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        /**
+        *//**
          * transaction && scope
-         */
+         *//*
 
 
         val transaction = HashMap<String,Any>()
@@ -170,15 +161,15 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        /**
+        *//**
          * authenticate for Card buttons
-         */
+         *//*
         val authenticate = HashMap<String,Any>()
         authenticate.put("id", authenticatedToken ?: "")
         authenticate.put("required",true)
-        /**
+        *//**
          * source for Card buttons
-         */
+         *//*
         val source = HashMap<String,Any>()
         source.put("id", sourceId ?: "")
 
@@ -201,9 +192,9 @@ class MainActivity : AppCompatActivity() {
         transaction.put("authenticate",authenticate)
         transaction.put("source",source)
 
-        /**
+        *//**
          * acceptance
-         */
+         *//*
         val supportedFund =  intent.getSerializableExtra("supportedFundSourceKey")
         val supportedPaymentAuthentications =  intent.getStringArrayExtra("supportedPaymentAuthenticationsKey")
         val supportedSchemes =  intent.getStringArrayExtra("supportedSchemesKey")
@@ -211,18 +202,18 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        /**
+        *//**
          * fields
-         */
+         *//*
         val fieldVisibility = HashMap<String,Any>()
 
-        /**
-         * Fields visibility **/
+        *//**
+         * Fields visibility **//*
         val cardHolder =  intent.getBooleanExtra("cardHolder",true)
         val cvv =  intent.getBooleanExtra("cvv",true)
-        /**
+        *//**
          * card
-         */
+         *//*
         val card = HashMap<String,Any>()
         card.put("cvv",cvv)
         card.put("cardHolder",cardHolder)
@@ -230,34 +221,34 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        /**
+        *//**
          * customerCards
-         */
+         *//*
         val customerCards = HashMap<String,Any>()
         val saveCard =  intent.getBooleanExtra("saveCard",true)
         val autoSaveCard =  intent.getBooleanExtra("autoSaveCard",true)
         customerCards.put("saveCard",saveCard)
         customerCards.put("autoSaveCard",autoSaveCard)
         val acceptance = HashMap<String,Any>()
-        /* acceptance.put("supportedFundSource",supportedFund)
+        *//* acceptance.put("supportedFundSource",supportedFund)
           acceptance.put("supportedPaymentAuthentications",supportedPaymentAuthentications)
-          acceptance.put("supportedSchemes",supportedSchemes) */
+          acceptance.put("supportedSchemes",supportedSchemes) *//*
 
         acceptance.put("supportedPaymentMethod",buttonKey?.toLowerCase().toString()) //TODO check what has to be passed dynamic
         if (supportedSchemes != null) {
             acceptance.put("supportedSchemes",supportedSchemes)
         }
 
-        /**
+        *//**
          * features
-         */
+         *//*
         val features = HashMap<String,Any>()
         val showCardBrands: Boolean = intent.getBooleanExtra("selectedCardBrand", true)
         features.put("acceptanceBadge",showCardBrands)
         features.put("customerCards",customerCards)
-        /**
+        *//**
          * configuration
-         */
+         *//*
 
         configuration.put("scope",scopeKey.toString())
         configuration.put("operator",operator)
@@ -299,7 +290,7 @@ class MainActivity : AppCompatActivity() {
 //        })
 
         when(PayButtonType.valueOf(buttonKey.toString())){
-            PayButtonType.VISA,PayButtonType.AMERICANEXPRESS,PayButtonType.MASTERCARD,PayButtonType.MADA, ->  findViewById<TextView>(R.id.auth_token).visibility = View.VISIBLE
+            PayButtonType.VISA, PayButtonType.AMERICANEXPRESS, PayButtonType.MASTERCARD, PayButtonType.MADA, ->  findViewById<TextView>(R.id.auth_token).visibility = View.VISIBLE
             else ->findViewById<TextView>(R.id.auth_token).visibility = View.GONE
         }
 
@@ -340,6 +331,55 @@ class MainActivity : AppCompatActivity() {
                 }
 
             })
+
+    }*/
+    fun configureSdk() {
+
+        //  val publicKey = intent.getStringExtra("publicKey")
+
+        // val hashStringKey = intent.getStringExtra("hashStringKey")
+        val publicKey = "pk_test_J2OSkKAFxu4jghc9zeRfQ0da"
+
+        val hashStringKey = "intent_PJ4l925129XLYf77g0H27" // googlepay
+        // val hashStringKey = "intent_6VIv5325653R81D8Pa0p703" // benefitpay
+        //  val hashStringKey = "intent_oDrk56251043pfkS72G0l934" // knet
+
+
+
+
+        /**
+         * operator
+         */
+        val operator = HashMap<String,Any>()
+
+        operator.put("publicKey",publicKey.toString())
+
+        /**
+         * intent
+         */
+        val intent = HashMap<String,Any>()
+        intent.put("intent",hashStringKey.toString())
+        /**
+         * configuration
+         */
+
+
+        val configuration = LinkedHashMap<String,Any>()
+
+        configuration.put("operator",operator)
+        configuration.put("intent",intent)
+
+
+
+
+
+
+        TapRedirectConfiguration.configureWithRedirectDictionary(
+            this,
+            findViewById(R.id.redirect_pay),
+            configuration,
+            this)
+
 
     }
 
@@ -458,6 +498,14 @@ class MainActivity : AppCompatActivity() {
         finish()
         startActivity(intent)
 
+    }
+
+    override fun onRedirectSuccess(data: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onRedirectError(error: String) {
+        TODO("Not yet implemented")
     }
 
 }

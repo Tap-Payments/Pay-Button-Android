@@ -9,11 +9,11 @@ android:orientation="vertical"
     android:layout_gravity="center"
     tools:context=".MainActivity">
 
-    <company.tap.tappaybutton.PayButton
+    <company.tap.tappaybutton.TapRedirectPay
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_15sdp"
-        android:id="@+id/paybutton"
+        android:id="@+id/redirect_pay"
 
         />
 
@@ -27,6 +27,7 @@ android:orientation="vertical"
         android:layout_marginTop="@dimen/_10sdp"
         android:text="@string/generate_authenticate_token"
         android:id="@+id/auth_token"
+        android:visibility="gone"
         />
     <TextView
         android:layout_width="match_parent"
