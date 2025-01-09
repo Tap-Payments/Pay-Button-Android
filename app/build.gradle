@@ -56,9 +56,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.github.Tap-Payments:TapAndroidForm:0.0.3'
 
-   // implementation 'com.github.Tap-Payments:Card-Android:0.0.52'
-
-//    implementation 'com.github.Tap-Payments:Pay-Button-Android:0.0.4'
 
 
 }
