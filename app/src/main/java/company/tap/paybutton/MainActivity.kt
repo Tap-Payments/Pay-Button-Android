@@ -244,7 +244,7 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
 
         val product = JSONObject()
         product.put("id","")
-        product.put("amount",2)
+        product.put("amount",intent.getStringExtra("amountKey")?.toDouble())
         product.put("name",descArray)
         product.put("description",descArray)
         product.put("metadata",medata)
@@ -319,7 +319,7 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
 
         // order.put("tax",taxarry)
         // order.put("discount",discount)
-        order.put("shipping",shippigobject)
+      //  order.put("shipping",shippigobject)
         order.put("metadata",medata)
 
 
@@ -516,7 +516,7 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
         fieldvisibility.put("name",true)
         fieldvisibility.put("card",card)
         fieldvisibility.put("contact",conatct)
-        fieldvisibility.put("shipping",shipping)
+      //  fieldvisibility.put("shipping",shipping)
 
         configOb.put("features",features)
         configOb.put("acceptance",acceptance)
