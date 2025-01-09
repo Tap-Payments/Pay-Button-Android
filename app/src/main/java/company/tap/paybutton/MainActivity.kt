@@ -1,19 +1,16 @@
 package company.tap.paybutton
 
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
-import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import com.chillibits.simplesettings.tool.getPrefStringValue
 import com.chillibits.simplesettings.tool.getPrefs
-import company.tap.tappaybutton.PayButtonStatusDelegate
 import company.tap.tappaybutton.RedirectPayStatusDelegate
 import company.tap.tappaybutton.TapRedirectConfiguration
 import company.tap.tappaybutton.TapRedirectPay
