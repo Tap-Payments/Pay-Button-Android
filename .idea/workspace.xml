@@ -36,54 +36,15 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a8c419cc-56a5-486e-ae52-b0512d4d58ed" name="Changes" comment="update payButton to latest Knet SDK">
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/ApiService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/AppLifecycleObserver.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/Extension.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/Headers.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/Pref.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/RedirectDataConfiguration.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/TapBrandView.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/TapRedirectConfiguration.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/TapRedirectPay.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/enums/enums.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/models/TapButtonSDKConfigUrlResponse.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/models/ThreeDsResponse.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/popup_window/WebChrome.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/threeDsWebview/ThreeDsBottomSheetFragmentButton.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/threeDsWebview/ThreeDsWebViewActivityButton.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/drawable/output_black_loader_nobg.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/activity_blank.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/activity_button_web_wrapper.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/activity_nfclaunch.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/activity_tap_card_form.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/activity_three_ds_web_view.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/activity_web_view.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/benefitpay_layout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/bottom_sheet_dialog_button.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/fragment_web.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/scanner_activity.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/tap_brandview.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/layout/webviewlayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/values/strings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tappaybutton/src/main/res/values/style.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.0/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+    <list default="true" id="a8c419cc-56a5-486e-ae52-b0512d4d58ed" name="Changes" comment="removed added libs and moved all classes from redirect sdk to pbs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/SettingsActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/company/tap/paybutton/SettingsActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tappaybutton/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButtonConfig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -169,37 +130,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "ScreenRecorder.SavePath": "/Users/macbookpro/Desktop",
-    "ScreenshotViewer.SavePath": "/Users/macbookpro/Desktop/portfolio/apps_screenshots/payment_button",
-    "android-custom-view/Users/ahlaam/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/BenefitPay-Android/0.0.20/7bb508f87c346819fa39f85b23ff75e79c5466e6/BenefitPay-Android-0.0.20-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/TapBenefitPay.kt_SELECTED": "TapBenefitPay",
-    "android-custom-view/Users/ahlaam/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.27/42ef21d79e41c59f61c75ee6fe564bbdb939258c/Knet-Android-0.0.0.27-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_SELECTED": "TapKnetPay",
-    "android-custom-view/Users/ahlaam/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.3/f2006ec922d500fea9bbf0cc604d0a24047f47ca/Knet-Android-0.0.3-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_SELECTED": "TapKnetPay",
-    "android-custom-view/Users/ahlaam/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.5/bad6b307b0283be1b4f34e0b046a07bbbd409285/Knet-Android-0.0.5-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_SELECTED": "TapKnetPay",
-    "android-custom-view/Users/ahlaam/Documents/AndroidProjects/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED": "PayButton",
-    "android-custom-view/Users/ahlaam/Documents/AndroidProjects/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/TapBrandView.kt_SELECTED": "TapBrandView",
-    "android-custom-view/Users/ahlaam/Documents/AndroidProjects/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/TapRedirectPay.kt_SELECTED": "TapRedirectPay",
-    "android-custom-view/Users/akazi/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.19/eabcf1d7753c009d198916059ef33f14a8e1f1b/Knet-Android-0.0.0.19-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_SELECTED": "TapKnetPay",
-    "android-custom-view/Users/akazi/Documents/TapProjects/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED": "PayButton",
-    "android-custom-view/Users/macbookpro/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED": "PayButton",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "FT__6Jan25__IntentPBS",
-    "last_opened_file_path": "/Users/ahlaam/Documents/AndroidProjects/Pay-Button-Android/tappaybutton/src/main/res/drawable",
-    "project.structure.last.edited": "SDK Location",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.2",
-    "show.migrate.to.gradle.popup": "false"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ScreenRecorder.SavePath&quot;: &quot;/Users/macbookpro/Desktop&quot;,
+    &quot;ScreenshotViewer.SavePath&quot;: &quot;/Users/macbookpro/Desktop/portfolio/apps_screenshots/payment_button&quot;,
+    &quot;android-custom-view/Users/ahlaam/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/BenefitPay-Android/0.0.20/7bb508f87c346819fa39f85b23ff75e79c5466e6/BenefitPay-Android-0.0.20-sources.jar!/company/tap/tapcardformkit/open/web_wrapper/TapBenefitPay.kt_SELECTED&quot;: &quot;TapBenefitPay&quot;,
+    &quot;android-custom-view/Users/ahlaam/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.27/42ef21d79e41c59f61c75ee6fe564bbdb939258c/Knet-Android-0.0.0.27-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_SELECTED&quot;: &quot;TapKnetPay&quot;,
+    &quot;android-custom-view/Users/ahlaam/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.3/f2006ec922d500fea9bbf0cc604d0a24047f47ca/Knet-Android-0.0.3-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_SELECTED&quot;: &quot;TapKnetPay&quot;,
+    &quot;android-custom-view/Users/ahlaam/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.5/bad6b307b0283be1b4f34e0b046a07bbbd409285/Knet-Android-0.0.5-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_SELECTED&quot;: &quot;TapKnetPay&quot;,
+    &quot;android-custom-view/Users/ahlaam/Documents/AndroidProjects/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED&quot;: &quot;PayButton&quot;,
+    &quot;android-custom-view/Users/ahlaam/Documents/AndroidProjects/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/TapBrandView.kt_SELECTED&quot;: &quot;TapBrandView&quot;,
+    &quot;android-custom-view/Users/ahlaam/Documents/AndroidProjects/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/TapRedirectPay.kt_SELECTED&quot;: &quot;TapRedirectPay&quot;,
+    &quot;android-custom-view/Users/akazi/.gradle/caches/modules-2/files-2.1/com.github.Tap-Payments/Knet-Android/0.0.0.19/eabcf1d7753c009d198916059ef33f14a8e1f1b/Knet-Android-0.0.0.19-sources.jar!/company/tap/tapWebForm/open/web_wrapper/TapKnetPay.kt_SELECTED&quot;: &quot;TapKnetPay&quot;,
+    &quot;android-custom-view/Users/akazi/Documents/TapProjects/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED&quot;: &quot;PayButton&quot;,
+    &quot;android-custom-view/Users/macbookpro/Pay-Button-Android/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt_SELECTED&quot;: &quot;PayButton&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;FT__6Jan25__IntentPBS&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/ahlaam/Documents/AndroidProjects/Pay-Button-Android/tappaybutton/src/main/res&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDK Location&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tappaybutton/src/main/res" />
       <recent name="$PROJECT_DIR$/tappaybutton/src/main/res/drawable" />
       <recent name="$PROJECT_DIR$/tappaybutton/src/main/res/values-en" />
       <recent name="$PROJECT_DIR$/tappaybutton/src/main/res/layout" />
@@ -328,7 +290,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732797035068</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="removed added libs and moved all classes from redirect sdk to pbs">
+      <option name="closed" value="true" />
+      <created>1736342064012</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1736342064012</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -345,7 +315,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update payButton to latest Kned SDK" />
     <MESSAGE value="update payButton to latest Knet SDK" />
-    <option name="LAST_COMMIT_MESSAGE" value="update payButton to latest Knet SDK" />
+    <MESSAGE value="removed added libs and moved all classes from redirect sdk to pbs" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed added libs and moved all classes from redirect sdk to pbs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -403,11 +374,6 @@
             <option name="lambda-ordinal" value="-1" />
           </properties>
           <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/tappaybutton/src/main/java/company/tap/tappaybutton/PayButton.kt</url>
-          <line>89</line>
-          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

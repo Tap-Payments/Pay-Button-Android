@@ -98,24 +98,27 @@
     <string name="merchantTitle">Merchant</string>
 
     <string-array name="ScopeList">
-        <item>charge</item>
-        <item>authorize</item>
-        <item>taptoken</item>
-        <item>googlepaytoken</item>
+        <item>CHARGE</item>
+        <item>AUTHORIZE</item>
+        <item>TAPTOKEN</item>
+        <item>GOOGLEPAYTOKEN</item>
 
     </string-array>
 
 
     <string-array name="ButtonList">
-        <item>BENEFITPAY</item>
         <item>KNET</item>
         <item>BENEFIT</item>
         <item>FAWRY</item>
         <item>PAYPAL</item>
         <item>TABBY</item>
-        <item>GOOGLEPAY</item>
-        <item>CAREEMPAY</item>
-        <item>SAMSUNGPAY</item>
+        <item>GOOGLE_PAY</item>
+        <item>BENEFITPAY</item>
+        <item>CAREEM_PAY</item>
+        <item>STCPAY</item>
+        <item>CLICK2PAY</item>
+        <item>QPAY</item>
+        <item>DEEMA</item>
 <!--        <item>VISA</item>-->
 <!--        <item>AMERICANEXPRESS</item>-->
 <!--        <item>MADA</item>-->
@@ -167,9 +170,9 @@
         <item>MADA</item>
         <item>VISA</item>
         <item>MASTERCARD</item>
-        <item>AMERICAN_EXPRESS</item>
+        <item>AMEX</item>
         <item>OMANNET</item>
-        <item>MEEZA</item>
+        <item>BENEFIT_CARD</item>
 
     </string-array>
 
@@ -180,34 +183,32 @@
 
     </string-array>
     <string-array name="LanugagesValues">
-        <item>en</item>
-        <item>ar</item>
-        <item>dynamic</item>
-
+        <item>EN</item>
+        <item>AR</item>
+        <item>DYNAMIC</item>
     </string-array>
 
     <string-array name="Theme">
-        <item>light</item>
-        <item>dark</item>
-        <item>dynamic</item>
+        <item>LIGHT</item>
+        <item>DARK</item>
+        <item>DYNAMIC</item>
 
     </string-array>
 
     <string-array name="Edges">
-        <item>flat</item>
-        <item>curved</item>
-        <item>circular</item>
+        <item>FLAT</item>
+        <item>CIRCULAR</item>
     </string-array>
 
     <string-array name="Direction">
-        <item>dynamic</item>
-        <item>ltr</item>
+        <item>DYNAMIC</item>
+        <item>LTR</item>
     </string-array>
 
 
     <string-array name="colorStyle">
-        <item>colored</item>
-        <item>monochrome</item>
+        <item>COLORED</item>
+        <item>MONOCHROME</item>
     </string-array>
 
 
