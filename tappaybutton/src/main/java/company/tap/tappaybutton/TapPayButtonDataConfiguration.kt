@@ -6,12 +6,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
-import android.util.Log
-import com.example.tappaybutton.R
 
-import company.tap.taplocalizationkit.LocalizationManager
 import company.tap.tapuilibrary.themekit.ThemeManager
-import java.util.Locale
 
 /**
  * Created by AhlaamK on 3/23/22.
@@ -22,7 +18,7 @@ All rights reserved.
 @SuppressLint("StaticFieldLeak")
 object RedirectDataConfiguration {
 
-    private var redirectPayStatusDelegate: RedirectPayStatusDelegate? = null
+    private var payButtonStatusDelegate: PayButtonStatusDelegate? = null
     private var applicationLifecycle: ApplicationLifecycle? = null
 
     var customerExample: Customer? = null
@@ -95,8 +91,8 @@ object RedirectDataConfiguration {
         authenticationExample = tapAuthentication
     }
 
-    fun addTapBenefitPayStatusDelegate(_tapCardStatuDelegate: RedirectPayStatusDelegate?) {
-        this.redirectPayStatusDelegate = _tapCardStatuDelegate
+    fun addTapBenefitPayStatusDelegate(_tapCardStatuDelegate: PayButtonStatusDelegate?) {
+        this.payButtonStatusDelegate = _tapCardStatuDelegate
 
     }
     fun addAppLifeCycle(appLifeCycle: ApplicationLifecycle?) {
@@ -106,27 +102,27 @@ object RedirectDataConfiguration {
     fun getAppLifeCycle(): ApplicationLifecycle? {
         return this.applicationLifecycle
     }
-    fun getTapKnetListener(): RedirectPayStatusDelegate? {
-        return redirectPayStatusDelegate
+    fun getTapKnetListener(): PayButtonStatusDelegate? {
+        return payButtonStatusDelegate
     }
 
-    fun initializeSDK(activity: Activity, configurations:  java.util.HashMap<String, Any>, tapRedirectPay: TapRedirectPay){
-        TapRedirectConfiguration.configureWithRedirectDictionary(activity,tapRedirectPay,configurations)
+    fun initializeSDK(activity: Activity, configurations:  java.util.HashMap<String, Any>, tapPayButton: TapPayButton){
+        TapPayButtonConfiguration.configureWithRedirectDictionary(activity,tapPayButton,configurations)
     }
 
 
 }
 
-interface RedirectPayStatusDelegate {
-    fun onRedirectSuccess(data: String)
-    fun onRedirectReady(){}
-    fun onRedirectClick(){}
-    fun onRedirectOrderCreated(data: String){}
-    fun onRedirectChargeCreated(data:String){}
-    fun onRedirectError(error: String)
-    fun onRedirectcancel(){}
-    fun onRedirectHeightChange(heightChange:String){}
-    fun onRedirectBindIdentification(data: String){}
+interface PayButtonStatusDelegate {
+    fun onPayButtonSuccess(data: String)
+    fun onPayButtonReady(){}
+    fun onPayButtonClick(){}
+    fun onPayButtonOrderCreated(data: String){}
+    fun onPayButtonChargeCreated(data:String){}
+    fun onPayButtonError(error: String)
+    fun onPayButtoncancel(){}
+    fun onPayButtonHeightChange(heightChange:String){}
+    fun onPayButtonBindIdentification(data: String){}
 
 }
 

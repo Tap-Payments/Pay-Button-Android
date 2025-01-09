@@ -11,9 +11,9 @@ import android.widget.TextView
 import android.widget.Toast
 import com.chillibits.simplesettings.tool.getPrefStringValue
 import com.chillibits.simplesettings.tool.getPrefs
-import company.tap.tappaybutton.RedirectPayStatusDelegate
-import company.tap.tappaybutton.TapRedirectConfiguration
-import company.tap.tappaybutton.TapRedirectPay
+import company.tap.tappaybutton.PayButtonStatusDelegate
+import company.tap.tappaybutton.TapPayButtonConfiguration
+import company.tap.tappaybutton.TapPayButton
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -28,8 +28,8 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import okio.IOException
 
-class MainActivity : AppCompatActivity() ,RedirectPayStatusDelegate{
-    lateinit var tapRedirectPay: TapRedirectPay
+class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
+    lateinit var tapPayButton: TapPayButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() ,RedirectPayStatusDelegate{
         /**
          * configureWithRedirectDictionary and calling the PayButton SDK
          */
-        TapRedirectConfiguration.configureWithRedirectDictionary(
+        TapPayButtonConfiguration.configureWithRedirectDictionary(
             this,
             findViewById(R.id.redirect_pay),
             configuration,
@@ -77,13 +77,13 @@ class MainActivity : AppCompatActivity() ,RedirectPayStatusDelegate{
 
     }
 
-    override fun onRedirectReady() {
+    override fun onPayButtonReady() {
         findViewById<TextView>(R.id.text).text = ""
         findViewById<TextView>(R.id.text).text = "onReady"
         Toast.makeText(this, "onReady", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onRedirectSuccess(data: String) {
+    override fun onPayButtonSuccess(data: String) {
         Log.i("onSuccess",data)
         findViewById<TextView>(R.id.text).text = ""
         findViewById<TextView>(R.id.text).text = "onSuccess>>>> $data"
@@ -93,20 +93,20 @@ class MainActivity : AppCompatActivity() ,RedirectPayStatusDelegate{
 
     }
 
-    override fun onRedirectClick() {
+    override fun onPayButtonClick() {
         Toast.makeText(this, "onClick", Toast.LENGTH_SHORT).show()
         findViewById<TextView>(R.id.text).text = ""
         findViewById<TextView>(R.id.text).text = "onClick "
 
     }
 
-    override fun onRedirectBindIdentification(data: String) {
+    override fun onPayButtonBindIdentification(data: String) {
         Toast.makeText(this, "onBindIdentification", Toast.LENGTH_SHORT).show()
         findViewById<TextView>(R.id.text).text = ""
         findViewById<TextView>(R.id.text).text = "onBindIdentification $data "
     }
 
-    override fun onRedirectChargeCreated(data: String) {
+    override fun onPayButtonChargeCreated(data: String) {
         Log.e("data",data.toString())
         findViewById<TextView>(R.id.text).text = ""
         findViewById<TextView>(R.id.text).text = "onChargeCreated $data"
@@ -114,18 +114,18 @@ class MainActivity : AppCompatActivity() ,RedirectPayStatusDelegate{
 
     }
 
-    override fun onRedirectOrderCreated(data: String) {
+    override fun onPayButtonOrderCreated(data: String) {
         findViewById<TextView>(R.id.text).text = ""
         findViewById<TextView>(R.id.text).text = "onOrderCreated >> $data"
-        Log.e("mainactv", "onRedirectOrderCreated: "+data )
+        Log.e("mainactv", "onPayButtonOrderCreated: "+data )
         Toast.makeText(this, "onOrderCreated $data", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onRedirectcancel() {
+    override fun onPayButtoncancel() {
         Toast.makeText(this, "Cancel ", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onRedirectError(error: String) {
+    override fun onPayButtonError(error: String) {
         Log.e("error",error.toString())
         findViewById<TextView>(R.id.text).text = ""
         findViewById<TextView>(R.id.text).text = "onError $error"

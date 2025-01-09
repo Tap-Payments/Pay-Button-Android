@@ -20,7 +20,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 
-class TapRedirectConfiguration {
+class TapPayButtonConfiguration {
 
     companion object {
         private val retrofit = ApiService.RetrofitClient.getClient1()
@@ -32,9 +32,9 @@ class TapRedirectConfiguration {
 
         fun configureWithRedirectDictionary(
             context: Context,
-            tapRedirectViewWeb: TapRedirectPay?,
+            tapRedirectViewWeb: TapPayButton?,
             tapMapConfiguration: java.util.HashMap<String, Any>,
-            redirectPayStatusDelegate: RedirectPayStatusDelegate? = null
+            payButtonStatusDelegate: PayButtonStatusDelegate? = null
 
         ) {
 //ToDO test when cdn url ready
@@ -43,14 +43,14 @@ class TapRedirectConfiguration {
                     tapMapConfiguration,
                     tapRedirectViewWeb,
                     context,
-                    redirectPayStatusDelegate
+                    payButtonStatusDelegate
 
                 )
             }
 
         }
 
-        private suspend fun getTapButtonSDKConfigUrls(tapMapConfiguration: HashMap<String, Any>, tapCardInputViewWeb: TapRedirectPay?, context: Context, redirectPayStatusDelegate: RedirectPayStatusDelegate?) {
+        private suspend fun getTapButtonSDKConfigUrls(tapMapConfiguration: HashMap<String, Any>, tapCardInputViewWeb: TapPayButton?, context: Context, payButtonStatusDelegate: PayButtonStatusDelegate?) {
             try {
                 /**
                  * request to get Tap configs
@@ -70,7 +70,7 @@ class TapRedirectConfiguration {
                     context,
                     tapCardInputViewWeb,
                     tapMapConfiguration,
-                    redirectPayStatusDelegate
+                    payButtonStatusDelegate
 
                 )
 
@@ -83,7 +83,7 @@ class TapRedirectConfiguration {
                     context,
                     tapCardInputViewWeb,
                     tapMapConfiguration,
-                    redirectPayStatusDelegate
+                    payButtonStatusDelegate
 
                 )
                 Log.e("error Config", e.message.toString())
@@ -93,7 +93,7 @@ class TapRedirectConfiguration {
 
         @SuppressLint("RestrictedApi")
         fun addOperatorHeaderField(
-            tapCardInputViewWeb: TapRedirectPay?,
+            tapCardInputViewWeb: TapPayButton?,
             context: Context,
             modelConfiguration: KnetConfiguration,
             publicKey: String?
@@ -156,9 +156,9 @@ class TapRedirectConfiguration {
 
         }
         private fun startWithSDKConfigs(context: Context,
-                                        tapRedirectViewWeb: TapRedirectPay?,
+                                        tapRedirectViewWeb: TapPayButton?,
                                         tapMapConfiguration: java.util.HashMap<String, Any>,
-                                        redirectPayStatusDelegate: RedirectPayStatusDelegate? = null){
+                                        payButtonStatusDelegate: PayButtonStatusDelegate? = null){
             with(tapMapConfiguration) {
                 android.util.Log.e("map", tapMapConfiguration.toString())
                RedirectDataConfiguration.configurationsAsHashMap = tapMapConfiguration
@@ -177,7 +177,7 @@ class TapRedirectConfiguration {
                     publickKey.toString()
                 )
 
-                RedirectDataConfiguration.addTapBenefitPayStatusDelegate(redirectPayStatusDelegate)
+                RedirectDataConfiguration.addTapBenefitPayStatusDelegate(payButtonStatusDelegate)
 
                 headers?.let { tapRedirectViewWeb?.init(tapMapConfiguration, it) }
 

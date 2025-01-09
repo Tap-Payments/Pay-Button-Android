@@ -53,7 +53,7 @@ import java.util.*
 
 
 @SuppressLint("ViewConstructor")
-class TapRedirectPay : LinearLayout , ApplicationLifecycle {
+class TapPayButton : LinearLayout , ApplicationLifecycle {
     lateinit var webviewStarterUrl: String
     private var isBenefitPayUrlIntercepted =false
     // lateinit var webViewScheme: String
@@ -244,7 +244,7 @@ class TapRedirectPay : LinearLayout , ApplicationLifecycle {
 
         if (intentID.toString().isNullOrBlank() || publickKey.toString().isNullOrBlank()) {
             RedirectDataConfiguration.getTapKnetListener()
-                ?.onRedirectError("public key and intent id are required")
+                ?.onPayButtonError("public key and intent id are required")
         } else {
             callIntentAPI(configuraton, headers)
         }
@@ -338,7 +338,7 @@ class TapRedirectPay : LinearLayout , ApplicationLifecycle {
                         }*/
 
 
-                        RedirectDataConfiguration.getTapKnetListener()?.onRedirectReady()
+                        RedirectDataConfiguration.getTapKnetListener()?.onPayButtonReady()
 
                     }
                     if (request?.url.toString().contains(TapRedirectStatusDelegate.onSuccess.name)) {
@@ -348,7 +348,7 @@ class TapRedirectPay : LinearLayout , ApplicationLifecycle {
                         var decoded = decodeBase64(datafromUrl)
                         println("decoded>>"+decoded)
                         if (decoded != null) {
-                            RedirectDataConfiguration.getTapKnetListener()?.onRedirectSuccess(
+                            RedirectDataConfiguration.getTapKnetListener()?.onPayButtonSuccess(
                                 decoded
                             )
 
@@ -385,7 +385,7 @@ class TapRedirectPay : LinearLayout , ApplicationLifecycle {
                                 else -> {}
                             }
                         }
-                        RedirectDataConfiguration.getTapKnetListener()?.onRedirectChargeCreated(
+                        RedirectDataConfiguration.getTapKnetListener()?.onPayButtonChargeCreated(
                             request?.url?.getQueryParameterFromUri(keyValueName).toString()
                         )
                     }
@@ -394,7 +394,7 @@ class TapRedirectPay : LinearLayout , ApplicationLifecycle {
                         println("orderResponse>>"+orderResponse)
                         //TODO check if decode required
                         RedirectDataConfiguration.getTapKnetListener()
-                            ?.onRedirectOrderCreated(
+                            ?.onPayButtonOrderCreated(
                                 orderResponse
                             )
 
@@ -405,12 +405,12 @@ class TapRedirectPay : LinearLayout , ApplicationLifecycle {
                         isBenefitPayUrlIntercepted=false
                         onSuccessCalled = false
                         pair = Pair("",false)
-                        RedirectDataConfiguration.getTapKnetListener()?.onRedirectClick()
+                        RedirectDataConfiguration.getTapKnetListener()?.onPayButtonClick()
 
                     }
                     if (request?.url.toString().contains(TapRedirectStatusDelegate.cancel.name)) {
 
-                        RedirectDataConfiguration.getTapKnetListener()?.onRedirectcancel()
+                        RedirectDataConfiguration.getTapKnetListener()?.onPayButtoncancel()
 
 
 
@@ -418,7 +418,7 @@ class TapRedirectPay : LinearLayout , ApplicationLifecycle {
                     if (request?.url.toString().contains(TapRedirectStatusDelegate.onCancel.name)) {
                         android.os.Handler(Looper.getMainLooper()).postDelayed(3000) {
                             if(!onSuccessCalled){
-                                RedirectDataConfiguration.getTapKnetListener()?.onRedirectcancel()
+                                RedirectDataConfiguration.getTapKnetListener()?.onPayButtoncancel()
                             }
 
 
@@ -433,7 +433,7 @@ class TapRedirectPay : LinearLayout , ApplicationLifecycle {
                             .contains(TapRedirectStatusDelegate.onBinIdentification.name)
                     ) {
                         RedirectDataConfiguration.getTapKnetListener()
-                            ?.onRedirectBindIdentification(
+                            ?.onPayButtonBindIdentification(
                                 request?.url?.getQueryParameterFromUri(keyValueName).toString()
                             )
                     }
@@ -445,7 +445,7 @@ class TapRedirectPay : LinearLayout , ApplicationLifecycle {
                         webViewFrame.layoutParams = params
 
                         RedirectDataConfiguration.getTapKnetListener()
-                            ?.onRedirectHeightChange(newHeight.toString())
+                            ?.onPayButtonHeightChange(newHeight.toString())
 
                     }
                     if (request?.url.toString().contains(TapRedirectStatusDelegate.on3dsRedirect.name)) {
@@ -473,14 +473,14 @@ class TapRedirectPay : LinearLayout , ApplicationLifecycle {
                     /* if (request?.url.toString().contains(KnetStatusDelegate.onError.name)) {
 
                          RedirectDataConfiguration.getTapKnetListener()
-                             ?.onRedirectError(
+                             ?.onPayButtonError(
                                  request?.url?.getQueryParameterFromUri(keyValueName).toString()
                              )
                      }*/
                     if (request?.url.toString().contains(TapRedirectStatusDelegate.onError.name)) {
                         decodeBase64(request?.url?.getQueryParameter(keyValueName).toString())?.let {
                             RedirectDataConfiguration.getTapKnetListener()
-                                ?.onRedirectError(
+                                ?.onPayButtonError(
                                     it
                                 )
                         }
@@ -559,7 +559,7 @@ class TapRedirectPay : LinearLayout , ApplicationLifecycle {
 
         fun navigateTo3dsActivity(paymentbutton: String) {
             val intent = Intent(context, ThreeDsWebViewActivityButton()::class.java)
-            ThreeDsWebViewActivityButton.tapRedirectPay = this@TapRedirectPay
+            ThreeDsWebViewActivityButton.tapPayButton = this@TapPayButton
             intent.putExtra("flow", paymentbutton)
             (context).startActivity(intent)
         }
@@ -670,7 +670,7 @@ class TapRedirectPay : LinearLayout , ApplicationLifecycle {
             Log.e("app","one")
             dismissDialog()
 
-            RedirectDataConfiguration.getTapKnetListener()?.onRedirectSuccess(pair.first)
+            RedirectDataConfiguration.getTapKnetListener()?.onPayButtonSuccess(pair.first)
 
         }
     }

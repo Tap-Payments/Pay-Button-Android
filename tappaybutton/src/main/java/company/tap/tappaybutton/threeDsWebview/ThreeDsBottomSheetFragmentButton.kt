@@ -16,7 +16,7 @@ import company.tap.tappaybutton.doAfterSpecificTime
 import company.tap.tappaybutton.getDeviceSpecs
 
 import company.tap.tappaybutton.TapBrandView
-import company.tap.tappaybutton.TapRedirectPay
+import company.tap.tappaybutton.TapPayButton
 
 class ThreeDsBottomSheetFragmentButton(var webView: WebView?, var onCancel:()->Unit): BottomSheetDialogFragment() {
 
@@ -38,7 +38,7 @@ class ThreeDsBottomSheetFragmentButton(var webView: WebView?, var onCancel:()->U
         val tapBrandView = view.findViewById<TapBrandView>(R.id.tab_brand_view)
 
         try {
-            val powerd  = TapRedirectPay.threeDsResponse.powered
+            val powerd  = TapPayButton.threeDsResponse.powered
             when(powerd){
                 false ->tapBrandView.poweredByImage.visibility = View.INVISIBLE
                 else -> {}

@@ -19,7 +19,7 @@ import company.tap.tappaybutton.getDeviceSpecs
 import company.tap.taplocalizationkit.LocalizationManager
 import company.tap.tappaybutton.PaymentFlow
 import company.tap.tappaybutton.RedirectDataConfiguration
-import company.tap.tappaybutton.TapRedirectPay
+import company.tap.tappaybutton.TapPayButton
 import java.util.*
 
 const val delayTime = 5000L
@@ -31,7 +31,7 @@ class ThreeDsWebViewActivityButton : AppCompatActivity() {
 
     companion object {
         @SuppressLint("StaticFieldLeak")
-        lateinit var tapRedirectPay: TapRedirectPay
+        lateinit var tapPayButton: TapPayButton
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -62,12 +62,12 @@ class ThreeDsWebViewActivityButton : AppCompatActivity() {
         paymentFlow = data?.getString("flow") ?: PaymentFlow.PAYMENTBUTTON.name
         when (paymentFlow) {
             PaymentFlow.PAYMENTBUTTON.name -> {
-                println("threeDsResponse>>"+TapRedirectPay.threeDsResponse.url)
-                webView.loadUrl(TapRedirectPay.threeDsResponse.url)
+                println("threeDsResponse>>"+TapPayButton.threeDsResponse.url)
+                webView.loadUrl(TapPayButton.threeDsResponse.url)
             }
 
             PaymentFlow.CARDPAY.name -> {
-                webView.loadUrl(TapRedirectPay.threeDsResponseCardPayButtons.threeDsUrl)
+                webView.loadUrl(TapPayButton.threeDsResponseCardPayButtons.threeDsUrl)
 
             }
         }
@@ -75,11 +75,11 @@ class ThreeDsWebViewActivityButton : AppCompatActivity() {
         threeDsBottomsheet = ThreeDsBottomSheetFragmentButton(webView, onCancel = {
             when (paymentFlow) {
                 PaymentFlow.PAYMENTBUTTON.name -> {
-                    TapRedirectPay.cancel()
+                    TapPayButton.cancel()
                 }
 
                 PaymentFlow.CARDPAY.name -> {
-                    TapRedirectPay.cancel()
+                    TapPayButton.cancel()
                     /*  tapKnetPay.init(
                           KnetConfiguration.MapConfigruation,
                           TapKnetPay.buttonTypeConfigured
@@ -87,7 +87,7 @@ class ThreeDsWebViewActivityButton : AppCompatActivity() {
 
                 }
             }
-            RedirectDataConfiguration.getTapKnetListener()?.onRedirectcancel()
+            RedirectDataConfiguration.getTapKnetListener()?.onPayButtoncancel()
         })
 
     }
@@ -110,10 +110,10 @@ class ThreeDsWebViewActivityButton : AppCompatActivity() {
                             val splittiedString = request.url.toString().split("?", ignoreCase = true)
                             if(splittiedString!=null)Log.e("splittedString", splittiedString.toString())
                             try {
-                                TapRedirectPay.retrieve(splittiedString[1])
+                                TapPayButton.retrieve(splittiedString[1])
                             } catch (e: Exception) {
                                 RedirectDataConfiguration.getTapKnetListener()
-                                    ?.onRedirectError(e.message.toString())
+                                    ?.onPayButtonError(e.message.toString())
                             }
                         }
 
@@ -125,13 +125,13 @@ class ThreeDsWebViewActivityButton : AppCompatActivity() {
 
                 PaymentFlow.CARDPAY.name -> {
                     when (request?.url?.toString()
-                        ?.contains(TapRedirectPay.threeDsResponseCardPayButtons.keyword)) {
+                        ?.contains(TapPayButton.threeDsResponseCardPayButtons.keyword)) {
                         true -> {
                             threeDsBottomsheet.dialog?.dismiss()
                             val splittiedString = request.url.toString().split("?")
 
                             Log.e("splitted", splittiedString.toString())
-                            TapRedirectPay.generateTapAuthenticate(request.url?.toString() ?: "")
+                            TapPayButton.generateTapAuthenticate(request.url?.toString() ?: "")
                         }
 
                         false -> {}
