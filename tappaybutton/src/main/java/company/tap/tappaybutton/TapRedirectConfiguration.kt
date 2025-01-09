@@ -1,6 +1,7 @@
 package company.tap.tappaybutton
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import com.example.tappaybutton.R
@@ -90,6 +91,7 @@ class TapRedirectConfiguration {
             }
         }
 
+        @SuppressLint("RestrictedApi")
         fun addOperatorHeaderField(
             tapCardInputViewWeb: TapRedirectPay?,
             context: Context,
@@ -113,7 +115,7 @@ class TapRedirectConfiguration {
             NetworkApp.initNetwork(
                 tapCardInputViewWeb?.context ,
                 publicKey ?: "",
-                // context.packageName,
+                // context.packageName,  //TODO
                 "demo.tap.PayButtonSDK",
                 ApiService.BASE_URL,
                 "android-knet",
@@ -129,14 +131,9 @@ class TapRedirectConfiguration {
             headers = Headers(
                 application = NetworkApp.getApplicationInfo(),
                 mdn = CryptoUtil.encryptJsonString(
-                    // context.packageName.toString(),
+                    // context.packageName.toString(), //TODO remove hardcoding
                     "demo.tap.PayButtonSDK",
-                    /*"-----BEGIN PUBLIC KEY-----\n" +
-                            "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8AX++RtxPZFtns4XzXFlDIxPB\n" +
-                            "h0umN4qRXZaKDIlb6a3MknaB7psJWmf2l+e4Cfh9b5tey/+rZqpQ065eXTZfGCAu\n" +
-                            "BLt+fYLQBhLfjRpk8S6hlIzc1Kdjg65uqzMwcTd0p7I4KLwHk1I0oXzuEu53fU1L\n" +
-                            "SZhWp4Mnd6wjVgXAsQIDAQAB\n" +
-                            "-----END PUBLIC KEY-----",*/encodedeky
+                   encodedeky
                 )
             )
 

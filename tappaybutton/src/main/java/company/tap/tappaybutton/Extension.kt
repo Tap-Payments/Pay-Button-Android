@@ -21,11 +21,12 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.core.os.postDelayed
 import com.bumptech.glide.Glide
+import com.example.tappaybutton.R
 import com.google.gson.Gson
 import company.tap.tappaybutton.enums.rawFolderRefrence
 import company.tap.tappaybutton.models.ThreeDsResponseCardPayButtons
 
-import company.tap.tapuilibrary.R
+
 import company.tap.tapuilibrary.themekit.ThemeManager
 import jp.wasabeef.blurry.Blurry
 import java.net.URLEncoder
@@ -127,15 +128,15 @@ fun ViewGroup.addLoaderWithBlurryToView(showLoadingIcon: Boolean, invokeAfterLoa
     @DrawableRes
     val loaderGif: Int =
         if (ThemeManager.currentTheme.isNotEmpty() && ThemeManager.currentTheme.contains("dark")) {
-            R.drawable.loader
+            company.tap.tapuilibrary.R.drawable.loader
         } else if (ThemeManager.currentTheme.isNotEmpty() && !ThemeManager.currentTheme.contains(
                 "dark"
             )
         ) {
-          //  R.drawable.output_black_loader_nobg
-            R.drawable.loader
+          R.drawable.output_black_loader_nobg
+           // R.drawable.loader
         } else
-            R.drawable.loader
+            company.tap.tapuilibrary.R.drawable.loader
 
 
 
