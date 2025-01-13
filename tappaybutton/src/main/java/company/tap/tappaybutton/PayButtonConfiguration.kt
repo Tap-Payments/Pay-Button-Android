@@ -9,7 +9,7 @@ import com.example.tappaybutton.R
 import company.tap.tapnetworkkit.connection.NetworkApp
 import company.tap.tapnetworkkit.utils.CryptoUtil
 import company.tap.tappaybutton.ApiService.BASE_URL_1
-import company.tap.tappaybutton.RedirectDataConfiguration.configurationsAsHashMap
+import company.tap.tappaybutton.PayButtonDataConfiguration.configurationsAsHashMap
 import company.tap.tappaybutton.enums.HeadersApplication
 import company.tap.tappaybutton.enums.HeadersMdn
 import company.tap.tappaybutton.enums.headersKey
@@ -20,7 +20,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 
-class TapPayButtonConfiguration {
+class PayButtonConfiguration {
 
     companion object {
         private val retrofit = ApiService.RetrofitClient.getClient1()
@@ -32,7 +32,7 @@ class TapPayButtonConfiguration {
 
         fun configureWithPayButtonDictionary(
             context: Context,
-            tapRedirectViewWeb: TapPayButton?,
+            tapRedirectViewWeb: PayButton?,
             tapMapConfiguration: java.util.HashMap<String, Any>,
             payButtonStatusDelegate: PayButtonStatusDelegate? = null
 
@@ -50,7 +50,7 @@ class TapPayButtonConfiguration {
 
         }
 
-        private suspend fun getTapButtonSDKConfigUrls(tapMapConfiguration: HashMap<String, Any>, tapCardInputViewWeb: TapPayButton?, context: Context, payButtonStatusDelegate: PayButtonStatusDelegate?) {
+        private suspend fun getTapButtonSDKConfigUrls(tapMapConfiguration: HashMap<String, Any>, tapCardInputViewWeb: PayButton?, context: Context, payButtonStatusDelegate: PayButtonStatusDelegate?) {
             try {
                 /**
                  * request to get Tap configs
@@ -93,7 +93,7 @@ class TapPayButtonConfiguration {
 
         @SuppressLint("RestrictedApi")
         fun addOperatorHeaderField(
-            tapCardInputViewWeb: TapPayButton?,
+            tapCardInputViewWeb: PayButton?,
             context: Context,
             modelConfiguration: KnetConfiguration,
             publicKey: String?
@@ -156,13 +156,13 @@ class TapPayButtonConfiguration {
 
         }
         private fun startWithSDKConfigs(context: Context,
-                                        tapRedirectViewWeb: TapPayButton?,
+                                        tapRedirectViewWeb: PayButton?,
                                         tapMapConfiguration: java.util.HashMap<String, Any>,
                                         payButtonStatusDelegate: PayButtonStatusDelegate? = null){
             with(tapMapConfiguration) {
                 android.util.Log.e("map", tapMapConfiguration.toString())
-               RedirectDataConfiguration.configurationsAsHashMap = tapMapConfiguration
-                val operator = RedirectDataConfiguration.configurationsAsHashMap?.get(
+               PayButtonDataConfiguration.configurationsAsHashMap = tapMapConfiguration
+                val operator = PayButtonDataConfiguration.configurationsAsHashMap?.get(
                     operatorKey
                 ) as HashMap<*, *>
                 val publickKey = operator.get(publicKeyToGet)
@@ -177,7 +177,7 @@ class TapPayButtonConfiguration {
                     publickKey.toString()
                 )
 
-                RedirectDataConfiguration.addTapBenefitPayStatusDelegate(payButtonStatusDelegate)
+                PayButtonDataConfiguration.addTapBenefitPayStatusDelegate(payButtonStatusDelegate)
 
                 headers?.let { tapRedirectViewWeb?.init(tapMapConfiguration, it) }
 

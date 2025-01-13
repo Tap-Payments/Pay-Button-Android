@@ -165,7 +165,7 @@ configuration.put("intent",intentObj)
     /**
  * configureWithPayButtonDictionary and calling the PayButton SDK
  */
-TapPayButtonConfiguration.configureWithPayButtonDictionary(
+PayButtonConfiguration.configureWithPayButtonDictionary(
     this,
     findViewById(R.id.redirect_pay),
     configuration,
@@ -205,7 +205,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
     /**
      * configureWithPayButtonDictionary and calling the PayButton SDK
      */
-    TapPayButtonConfiguration.configureWithPayButtonDictionary(
+    PayButtonConfiguration.configureWithPayButtonDictionary(
         this,
         findViewById(R.id.redirect_pay),
         configuration,
@@ -416,7 +416,7 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
         /**
          * configureWithPayButtonDictionary and calling the PayButton SDK
          */
-        TapPayButtonConfiguration.configureWithPayButtonDictionary(
+        PayButtonConfiguration.configureWithPayButtonDictionary(
             this,
             findViewById(R.id.redirect_pay),
             configuration,
