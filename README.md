@@ -220,20 +220,50 @@ Now we have created the UI and the parameters required to to correctly display P
 - Override the required callbacks as follows:
 ```kotlin
  object : PayButtonStatusDelegate {
-                override fun onSuccess(data: String) {
-                    Log.i("data",data.toString())
-                }
-                override fun onReady() {
-                    Log.i("data","onReady")
+    override fun onPayButtonSuccess(data: String) {
+        Log.i("onSuccess",data)
+        findViewById<TextView>(R.id.text).text = ""
+        findViewById<TextView>(R.id.text).text = "onSuccess>>>> $data"
+        findViewById<TextView>(R.id.text).movementMethod = ScrollingMovementMethod()
 
-                }
+        Toast.makeText(this, "onSuccess $data", Toast.LENGTH_SHORT).show()
+
+    }
+
+    override fun onPayButtonClick() {
+        Toast.makeText(this, "onClick", Toast.LENGTH_SHORT).show()
+        findViewById<TextView>(R.id.text).text = ""
+        findViewById<TextView>(R.id.text).text = "onClick "
+
+    }
 
 
-                override fun onError(error: String) {
-                    Log.i("data","onError")
+    override fun onPayButtonChargeCreated(data: String) {
+        Log.e("data",data.toString())
+        findViewById<TextView>(R.id.text).text = ""
+        findViewById<TextView>(R.id.text).text = "onChargeCreated $data"
+        Toast.makeText(this, "onChargeCreated $data", Toast.LENGTH_SHORT).show()
 
+    }
 
-                }
+    override fun onPayButtonOrderCreated(data: String) {
+        findViewById<TextView>(R.id.text).text = ""
+        findViewById<TextView>(R.id.text).text = "onOrderCreated >> $data"
+        Log.e("mainactv", "onPayButtonOrderCreated: "+data )
+        Toast.makeText(this, "onOrderCreated $data", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onPayButtoncancel() {
+        Toast.makeText(this, "Cancel ", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onPayButtonError(error: String) {
+        Log.e("error",error.toString())
+        findViewById<TextView>(R.id.text).text = ""
+        findViewById<TextView>(R.id.text).text = "onError $error"
+        Toast.makeText(this, "onError $error ", Toast.LENGTH_SHORT).show()
+
+    }
                 
             }
 ```
@@ -261,114 +291,28 @@ You can use a Hashmap to send data to our SDK. The benefit is that you can gener
 
 
 ```kotlin
-     /**
-       * operator
-       */
-      val operator = HashMap<String,Any>()
-        operator.put("publicKey","pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7")
-        operator.put("hashString","")
+     val publicKey = "pk_test_XXXXXXXXXXXX"
+/**
+ * operator
+ */
+val operator = HashMap<String,Any>()
+operator.put("publicKey",publicKey.toString())
 
-        /**
-         * phone
-         */
-        val phone = HashMap<String,Any>()
-        phone.put("countryCode","+20")
-        phone.put("number","011")
+/**
+ * intent
+ */
+val intentObj = HashMap<String,Any>()
+if (intentId != null) {
+    intentObj.put("intent",intentId)
+}
+/**
+ * configuration
+ */
 
-        /**
-         * contact
-         */
-        val contact = HashMap<String,Any>()
-        contact.put("email","test@gmail.com")
-        contact.put("phone",phone)
-        /**
-         * name
-         */
-        val name = HashMap<String,Any>()
-        name.put("lang","en")
-        name.put("first","Tap")
-        name.put("middle","")
-        name.put("last","Payment")
+val configuration = LinkedHashMap<String,Any>()
 
-        /**
-         * customer
-         */
-        val customer = HashMap<String,Any>()
-        customer.put("nameOnCard","")
-        customer.put("editable",true)
-        customer.put("contact",contact)
-        customer.put("name", listOf(name))
-
-        /**
-         * order
-         */
-        val order = HashMap<String,Any>()
-        order.put("id","order_id")
-        order.put("amount","1")
-        order.put("currency","BHD")
-        order.put("description","description")
-        order.put("reference","refrence_id")
-
-        /**
-         * merchant
-         */
-        val merchant = HashMap<String,Any>()
-        merchant.put("id", "")
-
-        /**
-         * invoice
-         */
-        val invoice = HashMap<String,Any>()
-        invoice.put("id","")
-
-     /** interface **/
-
-      val interfacee = HashMap<String,Any>()
-        interfacee.put("locale", "en")
-        interfacee.put("theme","light")
-        interfacee.put("edges", "curved")
-        interfacee.put("colorStyle","colored")
-        interfacee.put("loader",true)
-
-/** transaction **/
-
-
-      val authorize = HashMap<String,Any>()
-        authorize.put("type","VOID")
-        authorize.put("time","12")
-        val contract = HashMap<String,Any>()
-        contact.put("id","")
-
-        val paymentAgreement = HashMap<String,Any>()
-        paymentAgreement.put("id","")
-        paymentAgreement.put("contract",contract)
-        val transaction = HashMap<String,Any>()
-        transaction.put("reference","TRX")
-        transaction.put("authorize",authroize)
-        transaction.put("authentication",true)
-        transaction.put("paymentAgreement",paymentAgreement)
-        transaction.put("metadata",metada)
-
-     /** post  **/
-
-        val post = HashMap<String,Any>()
-        post.put("url","")
-        /**
-         * configuration request
-         */
-
-       
-
-        val configuration = LinkedHashMap<String,Any>()
-        configuration.put("operator", operator)
-        configuration.put("order",order)
-        configuration.put("customer",customer)
-        configuration.put("merchant",merchant)
-        configuration.put("invoice",invoice)
-        configuration.put("interface",interfacee)
-        configuration.put("post",post)
-        configuration.put("scope","charge")
-        configuration.put("transaction",transaction)
+configuration.put("operator",operator)
+configuration.put("intent",intentObj)
 
 
 ```
@@ -504,12 +448,7 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
         findViewById<TextView>(R.id.text).text = "onClick "
 
     }
-
-    override fun onPayButtonBindIdentification(data: String) {
-        Toast.makeText(this, "onBindIdentification", Toast.LENGTH_SHORT).show()
-        findViewById<TextView>(R.id.text).text = ""
-        findViewById<TextView>(R.id.text).text = "onBindIdentification $data "
-    }
+    
 
     override fun onPayButtonChargeCreated(data: String) {
         Log.e("data",data.toString())
@@ -574,210 +513,7 @@ Below you will find more details about each parameter shared in the above tables
 
       ```
 
-## order:
-  - Definition:This defined the details of the order that you are trying to purchase, in which you need to specify some details like the id, amount, currency ...
-  - Type: Dictionary, (required)
-  - Fields:
-     - id :
-        - Definition: Pass the order ID created for the order you are trying to purchase, which will be available in your database.
-         Note: This field can be empty
-     - currency :
-        - Definition: The currency which is linked to the order being paid.
 
-     - amount :
-       -  Definition: The order amount to be paid by the customer.
-         Note: Minimum amount to be added is 0.1.   
-     - description :
-        - Definition: Order details, which defines what the customer is paying for or the description of the service you are providing.
-          
-     - reference :
-        - Definition: This will be the order reference present in your database in which the paying is being done for.
-     
-     - Example: 
-      ```kotlin
-      val order = HashMap<String,Any>()
-      order.put("id", "")
-      order.put("amount",  "1" )
-      order.put("currency","BHD")
-      order.put("description", "")
-      order.put("reference", "")
-      ```
-
- # Transaction:
-  - Definition: This defined the details of the order that you are trying to purchase, in which you need to specify some details like the reference, scope...
-  - Type: Dictionary, (optional)
-  - Fields:
-     - authentication :
-        - Definition: If true, this means that the payment will not be accepted if it is card based and the card is not supporting 3DS.Note: Default is true.
-     - authorize :
-        - Definition: The scope/intention of the current order to authorize an amount from the customer.
-          - Fields:
-               - 1- type :  
-                           - VOID // Will release the held amount
-                           - CAPTURE // Will charge the held amount
-               - 2- time : Definition : An hour based time to perform the post authorize action
-
-
-     - paymentAgreement :
-        - Definition:  If you have created an agreement before, and you want to use it in this transaction pass its id here. Note: It can be empty. Only, related to card based buttons.         
-     - reference :
-        - Definition:  This will be the transaction reference present in your database in which the paying is being done for.          
- 
-  
-  - Example: 
-      ```kotlin
-          val transaction = HashMap<String,Any>()
-          val authorize = HashMap<String,Any>()
-          authorize.put("type","VOID")
-          authorize.put("time","12")
-          val contract = HashMap<String,Any>()
-            contact.put("id","")
-
-          val paymentAgreement = HashMap<String,Any>()
-           paymentAgreement.put("id","")
-           paymentAgreement.put("contract",contract)
-         val metada = HashMap<String,Any>()
-        metada.put("id","")
-          transaction.put("reference","TRX")
-          transaction.put("authorize",authorize)
-          transaction.put("authentication",true)
-          transaction.put("paymentAgreement",paymentAgreement)
-          transaction.put("metadata",metada)
-
-
-      ```
-
-
-## merchant:
-  - Definition:It is the Merchant id that you get from our onboarding team. This will be used as reference for your account in Tap.
-  - Type: Dictionary, (required)
-  - Fields:
-     - id :
-        - Definition: Generated once your account with Tap is created, which is unique for every merchant. 
-     - Example: 
-      ```kotlin
-        val merchant = HashMap<String,Any>()
-        merchant.put("id", "")
-      ```
-
-
-## invoice:
-  - Definition:After the token is generated, you can use it to pay for any invoice. Each invoice will have an invoice ID which you can add here using the SDK.
-Note: An invoice will first show you a receipt/summary of the order you are going to pay for as well as the amount, currency, and any related field before actually opening the payment form and completing the payment.
-  - Type: Dictionary, (optional)
-  - Fields:
-     - id :
-        - Definition: Unique Invoice ID which we are trying to pay.
-     
-     - Example: 
-      ```kotlin
-        val invoice = HashMap<String,Any>()
-        invoice.put("id","")
-
-      ```
-
-## post:
-  - Definition:Here you can pass the webhook URL you have, in order to receive notifications of the results of each Transaction happening on your application.
-  - Type: Dictionary, (optional)
-  - Fields:
-     - url :
-        - Definition:The webhook server's URL that you want to receive notifications on.
-     
-     - Example: 
-      ```kotlin
-         val post = HashMap<String,Any>()
-        post.put("url","")
-
-      ```
-
-## customer:
-  - Definition: Here, you will collect the information of the customer that is paying..
-  - Type: Dictionary, (required)
-  - Fields:
-     - id :
-        - Definition: This is an optional field that you do not have before the charge is processed. But, after the charge, then you will receive the customer ID in the response which can be handled in the onSuccess callback function.
-      
-    - name :
-        - Definition: Full Name of the customer paying.
-            - Fields:
-               - lang : Language chosen to write the customer name.
-               - first : Customer's first name.
-               - middle :Customer's middle name.
-               - last : Customer's last name.
-  
-    - contact :
-        - Definition: The customer's contact information like email address and phone number.
-Note: The contact information has to either have the email address or the phone details of the customers or both but it should not be empty.
-
-      - Fields:
-         - email :
-            - Customer's email address (string)
-         - phone :
-            -  Customer's Phone number details with country code and number 
-           
-
-     - Example: 
-      ```kotlin
-         /**
-         * phone
-         */
-        val phone = java.util.HashMap<String,Any>()
-        phone.put("countryCode","+20")
-        phone.put("number","011")
-
-
-        /**
-         * contact
-         */
-        val contact = java.util.HashMap<String,Any>()
-        contact.put("email","test@gmail.com")
-        contact.put("phone",phone)
-        /**
-         * name
-         */
-        val name = java.util.HashMap<String,Any>()
-        name.put("lang","en")
-        name.put("first", "first")
-        name.put("middle", "middle")
-        name.put("last","last")
-
-        /**
-         * customer
-         */
-        val customer = java.util.HashMap<String,Any>()
-        customer.put("id", "")
-        customer.put("contact",contact)
-        customer.put("name", listOf(name))
-
-      ```
-
-
-## interface:
-  - Definition:This will help you control the layout (UI) of the payment form, like changing the theme light to dark, the language used (en or ar), ...
-  - Type: Dictionary, (required)
-  - Fields:
-     - loader :
-        - Definition: A boolean to indicate wether or not you want to show a loading view on top of the pay button while it is performing api requests.
-     - locale :
-        - Definition: The language of the pay button. Accepted values as of now are: (en -> english /ar -> arabic )
-Possible Values:
-
-     - theme :
-       -  Definition: The display styling of the pay button. Accepted values as of now are: light /dark /dynamic
-     - edges :
-        - Definition: Control the edges of the payment form.  (flat/curved)  
-     - colorStyle :
-        - Definition: How do you want the icons rendered inside the pay button Possible Values: colored / monochrome
-     
-     - Example: 
-      ```kotlin
-       val interfacee = HashMap<String,Any>()
-        interfacee.put("locale","en")
-        interfacee.put("theme", "light")
-        interfacee.put("edges", "curved")
-        interfacee.put("colorStyle","colored")
-        interfacee.put("loader",true)
-      ```      
 
 
 # Available Button Types

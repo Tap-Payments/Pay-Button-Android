@@ -121,8 +121,8 @@ interface PayButtonStatusDelegate {
     fun onPayButtonChargeCreated(data:String){}
     fun onPayButtonError(error: String)
     fun onPayButtoncancel(){}
-    fun onPayButtonHeightChange(heightChange:String){}
-    fun onPayButtonBindIdentification(data: String){}
+   // fun onPayButtonHeightChange(heightChange:String){}
+   // fun onPayButtonBindIdentification(data: String){}
 
 }
 

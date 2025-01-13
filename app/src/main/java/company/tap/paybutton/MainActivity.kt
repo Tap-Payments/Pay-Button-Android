@@ -100,11 +100,6 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
 
     }
 
-    override fun onPayButtonBindIdentification(data: String) {
-        Toast.makeText(this, "onBindIdentification", Toast.LENGTH_SHORT).show()
-        findViewById<TextView>(R.id.text).text = ""
-        findViewById<TextView>(R.id.text).text = "onBindIdentification $data "
-    }
 
     override fun onPayButtonChargeCreated(data: String) {
         Log.e("data",data.toString())
