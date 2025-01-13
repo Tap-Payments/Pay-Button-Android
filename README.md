@@ -76,12 +76,12 @@ Once you create the variable in any way, you will have to follow these steps:
     android:layout_height="match_parent"
     tools:context=".main_activity.MainActivity">
 
-   <company.tap.tappaybutton.PayButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/paybutton"
-
-        />
+<company.tap.tappaybutton.TapPayButton
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="@dimen/_20sdp"
+android:id="@+id/redirect_pay"
+/>
 
 </LinearLayout>
  
@@ -134,72 +134,43 @@ To allow flexibility and to ease the integration, your application will only has
 First, let us create the required parameters:
 
 ```kotlin
-     /**
-       * operator
-       */
-      val operator = HashMap<String,Any>()
-        operator.put("publicKey","pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7")
-        operator.put("hashString","")
+     val publicKey = "pk_test_XXXXXXXXXXXXXX"
+/**
+ * operator
+ */
+val operator = HashMap<String,Any>()
+operator.put("publicKey",publicKey.toString())
 
-        /**
-         * phone
-         */
-        val phone = HashMap<String,Any>()
-        phone.put("countryCode","+20")
-        phone.put("number","011")
+/**
+ * intent
+ */
+val intentObj = HashMap<String,Any>()
+if (intentId != null) {
+    intentObj.put("intent",intentId)
+}
+/**
+ * configuration
+ */
 
-        /**
-         * contact
-         */
-        val contact = HashMap<String,Any>()
-        contact.put("email","test@gmail.com")
-        contact.put("phone",phone)
-        /**
-         * name
-         */
-        val name = HashMap<String,Any>()
-        name.put("lang","en")
-        name.put("first","Tap")
-        name.put("middle","")
-        name.put("last","Payment")
+val configuration = LinkedHashMap<String,Any>()
 
-        /**
-         * customer
-         */
-        val customer = HashMap<String,Any>()
-        customer.put("nameOnCard","")
-        customer.put("editable",true)
-        customer.put("contact",contact)
-        customer.put("name", listOf(name))
+configuration.put("operator",operator)
+configuration.put("intent",intentObj)
 
-        /**
-         * order
-         */
-        val order = HashMap<String,Any>()
-        order.put("id","order_id")
-        order.put("amount","1")
-        order.put("currency","BHD")
-        order.put("description","description")
-        order.put("reference","refrence_id")
-
-        /**
-         * configuration request
-         */
-
-        val configuration = LinkedHashMap<String,Any>()
-        configuration.put("operator", operator)
-        configuration.put("order",order)
-        configuration.put("customer",customer)
 
 ```
 ### 2 - Pass these parameters to the created Button variable before as follows
 
 ```kotlin
-     payButton.initPayButton(
-            this, 
-            configuration,
-        PayButtonType.KNET,
-            PayButtonStatusDelegate)
+    /**
+ * configureWithRedirectDictionary and calling the PayButton SDK
+ */
+TapPayButtonConfiguration.configureWithRedirectDictionary(
+    this,
+    findViewById(R.id.redirect_pay),
+    configuration,
+    this)
+
 ```
 
 ### Full code snippet for creating the parameters + passing it PayButton variable
@@ -208,68 +179,37 @@ First, let us create the required parameters:
 override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-      /**
-       * operator
-       */
-      val operator = HashMap<String,Any>()
-        operator.put("publicKey","pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7")
-        operator.put("hashString","")
+    val publicKey = "pk_test_XXXXXXXXX"
+    /**
+     * operator
+     */
+    val operator = HashMap<String,Any>()
+    operator.put("publicKey",publicKey.toString())
 
-        /**
-         * phone
-         */
-        val phone = HashMap<String,Any>()
-        phone.put("countryCode","+20")
-        phone.put("number","011")
+    /**
+     * intent
+     */
+    val intentObj = HashMap<String,Any>()
+    if (intentId != null) {
+        intentObj.put("intent",intentId)
+    }
+    /**
+     * configuration
+     */
 
-        /**
-         * contact
-         */
-        val contact = HashMap<String,Any>()
-        contact.put("email","test@gmail.com")
-        contact.put("phone",phone)
-        /**
-         * name
-         */
-        val name = HashMap<String,Any>()
-        name.put("lang","en")
-        name.put("first","Tap")
-        name.put("middle","")
-        name.put("last","Payment")
+    val configuration = LinkedHashMap<String,Any>()
 
-        /**
-         * customer
-         */
-        val customer = HashMap<String,Any>()
-        customer.put("nameOnCard","")
-        customer.put("editable",true)
-        customer.put("contact",contact)
-        customer.put("name", listOf(name))
+    configuration.put("operator",operator)
+    configuration.put("intent",intentObj)
 
-        /**
-         * order
-         */
-        val order = HashMap<String,Any>()
-        order.put("id","order_id")
-        order.put("amount","1")
-        order.put("currency","BHD")
-        order.put("description","description")
-        order.put("reference","refrence_id")
-
-        /**
-         * configuration request
-         */
-
-        val configuration = LinkedHashMap<String,Any>()
-        configuration.put("operator", operator)
-        configuration.put("order",order)
-        configuration.put("customer",customer)
-
-     payButton.initPayButton(
-            this, 
-            configuration,
-        PayButtonType.KNET,
-            PayButtonStatusDelegate,)
+    /**
+     * configureWithRedirectDictionary and calling the PayButton SDK
+     */
+    TapPayButtonConfiguration.configureWithRedirectDictionary(
+        this,
+        findViewById(R.id.redirect_pay),
+        configuration,
+        this)
 }
 ```
 # Receiving Callback Notifications
@@ -436,34 +376,61 @@ You can use a Hashmap to send data to our SDK. The benefit is that you can gener
 The below will allow the integrators to get notified from events fired from the PayButton.
 
 ```kotlin
-    override fun onReady() {
-           print("\n\n========\n\nonReady")
-    }
+     override fun onPayButtonReady() {
+    findViewById<TextView>(R.id.text).text = ""
+    findViewById<TextView>(R.id.text).text = "onReady"
+    Toast.makeText(this, "onReady", Toast.LENGTH_SHORT).show()
+}
 
-    override fun onClick() {
-         print("\n\n========\n\noClick")
-    }
+override fun onPayButtonSuccess(data: String) {
+    Log.i("onSuccess",data)
+    findViewById<TextView>(R.id.text).text = ""
+    findViewById<TextView>(R.id.text).text = "onSuccess>>>> $data"
+    findViewById<TextView>(R.id.text).movementMethod = ScrollingMovementMethod()
 
-    override fun onChargeCreated(data: String) {
-           print("\n\n========\n\nonChargeCreated")
-    }
+    Toast.makeText(this, "onSuccess $data", Toast.LENGTH_SHORT).show()
 
-    override fun onOrderCreated(data: String) {
-           print("\n\n========\n\nonOrderCreated")
+}
 
-    }
+override fun onPayButtonClick() {
+    Toast.makeText(this, "onClick", Toast.LENGTH_SHORT).show()
+    findViewById<TextView>(R.id.text).text = ""
+    findViewById<TextView>(R.id.text).text = "onClick "
 
-    override fun onCancel() {
-           print("\n\n========\n\nonCancel")
-    }
-  override fun onSuccess() {
-           print("\n\n========\n\nonSuccess")
-    }
+}
 
+override fun onPayButtonBindIdentification(data: String) {
+    Toast.makeText(this, "onBindIdentification", Toast.LENGTH_SHORT).show()
+    findViewById<TextView>(R.id.text).text = ""
+    findViewById<TextView>(R.id.text).text = "onBindIdentification $data "
+}
 
-    override fun onError(error: String) {
-           print("\n\n========\n\nonError")
-    }
+override fun onPayButtonChargeCreated(data: String) {
+    Log.e("data",data.toString())
+    findViewById<TextView>(R.id.text).text = ""
+    findViewById<TextView>(R.id.text).text = "onChargeCreated $data"
+    Toast.makeText(this, "onChargeCreated $data", Toast.LENGTH_SHORT).show()
+
+}
+
+override fun onPayButtonOrderCreated(data: String) {
+    findViewById<TextView>(R.id.text).text = ""
+    findViewById<TextView>(R.id.text).text = "onOrderCreated >> $data"
+    Log.e("mainactv", "onPayButtonOrderCreated: "+data )
+    Toast.makeText(this, "onOrderCreated $data", Toast.LENGTH_SHORT).show()
+}
+
+override fun onPayButtoncancel() {
+    Toast.makeText(this, "Cancel ", Toast.LENGTH_SHORT).show()
+}
+
+override fun onPayButtonError(error: String) {
+    Log.e("error",error.toString())
+    findViewById<TextView>(R.id.text).text = ""
+    findViewById<TextView>(R.id.text).text = "onError $error"
+    Toast.makeText(this, "onError $error ", Toast.LENGTH_SHORT).show()
+
+}
 ```
 # Full Code Sample
 Once all of the above steps are successfully completed, your Activity file should look like this:
@@ -477,152 +444,98 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
         configureSdk()
     }
 
-    fun configureSdk(){
+    fun configureSdk(intentId:String?) {
 
-
+        val publicKey = "pk_test_J2OSkKAFxu4jghc9zeRfQ0da"
         /**
          * operator
          */
         val operator = HashMap<String,Any>()
         operator.put("publicKey",publicKey.toString())
-        operator.put("hashString",hashStringKey.toString())
 
         /**
-         * order
+         * intent
          */
-        val order = HashMap<String,Any>()
-        order.put("id",ordrId ?: "")
-        order.put("amount", "1")
-        order.put("currency",selectedCurrency)
-        order.put("description",orderDescription ?: "")
-        order.put("reference",orderRefrence ?: "")
-
+        val intentObj = HashMap<String,Any>()
+        if (intentId != null) {
+            intentObj.put("intent",intentId)
+        }
         /**
-         * merchant
+         * configuration
          */
-        val merchant = HashMap<String,Any>()
-        merchant.put("id", "")
 
-        /**
-         * invoice
-         */
-        val invoice = HashMap<String,Any>()
-        invoice.put("id","")
-
-
-        /**
-         * phone
-         */
-        val phone = java.util.HashMap<String,Any>()
-        phone.put("countryCode","+20")
-        phone.put("number","011")
-
-
-        /**
-         * contact
-         */
-        val contact = java.util.HashMap<String,Any>()
-        contact.put("email","test@gmail.com")
-        contact.put("phone",phone)
-        /**
-         * name
-         */
-        val name = java.util.HashMap<String,Any>()
-        name.put("lang","en")
-        name.put("first", "first")
-        name.put("middle", "middle")
-        name.put("last","last")
-
-        /**
-         * customer
-         */
-        val customer = java.util.HashMap<String,Any>()
-        customer.put("id", "")
-        customer.put("contact",contact)
-        customer.put("name", listOf(name))
-
-        /**
-         * interface
-         */
-    
-        val interfacee = HashMap<String,Any>()
-        interfacee.put("locale",selectedLanguage ?: "en")
-        interfacee.put("theme",selectedTheme ?: "light")
-        interfacee.put("edges",selectedCardEdge ?: "curved")
-        interfacee.put("colorStyle",selectedColorStylee ?:"colored")
-        interfacee.put("loader",loader)
-
-       /** transaction **/
-
-
-        val authorize = HashMap<String,Any>()
-        authorize.put("type","VOID")
-        authorize.put("time","12")
-        val contract = HashMap<String,Any>()
-        contact.put("id","")
-
-        val paymentAgreement = HashMap<String,Any>()
-        paymentAgreement.put("id","")
-        paymentAgreement.put("contract",contract)
-        val transaction = HashMap<String,Any>()
-        transaction.put("reference","TRX")
-        transaction.put("authorize",authroize)
-        transaction.put("authentication",true)
-        transaction.put("paymentAgreement",paymentAgreement)
-        transaction.put("metadata",metada)
-
-
-
-        val post = HashMap<String,Any>()
-        post.put("url","")
         val configuration = LinkedHashMap<String,Any>()
 
         configuration.put("operator",operator)
-        configuration.put("order",order)
-        configuration.put("customer",customer)
+        configuration.put("intent",intentObj)
 
-        configuration.put("merchant",merchant)
-        configuration.put("invoice",invoice)
-        configuration.put("interface",interfacee)
-        configuration.put("post",post)
-        configuration.put("scope","charge")
-        configuration.put("transaction",transaction)
-
-
- payButton.initPayButton(
-            this, 
+        /**
+         * configureWithRedirectDictionary and calling the PayButton SDK
+         */
+        TapPayButtonConfiguration.configureWithRedirectDictionary(
+            this,
+            findViewById(R.id.redirect_pay),
             configuration,
-        PayButtonType.KNET,
-            PayButtonStatusDelegate)
+            this)
 
 
     }
 
 
-    override fun onSuccess(data: String) {
+    override fun onPayButtonReady() {
+        findViewById<TextView>(R.id.text).text = ""
+        findViewById<TextView>(R.id.text).text = "onReady"
+        Toast.makeText(this, "onReady", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onReady() {
-        super.onReady()
+    override fun onPayButtonSuccess(data: String) {
+        Log.i("onSuccess",data)
+        findViewById<TextView>(R.id.text).text = ""
+        findViewById<TextView>(R.id.text).text = "onSuccess>>>> $data"
+        findViewById<TextView>(R.id.text).movementMethod = ScrollingMovementMethod()
+
+        Toast.makeText(this, "onSuccess $data", Toast.LENGTH_SHORT).show()
+
     }
 
-    override fun onClick() {
-        super.onClick()
+    override fun onPayButtonClick() {
+        Toast.makeText(this, "onClick", Toast.LENGTH_SHORT).show()
+        findViewById<TextView>(R.id.text).text = ""
+        findViewById<TextView>(R.id.text).text = "onClick "
+
     }
 
-    override fun onChargeCreated(data: String) {
-        super.onChargeCreated(data)
+    override fun onPayButtonBindIdentification(data: String) {
+        Toast.makeText(this, "onBindIdentification", Toast.LENGTH_SHORT).show()
+        findViewById<TextView>(R.id.text).text = ""
+        findViewById<TextView>(R.id.text).text = "onBindIdentification $data "
     }
 
-    override fun onOrderCreated(data: String) {
-        super.onOrderCreated(data)
+    override fun onPayButtonChargeCreated(data: String) {
+        Log.e("data",data.toString())
+        findViewById<TextView>(R.id.text).text = ""
+        findViewById<TextView>(R.id.text).text = "onChargeCreated $data"
+        Toast.makeText(this, "onChargeCreated $data", Toast.LENGTH_SHORT).show()
+
     }
 
-    override fun onCancel() {
-        super.onCancel()
+    override fun onPayButtonOrderCreated(data: String) {
+        findViewById<TextView>(R.id.text).text = ""
+        findViewById<TextView>(R.id.text).text = "onOrderCreated >> $data"
+        Log.e("mainactv", "onPayButtonOrderCreated: "+data )
+        Toast.makeText(this, "onOrderCreated $data", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onError(error: String) {
+    override fun onPayButtoncancel() {
+        Toast.makeText(this, "Cancel ", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onPayButtonError(error: String) {
+        Log.e("error",error.toString())
+        findViewById<TextView>(R.id.text).text = ""
+        findViewById<TextView>(R.id.text).text = "onError $error"
+        Toast.makeText(this, "onError $error ", Toast.LENGTH_SHORT).show()
+
     }
 
 }
@@ -645,10 +558,10 @@ Below you will find more details about each parameter shared in the above tables
       ```kotlin
        val operator = HashMap<String,Any>()
         operator.put("publicKey","publickKeyValue")
-        operator.put("hashString","hashstringValue")
+  
       ```
- # scope:
-  - Definition: The scope of the current charge.
+ # intent:
+  - Definition: The intent Id generated by intent API.
   - Type: string (optional)
   - values:
      - charge :
@@ -657,7 +570,7 @@ Below you will find more details about each parameter shared in the above tables
         - Definition: The scope/intention of the current order to authorize an amount from the customer.
   - Example: 
       ```kotlin
-        configuration.put("scope","charge")
+        intentObj.put("intent",intentId)
 
       ```
 
