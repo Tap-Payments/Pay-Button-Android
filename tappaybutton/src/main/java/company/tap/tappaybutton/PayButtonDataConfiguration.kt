@@ -16,7 +16,7 @@ Copyright (c) 2022    Tap Payments.
 All rights reserved.
  **/
 @SuppressLint("StaticFieldLeak")
-object RedirectDataConfiguration {
+object PayButtonDataConfiguration {
 
     private var payButtonStatusDelegate: PayButtonStatusDelegate? = null
     private var applicationLifecycle: ApplicationLifecycle? = null
@@ -106,8 +106,8 @@ object RedirectDataConfiguration {
         return payButtonStatusDelegate
     }
 
-    fun initializeSDK(activity: Activity, configurations:  java.util.HashMap<String, Any>, tapPayButton: TapPayButton){
-        TapPayButtonConfiguration.configureWithPayButtonDictionary(activity,tapPayButton,configurations)
+    fun initializeSDK(activity: Activity, configurations:  java.util.HashMap<String, Any>, payButton: PayButton){
+        PayButtonConfiguration.configureWithPayButtonDictionary(activity,payButton,configurations)
     }
 
 

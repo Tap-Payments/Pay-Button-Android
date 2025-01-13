@@ -12,8 +12,8 @@ import android.widget.Toast
 import com.chillibits.simplesettings.tool.getPrefStringValue
 import com.chillibits.simplesettings.tool.getPrefs
 import company.tap.tappaybutton.PayButtonStatusDelegate
-import company.tap.tappaybutton.TapPayButtonConfiguration
-import company.tap.tappaybutton.TapPayButton
+import company.tap.tappaybutton.PayButtonConfiguration
+import company.tap.tappaybutton.PayButton
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -29,7 +29,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import okio.IOException
 
 class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
-    lateinit var tapPayButton: TapPayButton
+    lateinit var payButton: PayButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
         /**
          * configureWithPayButtonDictionary and calling the PayButton SDK
          */
-        TapPayButtonConfiguration.configureWithPayButtonDictionary(
+        PayButtonConfiguration.configureWithPayButtonDictionary(
             this,
             findViewById(R.id.redirect_pay),
             configuration,

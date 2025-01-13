@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
 
-    <company.tap.tappaybutton.TapPayButton
+    <company.tap.tappaybutton.PayButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_20sdp"

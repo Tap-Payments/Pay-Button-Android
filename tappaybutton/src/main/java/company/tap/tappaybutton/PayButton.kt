@@ -53,7 +53,7 @@ import java.util.*
 
 
 @SuppressLint("ViewConstructor")
-class TapPayButton : LinearLayout , ApplicationLifecycle {
+class PayButton : LinearLayout , ApplicationLifecycle {
     lateinit var webviewStarterUrl: String
     private var isBenefitPayUrlIntercepted =false
     // lateinit var webViewScheme: String
@@ -243,7 +243,7 @@ class TapPayButton : LinearLayout , ApplicationLifecycle {
         val publickKey = operator.get(publicKeyToGet)
 
         if (intentID.toString().isNullOrBlank() || publickKey.toString().isNullOrBlank()) {
-            RedirectDataConfiguration.getTapKnetListener()
+            PayButtonDataConfiguration.getTapKnetListener()
                 ?.onPayButtonError("public key and intent id are required")
         } else {
             callIntentAPI(configuraton, headers)
@@ -338,7 +338,7 @@ class TapPayButton : LinearLayout , ApplicationLifecycle {
                         }*/
 
 
-                        RedirectDataConfiguration.getTapKnetListener()?.onPayButtonReady()
+                        PayButtonDataConfiguration.getTapKnetListener()?.onPayButtonReady()
 
                     }
                     if (request?.url.toString().contains(TapRedirectStatusDelegate.onSuccess.name)) {
@@ -348,7 +348,7 @@ class TapPayButton : LinearLayout , ApplicationLifecycle {
                         var decoded = decodeBase64(datafromUrl)
                         println("decoded>>"+decoded)
                         if (decoded != null) {
-                            RedirectDataConfiguration.getTapKnetListener()?.onPayButtonSuccess(
+                            PayButtonDataConfiguration.getTapKnetListener()?.onPayButtonSuccess(
                                 decoded
                             )
 
@@ -385,7 +385,7 @@ class TapPayButton : LinearLayout , ApplicationLifecycle {
                                 else -> {}
                             }
                         }
-                        RedirectDataConfiguration.getTapKnetListener()?.onPayButtonChargeCreated(
+                        PayButtonDataConfiguration.getTapKnetListener()?.onPayButtonChargeCreated(
                             request?.url?.getQueryParameterFromUri(keyValueName).toString()
                         )
                     }
@@ -393,7 +393,7 @@ class TapPayButton : LinearLayout , ApplicationLifecycle {
                         val orderResponse = request?.url?.getQueryParameter(keyValueName).toString()
                         println("orderResponse>>"+orderResponse)
                         //TODO check if decode required
-                        RedirectDataConfiguration.getTapKnetListener()
+                        PayButtonDataConfiguration.getTapKnetListener()
                             ?.onPayButtonOrderCreated(
                                 orderResponse
                             )
@@ -405,12 +405,12 @@ class TapPayButton : LinearLayout , ApplicationLifecycle {
                         isBenefitPayUrlIntercepted=false
                         onSuccessCalled = false
                         pair = Pair("",false)
-                        RedirectDataConfiguration.getTapKnetListener()?.onPayButtonClick()
+                        PayButtonDataConfiguration.getTapKnetListener()?.onPayButtonClick()
 
                     }
                     if (request?.url.toString().contains(TapRedirectStatusDelegate.cancel.name)) {
 
-                        RedirectDataConfiguration.getTapKnetListener()?.onPayButtoncancel()
+                        PayButtonDataConfiguration.getTapKnetListener()?.onPayButtoncancel()
 
 
 
@@ -418,7 +418,7 @@ class TapPayButton : LinearLayout , ApplicationLifecycle {
                     if (request?.url.toString().contains(TapRedirectStatusDelegate.onCancel.name)) {
                         android.os.Handler(Looper.getMainLooper()).postDelayed(3000) {
                             if(!onSuccessCalled){
-                                RedirectDataConfiguration.getTapKnetListener()?.onPayButtoncancel()
+                                PayButtonDataConfiguration.getTapKnetListener()?.onPayButtoncancel()
                             }
 
 
@@ -432,10 +432,10 @@ class TapPayButton : LinearLayout , ApplicationLifecycle {
                     if (request?.url.toString()
                             .contains(TapRedirectStatusDelegate.onBinIdentification.name)
                     ) {
-                        RedirectDataConfiguration.getTapKnetListener()
+                       /* RedirectDataConfiguration.getTapKnetListener()
                             ?.onPayButtonBindIdentification(
                                 request?.url?.getQueryParameterFromUri(keyValueName).toString()
-                            )
+                            )*/
                     }
                     if (request?.url.toString().contains(TapRedirectStatusDelegate.onHeightChange.name)) {
                         val newHeight = request?.url?.getQueryParameter(keyValueName)
@@ -444,8 +444,8 @@ class TapPayButton : LinearLayout , ApplicationLifecycle {
                             webViewFrame.context.getDimensionsInDp(newHeight?.toInt() ?: 95)
                         webViewFrame.layoutParams = params
 
-                        RedirectDataConfiguration.getTapKnetListener()
-                            ?.onPayButtonHeightChange(newHeight.toString())
+                       /* RedirectDataConfiguration.getTapKnetListener()
+                            ?.onPayButtonHeightChange(newHeight.toString())*/
 
                     }
                     if (request?.url.toString().contains(TapRedirectStatusDelegate.on3dsRedirect.name)) {
@@ -479,7 +479,7 @@ class TapPayButton : LinearLayout , ApplicationLifecycle {
                      }*/
                     if (request?.url.toString().contains(TapRedirectStatusDelegate.onError.name)) {
                         decodeBase64(request?.url?.getQueryParameter(keyValueName).toString())?.let {
-                            RedirectDataConfiguration.getTapKnetListener()
+                            PayButtonDataConfiguration.getTapKnetListener()
                                 ?.onPayButtonError(
                                     it
                                 )
@@ -559,7 +559,7 @@ class TapPayButton : LinearLayout , ApplicationLifecycle {
 
         fun navigateTo3dsActivity(paymentbutton: String) {
             val intent = Intent(context, ThreeDsWebViewActivityButton()::class.java)
-            ThreeDsWebViewActivityButton.tapPayButton = this@TapPayButton
+            ThreeDsWebViewActivityButton.payButton = this@PayButton
             intent.putExtra("flow", paymentbutton)
             (context).startActivity(intent)
         }
@@ -670,7 +670,7 @@ class TapPayButton : LinearLayout , ApplicationLifecycle {
             Log.e("app","one")
             dismissDialog()
 
-            RedirectDataConfiguration.getTapKnetListener()?.onPayButtonSuccess(pair.first)
+            PayButtonDataConfiguration.getTapKnetListener()?.onPayButtonSuccess(pair.first)
 
         }
     }

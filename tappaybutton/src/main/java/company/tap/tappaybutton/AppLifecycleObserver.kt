@@ -10,11 +10,11 @@ class AppLifecycleObserver : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onEnterForeground() {
-        RedirectDataConfiguration.getAppLifeCycle()?.onEnterForeground()
+        PayButtonDataConfiguration.getAppLifeCycle()?.onEnterForeground()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onEnterBackground() {
-        RedirectDataConfiguration.getAppLifeCycle()?.onEnterBackground()
+        PayButtonDataConfiguration.getAppLifeCycle()?.onEnterBackground()
     }
 }
