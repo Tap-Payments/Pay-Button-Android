@@ -66,9 +66,9 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
         configuration.put("intent",intentObj)
 
         /**
-         * configureWithRedirectDictionary and calling the PayButton SDK
+         * configureWithPayButtonDictionary and calling the PayButton SDK
          */
-        TapPayButtonConfiguration.configureWithRedirectDictionary(
+        TapPayButtonConfiguration.configureWithPayButtonDictionary(
             this,
             findViewById(R.id.redirect_pay),
             configuration,

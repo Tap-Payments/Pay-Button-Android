@@ -30,7 +30,7 @@ class TapPayButtonConfiguration {
         private var  encodedeky: String? = null
         private var   headers: Headers? = null
 
-        fun configureWithRedirectDictionary(
+        fun configureWithPayButtonDictionary(
             context: Context,
             tapRedirectViewWeb: TapPayButton?,
             tapMapConfiguration: java.util.HashMap<String, Any>,

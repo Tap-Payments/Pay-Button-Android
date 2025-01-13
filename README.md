@@ -163,9 +163,9 @@ configuration.put("intent",intentObj)
 
 ```kotlin
     /**
- * configureWithRedirectDictionary and calling the PayButton SDK
+ * configureWithPayButtonDictionary and calling the PayButton SDK
  */
-TapPayButtonConfiguration.configureWithRedirectDictionary(
+TapPayButtonConfiguration.configureWithPayButtonDictionary(
     this,
     findViewById(R.id.redirect_pay),
     configuration,
@@ -203,9 +203,9 @@ override fun onCreate(savedInstanceState: Bundle?) {
     configuration.put("intent",intentObj)
 
     /**
-     * configureWithRedirectDictionary and calling the PayButton SDK
+     * configureWithPayButtonDictionary and calling the PayButton SDK
      */
-    TapPayButtonConfiguration.configureWithRedirectDictionary(
+    TapPayButtonConfiguration.configureWithPayButtonDictionary(
         this,
         findViewById(R.id.redirect_pay),
         configuration,
@@ -414,9 +414,9 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
         configuration.put("intent",intentObj)
 
         /**
-         * configureWithRedirectDictionary and calling the PayButton SDK
+         * configureWithPayButtonDictionary and calling the PayButton SDK
          */
-        TapPayButtonConfiguration.configureWithRedirectDictionary(
+        TapPayButtonConfiguration.configureWithPayButtonDictionary(
             this,
             findViewById(R.id.redirect_pay),
             configuration,

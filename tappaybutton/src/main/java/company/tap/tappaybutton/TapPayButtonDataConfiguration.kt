@@ -107,7 +107,7 @@ object RedirectDataConfiguration {
     }
 
     fun initializeSDK(activity: Activity, configurations:  java.util.HashMap<String, Any>, tapPayButton: TapPayButton){
-        TapPayButtonConfiguration.configureWithRedirectDictionary(activity,tapPayButton,configurations)
+        TapPayButtonConfiguration.configureWithPayButtonDictionary(activity,tapPayButton,configurations)
     }
 
 
