@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.res.Resources
 
 import company.tap.tapuilibrary.themekit.ThemeManager
+import java.security.PublicKey
 
 /**
  * Created by AhlaamK on 3/23/22.
@@ -106,8 +107,8 @@ object PayButtonDataConfiguration {
         return payButtonStatusDelegate
     }
 
-    fun initializeSDK(activity: Activity, configurations:  java.util.HashMap<String, Any>, payButton: PayButton){
-        PayButtonConfiguration.configureWithPayButtonDictionary(activity,payButton,configurations)
+    fun initializeSDK(activity: Activity, configurations:  java.util.HashMap<String, Any>, payButton: PayButton, publicKey: String?,intentId:String?){
+        PayButtonConfiguration.configureWithPayButtonDictionary(activity,publicKey,intentId,payButton,configurations)
     }
 
 

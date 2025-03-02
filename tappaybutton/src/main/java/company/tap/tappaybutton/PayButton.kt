@@ -21,10 +21,8 @@ import android.webkit.*
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.os.postDelayed
-import androidx.core.view.*
 import com.example.tappaybutton.R
 import com.google.gson.Gson
-
 import company.tap.tappaybutton.enums.SCHEMES
 import company.tap.tappaybutton.enums.TapRedirectStatusDelegate
 import company.tap.tappaybutton.enums.ThreeDsPayButtonType
@@ -39,6 +37,7 @@ import company.tap.tappaybutton.popup_window.WebChrome
 import company.tap.tappaybutton.threeDsWebview.ThreeDsWebViewActivityButton
 import okhttp3.Call
 import okhttp3.Callback
+import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -50,6 +49,7 @@ import org.json.JSONObject
 import java.io.IOException
 import java.net.URISyntaxException
 import java.util.*
+import kotlin.collections.HashMap
 
 
 @SuppressLint("ViewConstructor")
@@ -67,6 +67,8 @@ class PayButton : LinearLayout , ApplicationLifecycle {
     lateinit var dialog: Dialog
     lateinit var redirectConfiguration: java.util.HashMap<String, Any>
     lateinit var headersVal: Headers
+    lateinit var publickKeyVal: String
+    lateinit var intentVal: String
     var iSAppInForeground = true
     var onSuccessCalled = false
     var pair =  Pair("",false)
@@ -146,7 +148,7 @@ class PayButton : LinearLayout , ApplicationLifecycle {
     }
 
 
-    private fun callIntentAPI(configuraton: java.util.HashMap<String, Any>, headers: Headers) {
+    private fun callIntentRetereiveAPI(configuraton: java.util.HashMap<String, Any>, headers: Headers) {
         try {
             val intentObj = configuraton?.get("intent") as HashMap<*, *>
             val intentID = intentObj?.get("intent")
@@ -226,28 +228,160 @@ class PayButton : LinearLayout , ApplicationLifecycle {
 
     }
 
-    fun init(configuraton: java.util.HashMap<String, Any>, headers: Headers) {
+    private fun callIntentAPI(configuraton: java.util.HashMap<String, Any>, headers: Headers) {
+        try {
+            // Convert the HashMap to a JSON string using Gson
+            val gson = Gson()
+            val jsonString = gson.toJson(configuraton)
+            val mediaType = "application/json; charset=utf-8".toMediaType()
+// Create the RequestBody with the JSON string
+            val requestBody = jsonString.toRequestBody(mediaType)
+            val operator = HashMap<String, String>()
+            operator["publicKey"] = publickKeyVal
+            val builder: OkHttpClient.Builder = OkHttpClient().newBuilder()
+            val interceptor = HttpLoggingInterceptor()
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+            builder.addInterceptor(interceptor)
+            val okHttpClient: OkHttpClient = builder.build()
+            val request: Request = Request.Builder()
+                .url("https://mw-sdk.dev.tap.company/v2/intent")
+                .method("POST", requestBody)
+                .addHeader("Content-Type", "application/json")
+               // .addHeader("Authorization", "pk_test_ohzQrUWRnTkCLD1cqMeudyjX")
+                .addHeader("Authorization", publickKeyVal)
+                .addHeader("mdn", headers.mdn.toString().trim())
+                .build()
+            okHttpClient.newCall(request).enqueue(object : Callback{
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                }
 
-        redirectConfiguration = configuraton
+                override fun onResponse(call: Call, response: Response) {
+                    try {
+                        var responseBody: JSONObject? =
+                            response.body?.string()?.let { JSONObject(it) } // toString() is not the response body, it is a debug representation of the response body
+                        println("responseBody>>"+responseBody)
+                        if(!responseBody.toString().contains("errors")){
+                            /*
+                           *Pass to the sdk
+                           ***/
+                            var intentID:String? =null
+
+
+                          //  val operator = configuraton?.get(operatorKey) as HashMap<*, *>
+                          //  val publickKey = operator.get(publicKeyToGet)
+
+                            /**
+                             * intent
+                             */
+                            val intentObj = HashMap<String,Any>()
+                            intentID = responseBody?.getString("id")
+                            if (intentID != null) {
+                                intentObj.put("intent",intentID)
+                            }
+                            /**
+                             * configuration
+                             */
+
+                            val configuration = LinkedHashMap<String,Any>()
+
+                            configuration.put("operator",operator)
+                            configuration.put("intent",intentObj)
+
+                            callIntentRetereiveAPI(configuration,headers)
+
+
+                        }else{
+
+
+                            val errorObject = responseBody?.getJSONArray("errors")
+
+                            for(j in 0 until errorObject?.length()!!){
+                                val mediaEntryObj = errorObject.getJSONObject(j)
+                                val description = mediaEntryObj.getString("description")
+                                Handler(Looper.getMainLooper()).post {
+                                    // write your code here
+                                    PayButtonDataConfiguration.getTapKnetListener()?.onPayButtonError(description)
+                                }
+
+
+
+                            }
+                        }
+
+                    } catch (ex: JSONException) {
+                        throw RuntimeException(ex)
+                    }
+                }
+
+            })
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
+
+    }
+
+    fun init(configuraton: java.util.HashMap<String, Any>?, headers: Headers,_intentId : String?, _publickey:String?) {
+
+        if (configuraton != null) {
+            redirectConfiguration = configuraton
+        }
         headersVal = Headers(headers.mdn,headers.application)
+        if (_intentId != null) {
+            intentVal = _intentId
+        }
+        if (_publickey != null) {
+            publickKeyVal = _publickey
+        }
         //  initializePaymentData(buttonType)
         /**
          * Check for data in configuration has operator and intent id
          * else sends error
          * */
 
-        val intentObj = configuraton?.get(intentKey) as HashMap<*, *>
-        val intentID = intentObj?.get(intentKey)
+       // val intentObj = configuraton?.get(intentKey) as HashMap<*, *>
+       // val intentID = intentObj?.get(intentKey)
+        val intentID = _intentId
 
-        val operator = configuraton?.get(operatorKey) as HashMap<*, *>
-        val publickKey = operator.get(publicKeyToGet)
+       // val operator = configuraton?.get(operatorKey) as HashMap<*, *>
+       // val publickKey = operator.get(publicKeyToGet)
+        val publickKey = _publickey
 
         if (intentID.toString().isNullOrBlank() || publickKey.toString().isNullOrBlank()) {
             PayButtonDataConfiguration.getTapKnetListener()
                 ?.onPayButtonError("public key and intent id are required")
-        } else {
-            callIntentAPI(configuraton, headers)
         }
+        else if (intentID==null && intentID==""  && configuraton.isNullOrEmpty()){
+            PayButtonDataConfiguration.getTapKnetListener()
+                ?.onPayButtonError("Whether intent id or body is required")
+        }
+        else if (!configuraton.isNullOrEmpty() ){
+            callIntentAPI(configuraton,headers)
+
+        }
+        else if(intentID!=null && intentID!="" && configuraton.isNullOrEmpty()) {
+            val operator = HashMap<String, String>()
+            operator["publicKey"] = publickKeyVal
+            /**
+             * intent
+             */
+            val intentObj = HashMap<String,Any>()
+
+            if (intentID != null) {
+                intentObj.put("intent",intentID)
+            }
+            /**
+             * configuration
+             */
+
+            val configurations = LinkedHashMap<String,Any>()
+
+            configurations.put("operator",operator)
+            configurations.put("intent",intentObj)
+                callIntentRetereiveAPI(configurations, headers)
+
+        }
+
 
 
 
@@ -595,7 +729,7 @@ class PayButton : LinearLayout , ApplicationLifecycle {
                         dialog.setOnKeyListener { view, keyCode, keyEvent ->
                             if (keyEvent.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
                                 dismissDialog()
-                                init(redirectConfiguration,headersVal)
+                                init(redirectConfiguration,headersVal, intentVal ,publickKeyVal)
                                 return@setOnKeyListener  true
                             }
                             return@setOnKeyListener false

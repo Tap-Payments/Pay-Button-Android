@@ -32,8 +32,10 @@ class PayButtonConfiguration {
 
         fun configureWithPayButtonDictionary(
             context: Context,
+            publicKey: String?,
+            intentId: String?,
             tapRedirectViewWeb: PayButton?,
-            tapMapConfiguration: java.util.HashMap<String, Any>,
+            tapMapConfiguration: java.util.HashMap<String, Any>?,
             payButtonStatusDelegate: PayButtonStatusDelegate? = null
 
         ) {
@@ -41,6 +43,8 @@ class PayButtonConfiguration {
             MainScope().launch {
                 getTapButtonSDKConfigUrls(
                     tapMapConfiguration,
+                    publicKey,
+                    intentId,
                     tapRedirectViewWeb,
                     context,
                     payButtonStatusDelegate
@@ -50,7 +54,7 @@ class PayButtonConfiguration {
 
         }
 
-        private suspend fun getTapButtonSDKConfigUrls(tapMapConfiguration: HashMap<String, Any>, tapCardInputViewWeb: PayButton?, context: Context, payButtonStatusDelegate: PayButtonStatusDelegate?) {
+        private suspend fun getTapButtonSDKConfigUrls(tapMapConfiguration: HashMap<String, Any>?, publicKey: String?, intentId: String?,tapCardInputViewWeb: PayButton?, context: Context, payButtonStatusDelegate: PayButtonStatusDelegate?) {
             try {
                 /**
                  * request to get Tap configs
@@ -68,6 +72,8 @@ class PayButtonConfiguration {
 
                 startWithSDKConfigs(
                     context,
+                    publicKey ,
+                    intentId,
                     tapCardInputViewWeb,
                     tapMapConfiguration,
                     payButtonStatusDelegate
@@ -81,6 +87,8 @@ class PayButtonConfiguration {
 
                 startWithSDKConfigs(
                     context,
+                    publicKey,
+                    intentId,
                     tapCardInputViewWeb,
                     tapMapConfiguration,
                     payButtonStatusDelegate
@@ -156,16 +164,19 @@ class PayButtonConfiguration {
 
         }
         private fun startWithSDKConfigs(context: Context,
+                                        _publicKey: String?,
+                                        intentId:String?,
                                         tapRedirectViewWeb: PayButton?,
-                                        tapMapConfiguration: java.util.HashMap<String, Any>,
+                                        tapMapConfiguration: java.util.HashMap<String, Any>?,
                                         payButtonStatusDelegate: PayButtonStatusDelegate? = null){
             with(tapMapConfiguration) {
-                android.util.Log.e("map", tapMapConfiguration.toString())
+                android.util.Log.e("map vals>>", tapMapConfiguration.toString())
                PayButtonDataConfiguration.configurationsAsHashMap = tapMapConfiguration
-                val operator = PayButtonDataConfiguration.configurationsAsHashMap?.get(
+              /*  val operator = PayButtonDataConfiguration.configurationsAsHashMap?.get(
                     operatorKey
-                ) as HashMap<*, *>
-                val publickKey = operator.get(publicKeyToGet)
+                ) as HashMap<*, *>*/
+               // val publickKey = operator.get(publicKeyToGet)
+                val publickKey = _publicKey
 
                 val appLifecycleObserver = AppLifecycleObserver()
                 androidx.lifecycle.ProcessLifecycleOwner.get().lifecycle.addObserver(appLifecycleObserver)
@@ -179,7 +190,7 @@ class PayButtonConfiguration {
 
                 PayButtonDataConfiguration.addTapBenefitPayStatusDelegate(payButtonStatusDelegate)
 
-                headers?.let { tapRedirectViewWeb?.init(tapMapConfiguration, it) }
+                headers?.let { tapRedirectViewWeb?.init(tapMapConfiguration, it,intentId,publickKey) }
 
             }
         }
