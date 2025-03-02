@@ -38,8 +38,15 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-      callIntentAPI()
-      //  configureSdk(null)
+
+     /***
+      * If pre creating intent ****/
+     //  callIntentAPI()
+
+        /*** If PASSING INTENT OBJECT **** /
+         *
+         */
+       configureSdk(null)
 
     }
 
@@ -48,13 +55,8 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
     fun configureSdk(intentId:String?) {
 
       //  val publicKey = "pk_test_J2OSkKAFxu4jghc9zeRfQ0da"
-      //  val publicKey = "pk_test_ohzQrUWRnTkCLD1cqMeudyjX"
+
         val publicKey =  getPrefStringValue("publicKey","pk_test_ohzQrUWRnTkCLD1cqMeudyjX")
-        /**
-         * operator
-         */
-      //  val operator = HashMap<String,Any>()
-      //  operator.put("publicKey",publicKey.toString())
 
         /**
          * intent
@@ -63,14 +65,6 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
         if (intentId != null) {
             intentObj.put("intent",intentId)
         }
-        /**
-         * configuration
-         */
-
-    //    val configuration = LinkedHashMap<String,Any>()
-
-      //  configuration.put("operator",operator)
-     //   configuration.put("intent",intentObj)
 
         /**
          * configureWithPayButtonDictionary and calling the PayButton SDK
@@ -480,13 +474,25 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
             jsonObject.toString(), object : TypeToken<HashMap<String?, Any?>?>() {}.type
         )
 
-        PayButtonConfiguration.configureWithPayButtonDictionary(
-            this,
-            publicKey,
-            null,
-            findViewById(R.id.redirect_pay),
-            intentObjc,
-            this)
+        if(intentId==null){
+            PayButtonConfiguration.configureWithPayButtonDictionary(
+                this,
+                publicKey,
+                null,
+                findViewById(R.id.redirect_pay),
+                intentObjc,
+                this)
+        }else{
+            PayButtonConfiguration.configureWithPayButtonDictionary(
+                this,
+                publicKey,
+                intentId,
+                findViewById(R.id.redirect_pay),
+                null,
+                this)
+        }
+
+
 
 
     }
@@ -956,10 +962,13 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
         val body = jsonObject.toString().toRequestBody("application/json".toMediaTypeOrNull())
 
         val request: Request = Request.Builder()
-            .url("https://api.tap.company/v2/intent")
+           // .url("https://api.tap.company/v2/intent")
+            .url(" https://mw-sdk.dev.tap.company/v2/intent")
             .method("POST", body)
             .addHeader("Content-Type", "application/json")
-            .addHeader("Authorization", "Bearer sk_test_NSln5js3fIeq0QU1MuKRXAkD")
+          //  .addHeader("Authorization", "Bearer sk_test_NSln5js3fIeq0QU1MuKRXAkD")
+            .addHeader("Authorization", getPrefStringValue("publicKey","pk_test_ohzQrUWRnTkCLD1cqMeudyjX"))
+            .addHeader("mdn", "alcREQ7HvHCihdZ889eq/I2EbXyOecV5KN2IvpjMxP8U2yx/50UDy0R86CixOsC1TzsfW40AhiuT6G3aRui4OocT3EcKBpSjeXgDH6aJKhfTO33zbrK8ZA3eLZxKRwmvH9bugKRodb6lfG1PPN5dDZWiDqA6Je/suSr9hVUzrzg=")
             .build()
         okHttpClient.newCall(request).enqueue(object : Callback{
             override fun onFailure(call: Call, e: IOException) {

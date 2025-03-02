@@ -27,6 +27,7 @@ class PayButtonConfiguration {
         private val tapSDKConfigsUrl = retrofit.create(ApiService.TapButtonSDKConfigUrls::class.java)
         private var testEncKey: String? = null
         private var prodEncKey: String? = null
+        var  payButonurlFormat:String?="https://button.dev.tap.company/?intentId=%@&publicKey=%@&mdn=%@&platform=mobile"
         private var  encodedeky: String? = null
         private var   headers: Headers? = null
 
@@ -65,6 +66,10 @@ class PayButtonConfiguration {
 
                 BASE_URL_1 = tapButtonSDKConfigUrlResponse.baseURL
                 prodEncKey = tapButtonSDKConfigUrlResponse.prodEncKey
+                payButonurlFormat = tapButtonSDKConfigUrlResponse.payButtonUrlFormat
+
+
+                println("payButonurlFormat is"+payButonurlFormat)
                 //testEncKey = tapButtonSDKConfigUrlResponse.testEncKey
                 testEncKey = context.resources.getString(R.string.enryptkeyTest)
                 //  urlWebStarter = tapButtonSDKConfigUrlResponse.baseURL

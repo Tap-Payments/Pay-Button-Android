@@ -23,6 +23,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.os.postDelayed
 import com.example.tappaybutton.R
 import com.google.gson.Gson
+import company.tap.tappaybutton.ApiService.BASE_URL_1
+import company.tap.tappaybutton.PayButtonConfiguration.Companion.payButonurlFormat
 import company.tap.tappaybutton.enums.SCHEMES
 import company.tap.tappaybutton.enums.TapRedirectStatusDelegate
 import company.tap.tappaybutton.enums.ThreeDsPayButtonType
@@ -154,7 +156,7 @@ class PayButton : LinearLayout , ApplicationLifecycle {
             val intentID = intentObj?.get("intent")
 
 
-            val baseURL = "https://mw-sdk.dev.tap.company/v2/intent/" + intentID + "/sdk"
+            val baseURL = BASE_URL_1+"intent"+"/"+ intentID + "/sdk"
             val builder: OkHttpClient.Builder = OkHttpClient().newBuilder()
             val interceptor = HttpLoggingInterceptor()
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -197,8 +199,16 @@ class PayButton : LinearLayout , ApplicationLifecycle {
                             var intentIdResponse = responseBody?.getString("id")
                             if (intentIdResponse != null) {
                                 // knetWebView.loadUrl(redirectURL)
-                                urlToBeloaded =
-                                    "https://button.dev.tap.company/?intentId=" + intentIdResponse + "&publicKey=" + publickKey.toString() + "&mdn=" + toBase64(headers.mdn.toString()) + "&platform=mobile"
+
+                               // urlToBeloaded = "https://button.dev.tap.company/?intentId=" + intentIdResponse + "&publicKey=" + publickKey.toString() + "&mdn=" + toBase64(headers.mdn.toString()) + "&platform=mobile"
+                           var payBtnUrl = payButonurlFormat?.replace("%@","%s")
+
+                             urlToBeloaded=
+                                 payBtnUrl?.let {
+                                     String.format(
+                                         it,
+                                         intentIdResponse, publickKey.toString(),  toBase64(headers.mdn.toString()))
+                                 }.toString()
 
                                 Handler(Looper.getMainLooper()).post {
                                     redirectWebView.loadUrl(urlToBeloaded)
@@ -244,7 +254,7 @@ class PayButton : LinearLayout , ApplicationLifecycle {
             builder.addInterceptor(interceptor)
             val okHttpClient: OkHttpClient = builder.build()
             val request: Request = Request.Builder()
-                .url("https://mw-sdk.dev.tap.company/v2/intent")
+                .url(BASE_URL_1+"intent")
                 .method("POST", requestBody)
                 .addHeader("Content-Type", "application/json")
                // .addHeader("Authorization", "pk_test_ohzQrUWRnTkCLD1cqMeudyjX")
