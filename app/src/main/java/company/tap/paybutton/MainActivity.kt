@@ -48,7 +48,8 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
     fun configureSdk(intentId:String?) {
 
       //  val publicKey = "pk_test_J2OSkKAFxu4jghc9zeRfQ0da"
-        val publicKey = "pk_test_ohzQrUWRnTkCLD1cqMeudyjX"
+      //  val publicKey = "pk_test_ohzQrUWRnTkCLD1cqMeudyjX"
+        val publicKey =  getPrefStringValue("publicKey","pk_test_ohzQrUWRnTkCLD1cqMeudyjX")
         /**
          * operator
          */
@@ -475,7 +476,7 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
         jsonObject.put("post",post)
         jsonObject.put("checkout",checkout)
 
-        val mapObj: HashMap<String, Any> = Gson().fromJson(
+        val intentObjc: HashMap<String, Any> = Gson().fromJson(
             jsonObject.toString(), object : TypeToken<HashMap<String?, Any?>?>() {}.type
         )
 
@@ -484,7 +485,7 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
             publicKey,
             null,
             findViewById(R.id.redirect_pay),
-             mapObj,
+            intentObjc,
             this)
 
 

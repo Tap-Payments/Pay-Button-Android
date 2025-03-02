@@ -51,7 +51,8 @@ class SettingsActivity : AppCompatActivity(),SimpleSettingsConfig.PreferenceCall
         /**
          * operator
          */
-        intent.putExtra("publicKey", getPrefStringValue("publicKey","pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7"))
+       // intent.putExtra("publicKey", getPrefStringValue("publicKey","pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7"))
+        intent.putExtra("publicKey", getPrefStringValue("publicKey","pk_test_ohzQrUWRnTkCLD1cqMeudyjX"))
         intent.putExtra("hashStringKey", getPrefStringValue("hashStringKey","pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7"))
         intent.putExtra("merchantId", getPrefStringValue("merchantId",""))
 
