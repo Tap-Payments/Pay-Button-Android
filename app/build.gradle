@@ -7,13 +7,16 @@ plugins {
 android {
     namespace = "company.tap.paybutton"
     compileSdk = 34
-
+    def versionMajor = 1 // major design change
+    def versionMinor = 0 // feature added
+    def versionRevision =1// bug revisions
     defaultConfig {
         applicationId = "company.tap.paybutton"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+
+        versionCode 100000 * versionMajor + 10000 * versionMinor + 1000 * versionRevision
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
