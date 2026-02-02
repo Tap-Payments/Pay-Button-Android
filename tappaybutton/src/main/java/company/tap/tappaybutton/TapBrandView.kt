@@ -10,7 +10,6 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.tappaybutton.R
 
 import company.tap.taplocalizationkit.LocalizationManager
 import company.tap.tapuilibrary.fontskit.enums.TapFont
