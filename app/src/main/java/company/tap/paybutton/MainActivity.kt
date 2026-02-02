@@ -966,7 +966,6 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
             .url(" https://mw-sdk.dev.tap.company/v2/intent")
             .method("POST", body)
             .addHeader("Content-Type", "application/json")
-          //  .addHeader("Authorization", "Bearer sk_test_NSln5js3fIeq0QU1MuKRXAkD")
             .addHeader("Authorization", getPrefStringValue("publicKey","pk_test_ohzQrUWRnTkCLD1cqMeudyjX"))
             .addHeader("mdn", "alcREQ7HvHCihdZ889eq/I2EbXyOecV5KN2IvpjMxP8U2yx/50UDy0R86CixOsC1TzsfW40AhiuT6G3aRui4OocT3EcKBpSjeXgDH6aJKhfTO33zbrK8ZA3eLZxKRwmvH9bugKRodb6lfG1PPN5dDZWiDqA6Je/suSr9hVUzrzg=")
             .build()
