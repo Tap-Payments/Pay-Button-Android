@@ -545,7 +545,7 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
             .url("https://api.tap.company/v2/intent")
             .method("POST", body)
             .addHeader("Content-Type", "application/json")
-            .addHeader("Authorization", "Bearer sk_test_NSln5js3fIeq0QU1MuKRXAkD")
+
             .build()
         okHttpClient.newCall(request).enqueue(object : Callback{
             override fun onFailure(call: Call, e: IOException) {
