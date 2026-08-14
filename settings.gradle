@@ -1,4 +1,4 @@
-pluginManagement {
+/*pluginManagement {
     repositories {
         google()
         mavenCentral()
@@ -15,8 +15,8 @@ dependencyResolutionManagement {
 
 
 
-    }
-}
+    }*/
+
 
 rootProject.name = "Pay-Button-Android"
 include(":app")

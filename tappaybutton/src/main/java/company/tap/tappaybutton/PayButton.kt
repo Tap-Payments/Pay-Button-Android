@@ -150,92 +150,126 @@ class PayButton : LinearLayout , ApplicationLifecycle {
     }
 
 
-    private fun callIntentRetereiveAPI(configuraton: java.util.HashMap<String, Any>, headers: Headers) {
+    private fun callIntentRetereiveAPI(
+        configuraton: java.util.HashMap<String, Any>,
+        headers: Headers
+    ) {
         try {
-            val intentObj = configuraton?.get("intent") as HashMap<*, *>
-            val intentID = intentObj?.get("intent")
+            val intentObj = configuraton["intent"] as HashMap<*, *>
+            val intentID = intentObj["intent"]
 
+            val baseURL = BASE_URL_1 + "intent/" + intentID + "/sdk"
 
-            val baseURL = BASE_URL_1+"intent"+"/"+ intentID + "/sdk"
-            val builder: OkHttpClient.Builder = OkHttpClient().newBuilder()
+            val builder = OkHttpClient.Builder()
+
             val interceptor = HttpLoggingInterceptor()
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+            interceptor.level = HttpLoggingInterceptor.Level.BODY
             builder.addInterceptor(interceptor)
-            val operator = configuraton?.get(operatorKey) as HashMap<*, *>
-            val publickKey = operator.get(publicKeyToGet)
 
-            println("publickKey>>" + publickKey)
+            val operator = configuraton[operatorKey] as HashMap<*, *>
+            val publickKey = operator[publicKeyToGet]?.toString()
 
+            println("publickKey>>$publickKey")
 
-            val jsonObject: JSONObject = JSONObject()
-            try {
-                jsonObject.put("type", "button-android")
-                jsonObject.put("version", "2.0.0")
-                jsonObject.put("mdn", headers.mdn.toString())
-                jsonObject.put("application", headers.application.toString())
-            } catch (e: JSONException) {
-                e.printStackTrace();
-            }
+            /*
+             * Build sdk_info exactly according to the cURL structure:
+             *
+             * {
+             *   "sdk_info": {
+             *      "type": "button",
+             *      "authorization": "...",
+             *      "version": "2.2.0",
+             *      "mdn": "...",
+             *      "application": "..."
+             *   }
+             * }
+             */
+            val sdkInfo = JSONObject()
 
+            sdkInfo.put("type", "button")
+            sdkInfo.put("authorization", publickKey)
+            sdkInfo.put("version", "2.2.0")
+            sdkInfo.put("mdn", headers.mdn.toString())
+            sdkInfo.put("application", headers.application.toString())
+
+            /*
+             * Root request object
+             */
+            val jsonObject = JSONObject()
+            jsonObject.put("sdk_info", sdkInfo)
+
+            println("Intent SDK Request >> $jsonObject")
 
             val mediaType = "application/json; charset=utf-8".toMediaType()
             val body = jsonObject.toString().toRequestBody(mediaType)
-            val okHttpClient: OkHttpClient = builder.build()
-            val request: Request = Request.Builder()
+
+            val okHttpClient = builder.build()
+
+            val request = Request.Builder()
                 .url(baseURL)
-                .method("PUT", body)
+                .put(body)
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Authorization", publickKey.toString())
                 .addHeader("mdn", headers.mdn.toString().trim())
+                .addHeader("application", headers.application.toString())
                 .build()
+
             okHttpClient.newCall(request).enqueue(object : Callback {
+
                 override fun onResponse(call: Call, response: Response) {
                     try {
-                        var responseBody: JSONObject? =
-                            response.body?.string()
-                                ?.let { JSONObject(it) } // toString() is not the response body, it is a debug representation of the response body
 
-                        if (!responseBody.toString().contains("errors")) {
-                            var intentIdResponse = responseBody?.getString("id")
-                            if (intentIdResponse != null) {
-                                // knetWebView.loadUrl(redirectURL)
+                        val responseString = response.body?.string()
 
-                               // urlToBeloaded = "https://button.dev.tap.company/?intentId=" + intentIdResponse + "&publicKey=" + publickKey.toString() + "&mdn=" + toBase64(headers.mdn.toString()) + "&platform=mobile"
-                           var payBtnUrl = payButonurlFormat?.replace("%@","%s")
+                        println("Intent SDK Response >> $responseString")
 
-                             urlToBeloaded=
-                                 payBtnUrl?.let {
-                                     String.format(
-                                         it,
-                                         intentIdResponse, publickKey.toString(),  toBase64(headers.mdn.toString()))
-                                 }.toString()
+                        val responseBody = responseString?.let {
+                            JSONObject(it)
+                        }
+
+                        if (responseBody != null && !responseBody.toString().contains("errors")) {
+
+                            val intentIdResponse = responseBody.optString("id", null)
+
+                            if (!intentIdResponse.isNullOrEmpty()) {
+
+                                val payBtnUrl = payButonurlFormat?.replace("%@", "%s")
+
+                                urlToBeloaded = payBtnUrl?.let {
+                                    String.format(
+                                        it,
+                                        intentIdResponse,
+                                        publickKey.toString(),
+                                        toBase64(headers.mdn.toString())
+                                    )
+                                }.orEmpty()
 
                                 Handler(Looper.getMainLooper()).post {
                                     redirectWebView.loadUrl(urlToBeloaded)
-
                                 }
                             }
 
-                            println("ButtonURL >>"+urlToBeloaded)
+                            println("ButtonURL >> $urlToBeloaded")
+
                         } else {
-
-
+                            println("Intent SDK API returned errors >> $responseBody")
                         }
 
                     } catch (ex: JSONException) {
-                        throw RuntimeException(ex)
-                    } catch (ex: IOException) {
-                        throw RuntimeException(ex)
+                        ex.printStackTrace()
+                    } catch (ex: Exception) {
+                        ex.printStackTrace()
                     }
-
                 }
 
-                override fun onFailure(call: Call, e: IOException) {}
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                }
             })
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
 
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun callIntentAPI(configuraton: java.util.HashMap<String, Any>, headers: Headers) {

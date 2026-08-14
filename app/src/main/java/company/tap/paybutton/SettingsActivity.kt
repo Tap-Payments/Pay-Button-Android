@@ -20,6 +20,7 @@ import com.chillibits.simplesettings.tool.getPrefBooleanValue
 import com.chillibits.simplesettings.tool.getPrefStringSetValue
 import com.chillibits.simplesettings.tool.getPrefStringValue
 import com.chillibits.simplesettings.tool.getPrefs
+import com.tap.commondatamodels.TapTheme
 
 class SettingsActivity : AppCompatActivity(),SimpleSettingsConfig.PreferenceCallback  {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +55,7 @@ class SettingsActivity : AppCompatActivity(),SimpleSettingsConfig.PreferenceCall
        // intent.putExtra("publicKey", getPrefStringValue("publicKey","pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7"))
         intent.putExtra("publicKey", getPrefStringValue("publicKey","pk_test_ohzQrUWRnTkCLD1cqMeudyjX"))
         intent.putExtra("hashStringKey", getPrefStringValue("hashStringKey","pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7"))
-        intent.putExtra("merchantId", getPrefStringValue("merchantId",""))
+        intent.putExtra("merchantId", getPrefStringValue("merchantId","1124340"))
 
         /**
          * order
@@ -93,7 +94,7 @@ class SettingsActivity : AppCompatActivity(),SimpleSettingsConfig.PreferenceCall
          * scope && transaction
          */
 
-        intent.putExtra("scopeKey", getPrefStringValue("scopeKey","CHARGE"))
+        intent.putExtra("scopeKey", getPrefStringValue("scopeKey","charge"))
         intent.putExtra("transactionRefrenceKey", getPrefStringValue("transactionRefrenceKey",""))
         intent.putExtra("transactionAuthroizeTypeKey", getPrefStringValue("transactionAuthroizeTypeKey",""))
         intent.putExtra("transactionAuthroizeTimeKey", getPrefStringValue("transactionAuthroizeTimeKey",""))

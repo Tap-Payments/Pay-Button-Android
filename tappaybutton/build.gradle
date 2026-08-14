@@ -14,11 +14,11 @@ plugins {
 
 android {
     namespace = "com.example.tappaybutton"
-    compileSdk = 34
+    compileSdk 36
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 34
+        targetSdk 36
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -34,11 +34,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    configurations.all {
+        resolutionStrategy {
+
+        }
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = '17'
     }
 }
 
@@ -53,9 +58,8 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-
-    implementation "io.reactivex.rxjava2:rxjava:2.2.19"
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
     implementation 'com.github.Tap-Payments:TapNetwrok-Android:0.2.2.45'
     api 'com.google.code.gson:gson:2.10'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -66,13 +70,15 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     implementation 'androidx.lifecycle:lifecycle-process:2.6.2'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation 'com.github.Tap-Payments:TapUIKit-Android:2.0.16'
+   // implementation 'com.github.Tap-Payments:TapUIKit-Android:2.0.16'
     /**
      * update this library in tapUiLibrary to be used automatically
      */
     implementation 'jp.wasabeef:blurry:4.0.1'
     implementation 'com.github.bumptech.glide:glide:4.12.0'
-    api 'com.github.Tap-Payments:CommonDataModelsWeb-Andriod:0.0.14'
+    api 'com.github.Tap-Payments:CommonDataModelsWeb-Andriod:0.0.15'
+    api 'com.koushikdutta.ion:ion:3.1.0'
+    api 'com.github.Tap-Payments:TapNFCCardReaderKit-Android:0.0.6'
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
 

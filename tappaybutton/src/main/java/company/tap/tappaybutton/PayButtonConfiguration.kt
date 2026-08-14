@@ -40,7 +40,7 @@ class PayButtonConfiguration {
             payButtonStatusDelegate: PayButtonStatusDelegate? = null
 
         ) {
-//ToDO test when cdn url ready
+
             MainScope().launch {
                 getTapButtonSDKConfigUrls(
                     tapMapConfiguration,
@@ -70,9 +70,9 @@ class PayButtonConfiguration {
 
 
                 println("payButonurlFormat is"+payButonurlFormat)
-                //testEncKey = tapButtonSDKConfigUrlResponse.testEncKey
-                testEncKey = context.resources.getString(R.string.enryptkeyTest)
-                //  urlWebStarter = tapButtonSDKConfigUrlResponse.baseURL
+                testEncKey = tapButtonSDKConfigUrlResponse.testEncKey
+              //  testEncKey = context.resources.getString(R.string.enryptkeyTest)
+                  urlWebStarter = tapButtonSDKConfigUrlResponse.baseURL
 
 
                 startWithSDKConfigs(
@@ -128,24 +128,19 @@ class PayButtonConfiguration {
             NetworkApp.initNetwork(
                 tapCardInputViewWeb?.context ,
                 publicKey ?: "",
-                // context.packageName,  //TODO
-                "demo.tap.PayButtonSDK",
+               //  context.packageName,  //TODO
+                "tap.PayButtonSDK.demo",
                 ApiService.BASE_URL,
                 "android-knet",
                 true,
-                /*   "-----BEGIN PUBLIC KEY-----\n" +
-                           "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8AX++RtxPZFtns4XzXFlDIxPB\n" +
-                           "h0umN4qRXZaKDIlb6a3MknaB7psJWmf2l+e4Cfh9b5tey/+rZqpQ065eXTZfGCAu\n" +
-                           "BLt+fYLQBhLfjRpk8S6hlIzc1Kdjg65uqzMwcTd0p7I4KLwHk1I0oXzuEu53fU1L\n" +
-                           "SZhWp4Mnd6wjVgXAsQIDAQAB\n" +
-                           "-----END PUBLIC KEY-----",*/encodedeky,
+              encodedeky,
                 null
             )
             headers = Headers(
                 application = NetworkApp.getApplicationInfo(),
                 mdn = CryptoUtil.encryptJsonString(
-                    // context.packageName.toString(), //TODO remove hardcoding
-                    "demo.tap.PayButtonSDK",
+                   // context.packageName.toString(), //TODO remove hardcoding
+                    "tap.PayButtonSDK.demo",
                    encodedeky
                 )
             )

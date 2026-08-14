@@ -6,7 +6,7 @@ const val webPrefix = "tap{buttonType}websdk://"
 const val cardPrefix = "tapcardwebsdk://"
 
 const val keyValueName = "data"
-const val urlWebStarter = "https://button.staging.tap.company/wrapper/{url}?configurations="
+var urlWebStarter = "https://button.staging.tap.company/wrapper/{url}?configurations="
 //const val urlWebStarter = "https://button.dev.tap.company/wrapper/{url}?configurations="
 const val publicKeyToGet = "publicKey"
 const val HeadersApplication = "application"

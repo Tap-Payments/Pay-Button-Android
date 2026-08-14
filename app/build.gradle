@@ -6,14 +6,14 @@ plugins {
 
 android {
     namespace = "company.tap.paybutton"
-    compileSdk = 34
+    compileSdk = 36
     def versionMajor = 1 // major design change
     def versionMinor = 0 // feature added
     def versionRevision =1// bug revisions
     defaultConfig {
         applicationId = "company.tap.paybutton"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
 
         versionCode 100000 * versionMajor + 10000 * versionMinor + 1000 * versionRevision
         versionName = "1.0.1"
@@ -31,12 +31,18 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    configurations.all {
+        resolutionStrategy {
+
+        }
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = '17'
     }
+
 }
 
 dependencies {

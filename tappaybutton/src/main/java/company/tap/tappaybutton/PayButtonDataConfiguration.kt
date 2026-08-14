@@ -1,13 +1,14 @@
 package company.tap.tappaybutton
 
-import Customer
-import TapAuthentication
+
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
+import com.tap.commondatamodels.Customer
+import com.tap.commondatamodels.TapAuthentication
 
-import company.tap.tapuilibrary.themekit.ThemeManager
+
 import java.security.PublicKey
 
 /**

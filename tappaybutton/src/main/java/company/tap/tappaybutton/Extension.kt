@@ -27,7 +27,7 @@ import company.tap.tappaybutton.enums.rawFolderRefrence
 import company.tap.tappaybutton.models.ThreeDsResponseCardPayButtons
 
 
-import company.tap.tapuilibrary.themekit.ThemeManager
+
 import jp.wasabeef.blurry.Blurry
 import java.net.URLEncoder
 import java.util.*
@@ -128,7 +128,7 @@ fun ViewGroup.addLoaderWithBlurryToView(showLoadingIcon: Boolean, invokeAfterLoa
     @DrawableRes
     val loaderGif: Int =
         if (ThemeManager.currentTheme.isNotEmpty() && ThemeManager.currentTheme.contains("dark")) {
-            company.tap.tapuilibrary.R.drawable.loader
+            R.drawable.loader
         } else if (ThemeManager.currentTheme.isNotEmpty() && !ThemeManager.currentTheme.contains(
                 "dark"
             )
@@ -136,7 +136,7 @@ fun ViewGroup.addLoaderWithBlurryToView(showLoadingIcon: Boolean, invokeAfterLoa
           R.drawable.output_black_loader_nobg
            // R.drawable.loader
         } else
-            company.tap.tapuilibrary.R.drawable.loader
+            R.drawable.loader
 
 
 

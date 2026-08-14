@@ -12,10 +12,11 @@ import androidx.annotation.Nullable
 import com.example.tappaybutton.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import company.tap.tappaybutton.TapBrandView
 import company.tap.tappaybutton.doAfterSpecificTime
 import company.tap.tappaybutton.getDeviceSpecs
 
-import company.tap.tappaybutton.TapBrandView
+
 import company.tap.tappaybutton.PayButton
 
 class ThreeDsBottomSheetFragmentButton(var webView: WebView?, var onCancel:()->Unit): BottomSheetDialogFragment() {
