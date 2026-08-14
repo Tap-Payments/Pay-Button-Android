@@ -11,7 +11,7 @@ android {
     def versionMinor = 0 // feature added
     def versionRevision =1// bug revisions
     defaultConfig {
-        applicationId = "company.tap.paybutton"
+        applicationId = "tap.PayButtonSDK.demo"
         minSdk = 24
         targetSdk = 36
 

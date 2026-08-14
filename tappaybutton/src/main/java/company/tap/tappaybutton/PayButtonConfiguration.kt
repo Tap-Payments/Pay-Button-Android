@@ -128,8 +128,8 @@ class PayButtonConfiguration {
             NetworkApp.initNetwork(
                 tapCardInputViewWeb?.context ,
                 publicKey ?: "",
-               //  context.packageName,  //TODO
-                "tap.PayButtonSDK.demo",
+                 context.packageName,  //TODO
+                //"tap.PayButtonSDK.demo",
                 ApiService.BASE_URL,
                 "android-knet",
                 true,
@@ -139,8 +139,8 @@ class PayButtonConfiguration {
             headers = Headers(
                 application = NetworkApp.getApplicationInfo(),
                 mdn = CryptoUtil.encryptJsonString(
-                   // context.packageName.toString(), //TODO remove hardcoding
-                    "tap.PayButtonSDK.demo",
+                    context.packageName.toString(), //TODO remove hardcoding
+                   // "tap.PayButtonSDK.demo",
                    encodedeky
                 )
             )
