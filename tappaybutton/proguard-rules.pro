@@ -1,70 +1,55 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+#########################################
+# Gson
+#########################################
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+-keepattributes Signature
+-keepattributes RuntimeVisibleAnnotations
+-keepattributes RuntimeVisibleParameterAnnotations
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+-keepclassmembers,allowobfuscation class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
--keep class androidx.camera.** { *; }
--keep interface androidx.camera.** { *; }
+-keep class * implements com.google.gson.TypeAdapter { *; }
+-keep class * implements com.google.gson.TypeAdapterFactory { *; }
+-keep class * implements com.google.gson.JsonSerializer { *; }
+-keep class * implements com.google.gson.JsonDeserializer { *; }
+
+
+#########################################
+# WebView JavaScript Interface
+#########################################
+
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+
+#########################################
+# Tap Card Form
+#########################################
+
+-keep class company.tap.tapcardformkit.** { *; }
+
+
+#########################################
+# ML Kit
+#########################################
+
+-keep class com.google.mlkit.** { *; }
+
 
 #########################################
 # Retrofit
 #########################################
--keep class retrofit2.** { *; }
--dontwarn retrofit2.**
 
-# Keep method parameter names (needed for reflection)
--keepattributes Signature, RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
-
-#########################################
-# OkHttp
-#########################################
--keep class okhttp3.** { *; }
--dontwarn okhttp3.**
-
-# Keep Okio (used internally by OkHttp)
--keep class okio.** { *; }
--dontwarn okio.**
-
-#########################################
-# OkHttp Logging Interceptor
-#########################################
--keep class okhttp3.logging.** { *; }
--dontwarn okhttp3.logging.**
-
-#########################################
-# Gson
-#########################################
--keep class com.google.gson.** { *; }
--dontwarn com.google.gson.**
-
-# Keep field names annotated with @SerializedName
--keepclassmembers class * {
-    @com.google.gson.annotations.SerializedName <fields>;
-}
-
-# Preserve generic type info used by Gson
 -keepattributes Signature
--keepattributes *Annotation*
+-keepattributes RuntimeVisibleAnnotations
+-keepattributes RuntimeVisibleParameterAnnotations
+
 
 #########################################
-# Retrofit + Gson Converter
+# Your SDK models
 #########################################
--keep class retrofit2.converter.gson.** { *; }
--dontwarn retrofit2.converter.gson.**
 
+-keep class company.tap.tappaybutton.models.** { *; }
