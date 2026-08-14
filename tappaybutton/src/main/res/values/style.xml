@@ -54,7 +54,7 @@
 
     <style name="my_Toolbar" parent="@style/Widget.MaterialComponents.Toolbar">
         <item name="title">3ds Authentication</item>
-        <item name="titleTextColor">@color/white</item>
+        <item name="titleTextColor">#ffffff</item>
     </style>
 
     <style name="Theme.MyAnimTheme" parent="Theme.MaterialComponents.DayNight">
@@ -75,7 +75,7 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:layoutDirection">locale</item>
-        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimary">#ffffff</item>
 
     </style>
 
