@@ -1,7 +1,7 @@
 package company.tap.tappaybutton.models
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 
 @Parcelize
