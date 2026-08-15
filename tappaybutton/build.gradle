@@ -133,7 +133,7 @@ afterEvaluate {
 
                 groupId = "com.github.Tap-Payments"
                 artifactId = "Pay-Button-Android"
-                version = "1.0.0.2"
+                version = "1.0.0.4"
 
                 pom.withXml {
                     def dependenciesNode = asNode().appendNode('dependencies')
