@@ -3,6 +3,7 @@ package company.tap.tappaybutton
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -16,6 +17,7 @@ import android.util.Base64
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import android.widget.*
@@ -53,7 +55,6 @@ import java.net.URISyntaxException
 import java.util.*
 import kotlin.collections.HashMap
 
-
 @SuppressLint("ViewConstructor")
 class PayButton : LinearLayout , ApplicationLifecycle {
     lateinit var webviewStarterUrl: String
@@ -74,7 +75,9 @@ class PayButton : LinearLayout , ApplicationLifecycle {
     var iSAppInForeground = true
     var onSuccessCalled = false
     var pair =  Pair("",false)
-
+    private  val SAMSUNG_PAY_URL_PREFIX: String = "samsungpay"
+    private  val SAMSUNG_APP_STORE_URL: String = "samsungapps://ProductDetail/com.samsung.android.spay"
+    private var paymentResultReceived = false
     companion object {
         lateinit var threeDsResponse: ThreeDsResponse
         lateinit var threeDsResponseCardPayButtons: ThreeDsResponseCardPayButtons
@@ -485,6 +488,33 @@ class PayButton : LinearLayout , ApplicationLifecycle {
              */
             Log.e("url Here>>>>", request?.url.toString())
 
+            if (request?.url.toString().startsWith(SAMSUNG_PAY_URL_PREFIX, true) ||
+                request?.url.toString().startsWith(SAMSUNG_APP_STORE_URL, true)) {
+
+                // Stop the WebView from continuing to load this URL
+                webView?.post {
+                    webView.stopLoading()
+                    webView?.visibility = View.GONE
+
+                }
+
+                try {
+                    val intent = Intent.parseUri(request?.url.toString(), Intent.URI_INTENT_SCHEME)
+                   // samsungCheckoutStarted= true
+                    paymentResultReceived = false
+                    onSuccessCalled = false
+                    context.startActivity(intent)
+                } catch (e: ActivityNotFoundException) {
+                    val installIntent = Intent.parseUri(
+                        "samsungapps://ProductDetail/com.samsung.android.spay",
+                        Intent.URI_INTENT_SCHEME
+                    )
+                    installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(installIntent)
+                }
+
+                return true // ensures WebView does not handle the URL further
+            }
 
             if (request?.url.toString().startsWith(careemPayUrlHandler)) {
                 webViewFrame.layoutParams =
