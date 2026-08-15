@@ -34,6 +34,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
         }
     }
     compileOptions {
@@ -86,12 +87,12 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
-    implementation 'com.github.Tap-Payments:TapNetwrok-Android:0.2.2.45'
+    api 'com.github.Tap-Payments:TapNetwrok-Android:0.2.2.45'
     api 'com.google.code.gson:gson:2.10'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation "com.squareup.okhttp3:okhttp:4.12.0"
     implementation "com.squareup.okhttp3:logging-interceptor:4.12.0"
-    implementation 'com.github.Tap-Payments:LocalisationManager-Android:0.0.1.34'
+    api 'com.github.Tap-Payments:LocalisationManager-Android:0.0.1.34'
 
 
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
@@ -108,7 +109,7 @@ dependencies {
     api 'com.github.Tap-Payments:CommonDataModelsWeb-Andriod:0.0.15'
     api 'com.koushikdutta.ion:ion:3.1.0'
     api 'com.github.Tap-Payments:TapNFCCardReaderKit-Android:0.0.6'
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
 }
 // Create sources and Javadoc JARs
