@@ -53,3 +53,9 @@
 #########################################
 
 -keep class company.tap.tappaybutton.models.** { *; }
+-keep class com.tap.localisation.** { *; }
+-keep class company.tap.tapnetworkkit.** { *; }
+-keep class company.tap.tapnetworkkit_android.** { *; }
+-keep class company.tap.taplocalizationkit.** { *; }
+-keep class com.google.gson.** { *; }
+-keep class kotlinx.serialization.** { *; }
