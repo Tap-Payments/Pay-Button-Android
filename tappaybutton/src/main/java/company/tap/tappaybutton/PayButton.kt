@@ -54,6 +54,7 @@ import java.io.IOException
 import java.net.URISyntaxException
 import java.util.*
 import kotlin.collections.HashMap
+import android.os.Message
 
 @SuppressLint("ViewConstructor")
 class PayButton : LinearLayout , ApplicationLifecycle {
@@ -61,8 +62,12 @@ class PayButton : LinearLayout , ApplicationLifecycle {
     private var isBenefitPayUrlIntercepted =false
     // lateinit var webViewScheme: String
     var webViewScheme: String = "tapbuttonsdk://"
-    private lateinit var webChrome: WebChrome
+   // private lateinit var webChrome: WebChrome
+    private lateinit var webChrome: PayButtonChromeClient
 
+    private var popupWebView: WebView? = null
+    private var popupDialog: Dialog? = null
+    private var popupContainer: FrameLayout? = null
     lateinit var webViewFrame: FrameLayout
     lateinit var urlToBeloaded: String
     var firstTimeOnReadyCallback = true
@@ -128,28 +133,29 @@ class PayButton : LinearLayout , ApplicationLifecycle {
         redirectWebView = findViewById(R.id.webview)
         webViewFrame = findViewById(R.id.webViewFrame)
 
-
         with(redirectWebView) {
 
             with(settings) {
                 javaScriptEnabled = true
                 domStorageEnabled = true
+
+                // Required for window.open()
                 javaScriptCanOpenWindowsAutomatically = true
-                allowContentAccess = true
                 setSupportMultipleWindows(true)
+
+                allowContentAccess = true
                 cacheMode = WebSettings.LOAD_NO_CACHE
                 useWideViewPort = true
                 loadWithOverviewMode = true
-
             }
         }
+
         redirectWebView.setBackgroundColor(Color.TRANSPARENT)
         redirectWebView.setLayerType(LAYER_TYPE_SOFTWARE, null)
-        webChrome = WebChrome(context)
+
+        webChrome = PayButtonChromeClient()
         redirectWebView.webChromeClient = webChrome
         redirectWebView.webViewClient = MyWebViewClient()
-
-
     }
 
 
@@ -472,7 +478,219 @@ class PayButton : LinearLayout , ApplicationLifecycle {
         webviewStarterUrl = scheme.value.first
         webViewScheme = scheme.value.second
     }
+    private inner class PayButtonChromeClient : WebChromeClient() {
 
+        override fun onCreateWindow(
+            view: WebView?,
+            isDialog: Boolean,
+            isUserGesture: Boolean,
+            resultMsg: Message?
+        ): Boolean {
+
+            Log.d(
+                "PayButtonChromeClient",
+                "window.open() detected. isDialog=$isDialog, isUserGesture=$isUserGesture"
+            )
+
+            if (resultMsg == null) {
+                Log.e("PayButtonChromeClient", "WebViewTransport message is null")
+                return false
+            }
+
+            val parentContext = view?.context ?: context
+
+            // Prevent creating multiple popup dialogs
+            closePopupWebView()
+
+            val newWebView = WebView(parentContext)
+
+            popupWebView = newWebView
+
+            with(newWebView.settings) {
+                javaScriptEnabled = true
+                domStorageEnabled = true
+                javaScriptCanOpenWindowsAutomatically = true
+                setSupportMultipleWindows(true)
+                allowContentAccess = true
+                cacheMode = WebSettings.LOAD_NO_CACHE
+                useWideViewPort = true
+                loadWithOverviewMode = true
+            }
+
+            newWebView.setBackgroundColor(Color.WHITE)
+
+            /*
+             * Important:
+             * Use the same WebViewClient so that the popup WebView
+             * understands the existing Tap redirect callbacks,
+             * 3DS redirects, cancel, success, etc.
+             */
+            newWebView.webViewClient = MyWebViewClient()
+
+            /*
+             * Use another ChromeClient for the popup itself.
+             *
+             * This allows a popup opened from the 3DS page to also
+             * create another popup if required.
+             */
+            newWebView.webChromeClient = this
+
+            /*
+             * Create popup dialog
+             */
+            val dialog = Dialog(
+                parentContext,
+                android.R.style.Theme_Translucent_NoTitleBar
+            )
+
+            popupDialog = dialog
+
+            dialog.setCancelable(true)
+            dialog.setCanceledOnTouchOutside(false)
+
+            val container = FrameLayout(parentContext)
+
+            popupContainer = container
+
+            container.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+
+            container.setBackgroundColor(Color.WHITE)
+
+            container.addView(
+                newWebView,
+                FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+            )
+
+            dialog.setContentView(container)
+
+            /*
+             * Back button closes only the popup.
+             * The original payment WebView remains alive underneath.
+             */
+            dialog.setOnKeyListener { _, keyCode, event ->
+
+                if (
+                    keyCode == KeyEvent.KEYCODE_BACK &&
+                    event.action == KeyEvent.ACTION_UP
+                ) {
+
+                    Log.d(
+                        "PayButtonChromeClient",
+                        "Closing popup WebView"
+                    )
+
+                    closePopupWebView()
+
+                    true
+                } else {
+                    false
+                }
+            }
+
+            dialog.setOnDismissListener {
+                Log.d(
+                    "PayButtonChromeClient",
+                    "Popup dialog dismissed"
+                )
+
+                cleanupPopupWebView()
+            }
+
+            dialog.show()
+
+            /*
+             * Give the dialog the full available size.
+             */
+            dialog.window?.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+
+            /*
+             * This is the critical part.
+             *
+             * Android gives us the WebViewTransport through resultMsg.
+             * We attach our new WebView to it.
+             */
+            val transport =
+                resultMsg.obj as? WebView.WebViewTransport
+
+            if (transport == null) {
+                Log.e(
+                    "PayButtonChromeClient",
+                    "Unable to get WebViewTransport"
+                )
+
+                closePopupWebView()
+                return false
+            }
+
+            transport.webView = newWebView
+            resultMsg.sendToTarget()
+
+            return true
+        }
+
+        override fun onCloseWindow(window: WebView?) {
+
+            Log.d(
+                "PayButtonChromeClient",
+                "window.close() received"
+            )
+
+            if (window == popupWebView) {
+                closePopupWebView()
+            } else {
+                super.onCloseWindow(window)
+            }
+        }
+
+        fun closePopupWebView() {
+            try {
+                popupDialog?.dismiss()
+            } catch (e: Exception) {
+                Log.e(
+                    "PayButtonChromeClient",
+                    "Error dismissing popup dialog",
+                    e
+                )
+                cleanupPopupWebView()
+            }
+        }
+
+        private fun cleanupPopupWebView() {
+
+            try {
+                popupWebView?.let { webView ->
+
+                    webView.stopLoading()
+
+                    webView.webChromeClient = null
+                   // webView.webViewClient =
+
+                    popupContainer?.removeView(webView)
+
+                    webView.destroy()
+                }
+            } catch (e: Exception) {
+                Log.e(
+                    "PayButtonChromeClient",
+                    "Error cleaning popup WebView",
+                    e
+                )
+            }
+
+            popupWebView = null
+            popupContainer = null
+            popupDialog = null
+        }
+    }
 
     inner class MyWebViewClient : WebViewClient() {
 
@@ -700,8 +918,8 @@ class PayButton : LinearLayout , ApplicationLifecycle {
                      * for google button specifically
                      */
                     if (request?.url.toString().contains(TapRedirectStatusDelegate.onClosePopup.name)) {
-                        webChrome.getdialog()?.dismiss()
-
+                        webChrome.closePopupWebView()
+                        return true
                     }
 
                     /* if (request?.url.toString().contains(KnetStatusDelegate.onError.name)) {
@@ -868,10 +1086,23 @@ class PayButton : LinearLayout , ApplicationLifecycle {
 
 
     override fun onDetachedFromWindow() {
+
+        try {
+            if (::webChrome.isInitialized) {
+                webChrome.closePopupWebView()
+            }
+        } catch (e: Exception) {
+            Log.e(
+                "PayButton",
+                "Error closing popup WebView",
+                e
+            )
+        }
+
         redirectWebView.destroy()
+
         super.onDetachedFromWindow()
     }
-
 
 
     fun toBase64(value: String?): String? {
