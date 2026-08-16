@@ -515,7 +515,50 @@ class PayButton : LinearLayout , ApplicationLifecycle {
 
                 return true // ensures WebView does not handle the URL further
             }
+          /*  if (request?.url.toString().contains(TapRedirectStatusDelegate.onHeightChange.name)) {
+                val newHeight = request?.url?.getQueryParameter(keyValueName)
+                val params: ViewGroup.LayoutParams? = webViewFrame.layoutParams
+                params?.height = webViewFrame.context.getDimensionsInDp(newHeight?.toInt()?.plus(15) ?: 95)
+                webViewFrame.layoutParams = params
 
+                PayButtonDataConfiguration.getTapKnetListener()
+                    ?.onPayButtonHeightChange(newHeight.toString())
+
+
+            }*/
+            if (request?.url.toString().contains(TapRedirectStatusDelegate.onHeightChange.name)) {
+
+                val height = request?.url?.getQueryParameter(keyValueName)?.toIntOrNull()
+
+                if (height != null) {
+                    webViewFrame.post {
+                        webViewFrame.layoutParams =
+                            webViewFrame.layoutParams.apply {
+                                this.height =
+                                    webViewFrame.context.getDimensionsInDp(height)
+                            }
+
+                        webViewFrame.requestLayout()
+                    }
+                    PayButtonDataConfiguration.getTapKnetListener()
+                        ?.onPayButtonHeightChange(height.toString())
+
+                }
+
+
+                return true
+            }
+            if (request?.url.toString().contains(TapRedirectStatusDelegate.onBinIdentification.name)) {
+                PayButtonDataConfiguration.getTapKnetListener()
+                    ?.onPayButtonBindIdentification(
+                        request?.url?.getQueryParameterFromUri(keyValueName).toString()
+                    )
+                var datafromUrl = request?.url?.getQueryParameter(keyValueName).toString()
+                PayButtonDataConfiguration.getTapKnetListener()
+                    ?.onPayButtonBindIdentification(datafromUrl)
+
+                return true
+            }
             if (request?.url.toString().startsWith(careemPayUrlHandler)) {
                 webViewFrame.layoutParams =
                     LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
@@ -572,6 +615,7 @@ class PayButton : LinearLayout , ApplicationLifecycle {
                             false ->{}
                         }
                     }
+
                     if (request?.url.toString().contains(TapRedirectStatusDelegate.onChargeCreated.name)) {
 
                         val data = decodeBase64(request?.url?.getQueryParameter(keyValueName).toString())
@@ -637,25 +681,7 @@ class PayButton : LinearLayout , ApplicationLifecycle {
                         }
 
                     }
-                    if (request?.url.toString()
-                            .contains(TapRedirectStatusDelegate.onBinIdentification.name)
-                    ) {
-                       /* RedirectDataConfiguration.getTapKnetListener()
-                            ?.onPayButtonBindIdentification(
-                                request?.url?.getQueryParameterFromUri(keyValueName).toString()
-                            )*/
-                    }
-                    if (request?.url.toString().contains(TapRedirectStatusDelegate.onHeightChange.name)) {
-                        val newHeight = request?.url?.getQueryParameter(keyValueName)
-                        val params: ViewGroup.LayoutParams? = webViewFrame.layoutParams
-                        params?.height =
-                            webViewFrame.context.getDimensionsInDp(newHeight?.toInt() ?: 95)
-                        webViewFrame.layoutParams = params
 
-                       /* RedirectDataConfiguration.getTapKnetListener()
-                            ?.onPayButtonHeightChange(newHeight.toString())*/
-
-                    }
                     if (request?.url.toString().contains(TapRedirectStatusDelegate.on3dsRedirect.name)) {
                         /**
                          * navigate to 3ds Activity

@@ -70,6 +70,8 @@ class ThreeDsWebViewActivityButton : AppCompatActivity() {
                 webView.loadUrl(PayButton.threeDsResponseCardPayButtons.threeDsUrl)
 
             }
+
+
         }
 
         threeDsBottomsheet = ThreeDsBottomSheetFragmentButton(webView, onCancel = {
