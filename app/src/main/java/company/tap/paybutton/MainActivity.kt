@@ -1886,7 +1886,7 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
 
         val publicKey = getPrefStringValue(
             "publicKey",
-            "pk_test_Vlk842B1EA7tDN5QbrfGjYzh"
+            "pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7"
         )
 
         /**
@@ -3350,7 +3350,7 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
             "url",
             getPrefStringValue(
                 "redirectUrlKey",
-                "onTapKnetRedirect://"
+                "demo.tap.PayButtonSDK"
             )
         )
 
@@ -3369,7 +3369,7 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
             "url",
             getPrefStringValue(
                 "posturlKey",
-                ""
+                "demo.tap.PayButtonSDK"
             )
         )
 

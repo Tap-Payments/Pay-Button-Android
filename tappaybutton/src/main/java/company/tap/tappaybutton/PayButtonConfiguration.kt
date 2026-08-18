@@ -153,7 +153,7 @@ class PayButtonConfiguration {
                     hashMapHeader[HeadersApplication] = headers?.application.toString()
                     //val redirect = HashMap<String,Any>()
                     // redirect.put(urlKey, redirectValue)
-                    configurationsAsHashMap?.put(headersKey, hashMapHeader)
+                   // configurationsAsHashMap?.put(headersKey, hashMapHeader)
                     //  configurationsAsHashMap?.put(redirectKey, redirect)
 
 

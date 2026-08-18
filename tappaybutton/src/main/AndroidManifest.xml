@@ -1,14 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    >
-    <application android:supportsRtl="true"
-        android:hardwareAccelerated="true"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-        >
+    <application
+        android:supportsRtl="true"
+        android:hardwareAccelerated="true">
+
         <activity
             android:name="company.tap.tappaybutton.threeDsWebview.ThreeDsWebViewActivityButton"
             android:exported="false"
             android:theme="@style/Theme.Transparent" />
+        <activity
+            android:name="company.tap.tappaybutton.PasskeyWebViewActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Transparent"/>
+        <activity
+            android:name="company.tap.tappaybutton.PasskeyCallbackActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Transparent">
+
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="tap-paybutton"
+                    android:host="passkey"
+                    android:pathPrefix="/callback" />
+
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name="company.tap.tappaybutton.ThreeDSPasskeyRedirectActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoDisplay">
+
+            <intent-filter>
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="tapcardwebsdk"
+                    android:host="onpasskeyredirect" />
+
+            </intent-filter>
+
+        </activity>
+
+
 
     </application>
 

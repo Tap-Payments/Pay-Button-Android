@@ -1,3 +1,4 @@
+
 package company.tap.tappaybutton
 
 
@@ -9,6 +10,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -62,7 +64,7 @@ class PayButton : LinearLayout , ApplicationLifecycle {
     private var isBenefitPayUrlIntercepted =false
     // lateinit var webViewScheme: String
     var webViewScheme: String = "tapbuttonsdk://"
-   // private lateinit var webChrome: WebChrome
+    // private lateinit var webChrome: WebChrome
     private lateinit var webChrome: PayButtonChromeClient
 
     private var popupWebView: WebView? = null
@@ -83,6 +85,7 @@ class PayButton : LinearLayout , ApplicationLifecycle {
     private  val SAMSUNG_PAY_URL_PREFIX: String = "samsungpay"
     private  val SAMSUNG_APP_STORE_URL: String = "samsungapps://ProductDetail/com.samsung.android.spay"
     private var paymentResultReceived = false
+    private var passkeyBrowserOpened = false
     companion object {
         lateinit var threeDsResponse: ThreeDsResponse
         lateinit var threeDsResponseCardPayButtons: ThreeDsResponseCardPayButtons
@@ -300,7 +303,7 @@ class PayButton : LinearLayout , ApplicationLifecycle {
                 .url(BASE_URL_1+"intent")
                 .method("POST", requestBody)
                 .addHeader("Content-Type", "application/json")
-               // .addHeader("Authorization", "pk_test_ohzQrUWRnTkCLD1cqMeudyjX")
+                // .addHeader("Authorization", "pk_test_ohzQrUWRnTkCLD1cqMeudyjX")
                 .addHeader("Authorization", publickKeyVal)
                 .addHeader("mdn", headers.mdn.toString().trim())
                 .build()
@@ -321,8 +324,8 @@ class PayButton : LinearLayout , ApplicationLifecycle {
                             var intentID:String? =null
 
 
-                          //  val operator = configuraton?.get(operatorKey) as HashMap<*, *>
-                          //  val publickKey = operator.get(publicKeyToGet)
+                            //  val operator = configuraton?.get(operatorKey) as HashMap<*, *>
+                            //  val publickKey = operator.get(publicKeyToGet)
 
                             /**
                              * intent
@@ -392,12 +395,12 @@ class PayButton : LinearLayout , ApplicationLifecycle {
          * else sends error
          * */
 
-       // val intentObj = configuraton?.get(intentKey) as HashMap<*, *>
-       // val intentID = intentObj?.get(intentKey)
+        // val intentObj = configuraton?.get(intentKey) as HashMap<*, *>
+        // val intentID = intentObj?.get(intentKey)
         val intentID = _intentId
 
-       // val operator = configuraton?.get(operatorKey) as HashMap<*, *>
-       // val publickKey = operator.get(publicKeyToGet)
+        // val operator = configuraton?.get(operatorKey) as HashMap<*, *>
+        // val publickKey = operator.get(publicKeyToGet)
         val publickKey = _publickey
 
         if (intentID.toString().isNullOrBlank() || publickKey.toString().isNullOrBlank()) {
@@ -408,9 +411,19 @@ class PayButton : LinearLayout , ApplicationLifecycle {
             PayButtonDataConfiguration.getTapKnetListener()
                 ?.onPayButtonError("Whether intent id or body is required")
         }
-        else if (!configuraton.isNullOrEmpty() ){
-            callIntentAPI(configuraton,headers)
+        else if (!configuraton.isNullOrEmpty()) {
 
+            val sdkInfo = hashMapOf<String, Any>(
+                "type" to "button",
+                "authorization" to publickKeyVal,
+                "version" to "2.2.0",
+                "mdn" to headersVal.mdn.toString(),
+                "application" to headersVal.application.toString()
+            )
+
+            configuraton["sdk_info"] = sdkInfo
+
+            callIntentAPI(configuraton, headers)
         }
         else if(intentID!=null && intentID!="" && configuraton.isNullOrEmpty()) {
             val operator = HashMap<String, String>()
@@ -431,7 +444,7 @@ class PayButton : LinearLayout , ApplicationLifecycle {
 
             configurations.put("operator",operator)
             configurations.put("intent",intentObj)
-                callIntentRetereiveAPI(configurations, headers)
+            callIntentRetereiveAPI(configurations, headers)
 
         }
 
@@ -520,12 +533,95 @@ class PayButton : LinearLayout , ApplicationLifecycle {
             newWebView.setBackgroundColor(Color.WHITE)
 
             /*
-             * Important:
-             * Use the same WebViewClient so that the popup WebView
-             * understands the existing Tap redirect callbacks,
-             * 3DS redirects, cancel, success, etc.
+             * Handle URLs opened by window.open() in the popup WebView.
+             *
+             * Passkey URLs must be handled here as well because a URL
+             * opened through window.open() can arrive on this WebView
+             * instead of the main WebView.
              */
-            newWebView.webViewClient = MyWebViewClient()
+            newWebView.webViewClient = object : WebViewClient() {
+
+                override fun shouldOverrideUrlLoading(
+                    webView: WebView?,
+                    request: WebResourceRequest?
+                ): Boolean {
+
+                    val url = request?.url?.toString().orEmpty()
+
+                    Log.d(
+                        "PayButtonChromeClient",
+                        "Popup URL: $url"
+                    )
+
+                    /*
+                     * IMPORTANT:
+                     * Passkey must be checked before forwarding the URL
+                     * to the normal WebViewClient.
+                     */
+                    if (url.contains("passkey", ignoreCase = true)) {
+
+                        Log.d(
+                            "PayButtonChromeClient",
+                            "Passkey URL detected in popup: $url"
+                        )
+
+                        webView?.stopLoading()
+                         openPasskeyInDefaultBrowser(url)
+                        // openPasskeyWebView(url)
+
+                        return true
+                    }
+
+                    /*
+                     * Keep all existing Tap SDK URL handling unchanged.
+                     */
+                    return MyWebViewClient()
+                        .shouldOverrideUrlLoading(webView, request)
+                }
+
+                override fun onPageStarted(
+                    view: WebView,
+                    url: String,
+                    favicon: android.graphics.Bitmap?
+                ) {
+                    super.onPageStarted(view, url, favicon)
+
+                    Log.d(
+                        "PayButtonChromeClient",
+                        "Popup page started: $url"
+                    )
+
+                    /*
+                     * Some navigation paths may reach onPageStarted()
+                     * without first reaching shouldOverrideUrlLoading().
+                     * Check passkey here as a second safety net.
+                     */
+                    if (url.contains("passkey/redirect", ignoreCase = true)) {
+
+                        Log.d(
+                            "PayButtonChromeClient",
+                            "Passkey URL detected in popup onPageStarted: $url"
+                        )
+
+                        view.stopLoading()
+                         openPasskeyInDefaultBrowser(url)
+                        //  openPasskeyWebView(url)
+                    }
+                }
+
+                override fun onReceivedError(
+                    view: WebView,
+                    request: WebResourceRequest,
+                    error: WebResourceError
+                ) {
+                    Log.e(
+                        "PayButtonChromeClient",
+                        "Popup WebView error: ${error.errorCode} ${error.description}"
+                    )
+
+                    super.onReceivedError(view, request, error)
+                }
+            }
 
             /*
              * Use another ChromeClient for the popup itself.
@@ -672,7 +768,7 @@ class PayButton : LinearLayout , ApplicationLifecycle {
                     webView.stopLoading()
 
                     webView.webChromeClient = null
-                   // webView.webViewClient =
+                    // webView.webViewClient =
 
                     popupContainer?.removeView(webView)
 
@@ -718,7 +814,7 @@ class PayButton : LinearLayout , ApplicationLifecycle {
 
                 try {
                     val intent = Intent.parseUri(request?.url.toString(), Intent.URI_INTENT_SCHEME)
-                   // samsungCheckoutStarted= true
+                    // samsungCheckoutStarted= true
                     paymentResultReceived = false
                     onSuccessCalled = false
                     context.startActivity(intent)
@@ -733,17 +829,17 @@ class PayButton : LinearLayout , ApplicationLifecycle {
 
                 return true // ensures WebView does not handle the URL further
             }
-          /*  if (request?.url.toString().contains(TapRedirectStatusDelegate.onHeightChange.name)) {
-                val newHeight = request?.url?.getQueryParameter(keyValueName)
-                val params: ViewGroup.LayoutParams? = webViewFrame.layoutParams
-                params?.height = webViewFrame.context.getDimensionsInDp(newHeight?.toInt()?.plus(15) ?: 95)
-                webViewFrame.layoutParams = params
+            /*  if (request?.url.toString().contains(TapRedirectStatusDelegate.onHeightChange.name)) {
+                  val newHeight = request?.url?.getQueryParameter(keyValueName)
+                  val params: ViewGroup.LayoutParams? = webViewFrame.layoutParams
+                  params?.height = webViewFrame.context.getDimensionsInDp(newHeight?.toInt()?.plus(15) ?: 95)
+                  webViewFrame.layoutParams = params
 
-                PayButtonDataConfiguration.getTapKnetListener()
-                    ?.onPayButtonHeightChange(newHeight.toString())
+                  PayButtonDataConfiguration.getTapKnetListener()
+                      ?.onPayButtonHeightChange(newHeight.toString())
 
 
-            }*/
+              }*/
             if (request?.url.toString().contains(TapRedirectStatusDelegate.onHeightChange.name)) {
 
                 val height = request?.url?.getQueryParameter(keyValueName)?.toIntOrNull()
@@ -774,6 +870,22 @@ class PayButton : LinearLayout , ApplicationLifecycle {
                 var datafromUrl = request?.url?.getQueryParameter(keyValueName).toString()
                 PayButtonDataConfiguration.getTapKnetListener()
                     ?.onPayButtonBindIdentification(datafromUrl)
+
+                return true
+            }
+            val currentUrl = request?.url?.toString().orEmpty()
+
+            if (currentUrl.contains("passkey/redirect", ignoreCase = true)) {
+
+                // Prevent the passkey URL from loading inside our WebView
+                Log.d(
+                    "PayButton",
+                    "Passkey URL detected in main WebView: $currentUrl"
+                )
+
+                webView?.stopLoading()
+                  openPasskeyInDefaultBrowser(currentUrl)
+                //   openPasskeyWebView(currentUrl)
 
                 return true
             }
@@ -871,6 +983,7 @@ class PayButton : LinearLayout , ApplicationLifecycle {
 
 
                     }
+
                     if (request?.url.toString().contains(TapRedirectStatusDelegate.onClick.name)) {
                         isBenefitPayUrlIntercepted=false
                         onSuccessCalled = false
@@ -1064,8 +1177,67 @@ class PayButton : LinearLayout , ApplicationLifecycle {
 
                     isBenefitPayUrlIntercepted = true
                 }
-                else -> {}
+                else -> {
+
+
+                    Log.e(
+                        "intercepted",
+                        request?.url.toString()
+                    )
+
+                    /*
+                     * IMPORTANT:
+                     *
+                     * Visa Passkey can navigate inside an iframe/new browsing
+                     * context. In that case shouldOverrideUrlLoading() may not
+                     * receive the URL.
+                     *
+                     * Catch it here as well.
+                     */
+                    if (
+                        request?.url.toString().contains("passkey/redirect", ignoreCase = true) ||
+                        request?.url.toString().contains("/passkey/", ignoreCase = true)
+                    ) {
+
+                        Log.d(
+                            "PayButton",
+                            "PASSKEY REQUEST DETECTED: $request?.url."
+                        )
+
+                        view?.post {
+
+                            try {
+                                view.stopLoading()
+
+                                 openPasskeyInDefaultBrowser(request?.url.toString())
+                                //  openPasskeyWebView(request?.url.toString())
+
+                            } catch (e: Exception) {
+
+                                Log.e(
+                                    "PayButton",
+                                    "Failed to open Passkey URL externally",
+                                    e
+                                )
+                            }
+                        }
+
+                        /*
+                         * We do not want this request to continue inside
+                         * the WebView.
+                         */
+                        return WebResourceResponse(
+                            "text/plain",
+                            "UTF-8",
+                            null
+                        )
+                    }
+
+
+
+                }
             }
+
 
             return super.shouldInterceptRequest(view, request)
         }
@@ -1084,7 +1256,139 @@ class PayButton : LinearLayout , ApplicationLifecycle {
         }
     }
 
+    private fun openPasskeyInDefaultBrowser(passkeyUrl: String) {
 
+        try {
+
+            /*
+             * ADDED: Create the passkey session BEFORE opening the browser.
+             *
+             * The redirect Activity will deliver
+             * tapcardwebsdk://onpasskeyredirect?... back to this session.
+             * The existing PayButton WebView flow is then resumed with the
+             * returned authentication URL.
+             */
+            ThreeDSPasskeySession.start(
+                threeDsUrl = passkeyUrl,
+                redirectUrl = null,
+                keyword = null,
+                listener = object : ThreeDSPasskeySession.Listener {
+
+                    override fun onSucceeded(redirectionUrl: String) {
+
+                        Log.d(
+                            "PayButton",
+                            "ThreeDS Passkey callback received: $redirectionUrl"
+                        )
+
+                        redirectWebView?.post {
+                            redirectWebView?.visibility = View.VISIBLE
+
+                            val javascript =
+                                "window.loadAuthernticate(${JSONObject.quote(redirectionUrl)});"
+
+                            redirectWebView?.evaluateJavascript(
+                                "typeof window.loadAuthernticate"
+                            ) { typeResult ->
+
+                                Log.d(
+                                    "PayButton",
+                                    "window.loadAuthernticate type = $typeResult"
+                                )
+
+                                if (typeResult == "\"function\"") {
+
+                                    val javascript =
+                                        "window.loadAuthernticate(${JSONObject.quote(redirectionUrl)});"
+
+                                    redirectWebView?.evaluateJavascript(
+                                        javascript
+                                    ) { result ->
+                                        Log.d(
+                                            "PayButton",
+                                            "loadAuthernticate result = $result"
+                                        )
+                                    }
+                                } else {
+                                    Log.e(
+                                        "PayButton",
+                                        "window.loadAuthernticate is not available"
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onCanceled() {
+
+                        Log.d(
+                            "PayButton",
+                            "ThreeDS Passkey authentication cancelled"
+                        )
+
+                        redirectWebView?.post {
+                            redirectWebView?.visibility = View.VISIBLE
+                        }
+                    }
+
+                    override fun onFailed(error: Throwable) {
+
+                        Log.e(
+                            "PayButton",
+                            "ThreeDS Passkey authentication failed",
+                            error
+                        )
+
+                        redirectWebView?.post {
+                            redirectWebView?.visibility = View.VISIBLE
+                        }
+                    }
+                }
+            )
+
+
+            redirectWebView?.stopLoading()
+            redirectWebView?.visibility = View.GONE
+
+            PasskeyManager.setAuthenticationCallback { authUrl ->
+
+                redirectWebView?.post {
+
+                    redirectWebView?.visibility = View.VISIBLE
+
+                    val javascript =
+                        "window.loadAuthenticate(${org.json.JSONObject.quote(authUrl)});"
+
+                    redirectWebView?.evaluateJavascript(javascript) { result ->
+
+                        Log.d(
+                            "PayButton",
+                            "loadAuthernticate result: $result"
+                        )
+                    }
+                }
+            }
+
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(passkeyUrl)
+            ).apply {
+                addCategory(Intent.CATEGORY_BROWSABLE)
+            }
+
+            context.startActivity(intent)
+
+        } catch (e: Exception) {
+
+            Log.e(
+                "PayButton",
+                "Unable to open passkey URL",
+                e
+            )
+
+            redirectWebView?.visibility = View.VISIBLE
+        }
+    }
     override fun onDetachedFromWindow() {
 
         try {
@@ -1154,6 +1458,98 @@ class PayButton : LinearLayout , ApplicationLifecycle {
         Log.e("applifeCycle","onEnterBackground")
 
     }
+    private fun openPasskeyWebView(passkeyUrl: String) {
+
+        Log.d(
+            "PayButton",
+            "Opening Passkey WebView: $passkeyUrl"
+        )
+
+        redirectWebView.stopLoading()
+
+        /*
+         * Hide the main PayButton WebView while Passkey
+         * authentication is running.
+         */
+        redirectWebView.visibility = View.GONE
+
+        PasskeyWebViewActivity.onAuthenticationCompleted = { authUrl ->
+
+            Log.d(
+                "PayButton",
+                "Passkey callback received: $authUrl"
+            )
+
+            /*
+             * Main PayButton WebView must be restored after
+             * Passkey Activity is closed.
+             */
+            redirectWebView.post {
+
+                redirectWebView.visibility = View.VISIBLE
+
+                /*
+                 * Pass the FULL callback URL:
+                 *
+                 * https://sdk.dev.tap.company/?auth_payer=XXXX
+                 *
+                 * into:
+                 *
+                 * window.loadAuthernticate(url)
+                 */
+                val javascript =
+                    "window.loadAuthenticate(${JSONObject.quote(authUrl)});"
+
+                Log.d(
+                    "PayButton",
+                    "Calling loadAuthernticate with: $authUrl"
+                )
+
+                redirectWebView.evaluateJavascript(
+                    javascript
+                ) { result ->
+
+                    Log.d(
+                        "PayButton",
+                        "loadAuthernticate result: $result"
+                    )
+                }
+            }
+        }
+
+        PasskeyWebViewActivity.onAuthenticationCancelled = {
+
+            Log.d(
+                "PayButton",
+                "Passkey authentication cancelled by user"
+            )
+
+            /*
+             * Restore the main PayButton WebView.
+             *
+             * IMPORTANT:
+             * Do NOT call loadAuthernticate().
+             */
+            redirectWebView.post {
+                redirectWebView.visibility = View.VISIBLE
+            }
+        }
+
+        val intent = Intent(
+            context,
+            PasskeyWebViewActivity::class.java
+        ).apply {
+
+            putExtra(
+                PasskeyWebViewActivity.EXTRA_URL,
+                passkeyUrl
+            )
+
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+
+        context.startActivity(intent)
+    }
 }
 enum class KnetConfiguration() {
     MapConfigruation
@@ -1162,6 +1558,7 @@ enum class KnetConfiguration() {
 enum class PaymentFlow {
     CARDPAY, PAYMENTBUTTON
 }
+
 
 
 
