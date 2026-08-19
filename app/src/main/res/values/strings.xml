@@ -119,11 +119,11 @@
         <item>CLICK2PAY</item>
         <item>CARD</item>
         <item>TAMARA</item>
-       <!-- <item>QPAY</item>-->
+        <item>QPAY</item>
 
 <!--        <item>VISA</item>-->
 <!--        <item>AMERICANEXPRESS</item>-->
-       <!-- <item>FAWRY</item>-->
+        <item>FAWRY</item>
 <!--        <item>MADA</item>-->
 <!--        <item>MASTERCARD</item>-->
         <!--<item>STCPAY</item>-->
@@ -336,11 +336,6 @@
         <item>WEB / REDIRECT</item>
     </string-array>
 
-    <!-- Mirrors the iOS demo's "Created by" row -->
-    <string-array name="IntentSource">
-        <item>the sdk creates it</item>
-        <item>the app creates it</item>
-    </string-array>
 
     <!-- Mirrors the iOS "user experience" row -->
     <string-array name="UserExperience">

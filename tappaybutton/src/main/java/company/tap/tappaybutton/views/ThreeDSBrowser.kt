@@ -3,7 +3,6 @@ package company.tap.tappaybutton.views
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
@@ -11,6 +10,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.browser.customtabs.CustomTabsService
+import company.tap.tappaybutton.utils.tapHostActivity
 
 /*
  * ThreeDSBrowser.kt
@@ -39,7 +39,7 @@ internal object ThreeDSBrowser {
      * @return True when something opened
      */
     internal fun open(url: Uri, context: Context): Boolean {
-        val host: Activity? = context.findActivity()
+        val host: Activity? = context.tapHostActivity()
 
         if (host == null) {
             // Without an activity there is no task to draw the tab over, so the browser app
@@ -110,18 +110,6 @@ internal object ThreeDSBrowser {
         return null
     }
 
-    /**
-     * Walks out through the theme wrappers a view's context is usually buried under, to the
-     * activity underneath. Null when the button was built with an application context
-     */
-    internal fun hostActivity(context: Context): Activity? = context.findActivity()
-
-    private fun Context.findActivity(): Activity? {
-        var current: Context? = this
-        while (current is ContextWrapper) {
-            if (current is Activity) return current
-            current = current.baseContext
-        }
-        return null
-    }
+    /** The activity the button is living in, or null when it was built with an app context */
+    internal fun hostActivity(context: Context): Activity? = context.tapHostActivity()
 }

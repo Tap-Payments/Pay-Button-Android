@@ -65,6 +65,17 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
     </style>
 
+    <!--
+        The card scanner fills the screen with a camera preview, so its window is opaque. On the
+        translucent theme the activity underneath stays visible behind the preview and the system
+        never treats the screen as covered.
+    -->
+    <style name="Theme.TapCardScanner" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
     <style name="Theme.Transparent" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>

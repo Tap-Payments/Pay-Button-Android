@@ -42,7 +42,9 @@ internal const val AUTH_PAYER_KEYWORD = "auth_payer"
  * redirection finished keyword
  */
 internal fun PayButton.showRedirectionView(redirection: Redirection) {
-    // The 3ds page reads the details off the button, the same way the iOS view is handed them
+    // The 3ds page reads the details off the button, the same way the iOS view is handed them.
+    // The bar is shown whatever `powered` says on this route .. only the card form's own 3ds
+    // page honours it, which is where the merchant actually set it
     PayButton.threeDsResponse = redirection
     navigateTo3dsActivity(PaymentFlow.PAYMENTBUTTON.name)
 }
@@ -136,8 +138,8 @@ internal fun PayButton.handleCardAuthenticationCanceled() {
     PayButtonDataConfiguration.getTapKnetListener()?.onPayButtoncancel()
     val javaScript = """
         (function() {
-            if (window.CardSDK && typeof window.CardSDK.cancelAuthentication === 'function') {
-                window.CardSDK.cancelAuthentication();
+            if (window && typeof window.cancelAuthentication === 'function') {
+                window.cancelAuthentication();
                 return 'CardSDK';
             }
             if (typeof window.cancel === 'function') {

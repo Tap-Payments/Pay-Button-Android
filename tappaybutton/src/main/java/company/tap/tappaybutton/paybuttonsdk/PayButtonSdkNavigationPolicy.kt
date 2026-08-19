@@ -48,15 +48,6 @@ internal fun PayButton.decidePolicyFor(url: Uri, webView: WebView?): Boolean {
     // An app that is not us wants this navigation
     if (handleNativeHandoff(url, webView)) return true
 
-    // An acs that asks for a passkey can not run in a web view at all, whichever web view
-    // it reached. It leaves for the system browser before anything tries to load it
-    if (isPasskeyNavigation(absoluteString)) {
-        Log.i(TAG, "a passkey navigation arrived, $absoluteString")
-        webView?.stopLoading()
-        startFidoAuthentication(threeDsUrl = absoluteString, redirectUrl = lastCardRedirection?.redirectUrl)
-        return true
-    }
-
     // The scheme is the only part of a url that may be case folded, so match it that way
     val isCardWebSdkCallback: Boolean = absoluteString.startsWith(cardPrefix, ignoreCase = true)
     val isWebSdkCallback: Boolean = absoluteString.startsWith(webViewScheme, ignoreCase = true)
@@ -71,17 +62,6 @@ internal fun PayButton.decidePolicyFor(url: Uri, webView: WebView?): Boolean {
     // url from being handed to the network stack, which would only fail to load
     return isCardWebSdkCallback || isWebSdkCallback
 }
-
-/**
- * True when this navigation is an acs page that advertises a passkey challenge.
- *
- * It is matched on the url alone, unlike `requiresSystemBrowser`, because a challenge can
- * also arrive as a plain navigation with no `on3dsRedirect` announcing it and so no keyword
- * to check against
- */
-internal fun isPasskeyNavigation(absoluteString: String): Boolean =
-    absoluteString.contains("passkey/redirect", ignoreCase = true) ||
-            absoluteString.contains("/passkey/", ignoreCase = true)
 
 /**
  * Hands a navigation over to the app it belongs to, when it is not a page at all.

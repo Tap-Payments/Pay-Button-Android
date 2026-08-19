@@ -23,11 +23,11 @@ import company.tap.tappaybutton.PayButton
 import company.tap.tappaybutton.PayButtonDataConfiguration
 import company.tap.tappaybutton.PaymentFlow
 import company.tap.tappaybutton.enums.tapID
-import company.tap.tappaybutton.getDeviceSpecs
 import company.tap.tappaybutton.models.CardRedirection
 import company.tap.tappaybutton.models.Redirection
 import company.tap.tappaybutton.paybuttonsdk.handleCardAuthenticationCanceled
 import company.tap.tappaybutton.paybuttonsdk.passCardAuthenticationToSDK
+import company.tap.tappaybutton.utils.tapDisableZoom
 import company.tap.tappaybutton.utils.tapExtractDataFromUrl
 import java.util.Locale
 
@@ -138,9 +138,16 @@ class ThreeDsWebViewActivityButton : AppCompatActivity() {
             return
         }
 
+        // The card form's own page honours what the merchant asked for. The shared redirection
+        // page always carries the bar .. that route is the sdk's page, not the form's
+        val poweredForSheet: Boolean = when (paymentFlow) {
+            PaymentFlow.CARDPAY.name -> redirectionData?.powered ?: true
+            else -> true
+        }
+
         threeDsBottomsheet = ThreeDsBottomSheetFragmentButton(
             webView = webView,
-            powered = redirectionData?.powered ?: true,
+            powered = poweredForSheet,
             onCancel = { threeDSCanceled() }
         )
 
@@ -152,9 +159,11 @@ class ThreeDsWebViewActivityButton : AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     private fun buildWebView() {
         webView = WebView(this)
+        // Fills whatever it is put in rather than being pinned to a screen's worth of pixels.
+        // A fixed height cannot reach the bottom of a sheet that is not the height of the screen
         webView.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
-            this.getDeviceSpecs().first
+            LinearLayout.LayoutParams.MATCH_PARENT
         )
 
         with(webView.settings) {
@@ -166,6 +175,7 @@ class ThreeDsWebViewActivityButton : AppCompatActivity() {
             cacheMode = WebSettings.LOAD_NO_CACHE
         }
 
+        webView.tapDisableZoom()
         webView.requestFocus()
         webView.webViewClient = ThreeDsWebViewClient()
 

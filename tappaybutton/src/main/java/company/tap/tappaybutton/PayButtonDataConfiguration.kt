@@ -9,7 +9,6 @@ import com.tap.commondatamodels.Customer
 import com.tap.commondatamodels.TapAuthentication
 
 
-import java.security.PublicKey
 
 /**
  * Created by AhlaamK on 3/23/22.

@@ -15,6 +15,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import company.tap.tappaybutton.PayButton
+import company.tap.tappaybutton.utils.tapDisableZoom
 
 /*
  * PayButtonSdkPopup.kt
@@ -77,6 +78,7 @@ internal class PayButtonPopupChromeClient(
             loadWithOverviewMode = true
         }
 
+        newWebView.tapDisableZoom()
         newWebView.setBackgroundColor(Color.WHITE)
 
         // The popup fires the same web sdk callbacks the form does, so it is routed the same
@@ -97,17 +99,6 @@ internal class PayButtonPopupChromeClient(
                 super.onPageStarted(view, url, favicon)
                 Log.d(TAG, "Popup page started: $url")
 
-                // Some navigations reach onPageStarted without ever reaching
-                // shouldOverrideUrlLoading, ex a redirect inside a nested browsing context.
-                // A passkey must not be allowed to keep loading here either
-                if (isPasskeyNavigation(url)) {
-                    Log.d(TAG, "Passkey URL detected in popup onPageStarted: $url")
-                    view.stopLoading()
-                    payButton.startFidoAuthentication(
-                        threeDsUrl = url,
-                        redirectUrl = payButton.lastCardRedirection?.redirectUrl
-                    )
-                }
             }
 
             override fun onReceivedError(

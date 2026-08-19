@@ -8,10 +8,11 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.LinearLayout
 import com.example.tappaybutton.R
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import company.tap.tappaybutton.TapBrandView
-import company.tap.tappaybutton.getDeviceSpecs
+import company.tap.tappaybutton.getDimensionsInDp
 
 /*
  * ThreeDsBottomSheetFragmentButton.kt
@@ -73,10 +74,8 @@ class ThreeDsBottomSheetFragmentButton(
             tapBrandView.poweredByImage.visibility = View.INVISIBLE
         }
 
-        val bottomSheetDialog = dialog as? BottomSheetDialog
-        bottomSheetDialog?.behavior?.isFitToContents = true
-        bottomSheetDialog?.behavior?.peekHeight =
-            (context?.getDeviceSpecs()?.first ?: 950) - 250
+        // The page fills the sheet and scrolls itself, so the sheet is sized rather than fitted
+        // to a content height it no longer has one of
 
         // The payer must finish or back out deliberately, a half dismissed sheet leaves the
         // authentication running with nothing on screen
@@ -85,6 +84,57 @@ class ThreeDsBottomSheetFragmentButton(
         tapBrandView.backButtonLinearLayout.setOnClickListener {
             dialog?.dismiss()
             onCancel.invoke()
+        }
+    }
+
+    /**
+     * Sizes the sheet once its window exists.
+     *
+     * It has to be here, not in onViewCreated .. the view being sized is not ours.
+     * BottomSheetDialog wraps whatever it is given in a container of its own, and that container
+     * is wrap_content, so a root of match_parent inside it resolves against nothing and the sheet
+     * ends up as tall as the page happened to have painted.
+     *
+     * All four settings work as a set. Turning fitToContents off without the rest leaves the
+     * behaviour with a peek height and a half expanded state at half the screen, and it opens at
+     * whichever it likes .. which is one gateway looking half height and another looking like an
+     * empty strip, from the same cause.
+     */
+    override fun onStart() {
+        super.onStart()
+
+        val container: View = dialog?.findViewById(
+            com.google.android.material.R.id.design_bottom_sheet
+        ) ?: return
+
+        container.layoutParams = container.layoutParams.apply {
+            height = ViewGroup.LayoutParams.MATCH_PARENT
+        }
+
+        (dialog as? BottomSheetDialog)?.behavior?.apply {
+            isFitToContents = false
+            // Stops short of the top, so it reads as a sheet over the app rather than a screen
+            // that replaced it. Same idea as a page sheet on iOS leaving the presenting screen
+            // showing above it. In dp, so the gap is the same size on any density
+            expandedOffset = requireContext().getDimensionsInDp(TOP_GAP_DP)
+            skipCollapsed = true
+            // The payer finishes or backs out with the button, the same as iOS being modal in
+            // presentation. Dragging could otherwise settle it half way down mid authentication
+            isDraggable = false
+            state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
+        // Measured after a layout pass. Whichever of these comes back short is where the height
+        // stops flowing down
+        container.post {
+            Log.i(
+                TAG,
+                "screen ${resources.displayMetrics.heightPixels} | " +
+                        "container ${container.height} | " +
+                        "root ${view?.height ?: -1} | " +
+                        "webLinear ${view?.findViewById<View>(R.id.webLinear)?.height ?: -1} | " +
+                        "webView ${webView?.height ?: -1}"
+            )
         }
     }
 
@@ -100,5 +150,8 @@ class ThreeDsBottomSheetFragmentButton(
 
     private companion object {
         private const val TAG = "3DS_BOTTOM_SHEET"
+
+        /** How much of the app stays visible above the page, in dp */
+        private const val TOP_GAP_DP = 56
     }
 }

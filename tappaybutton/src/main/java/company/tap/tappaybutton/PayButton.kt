@@ -4,13 +4,9 @@ package company.tap.tappaybutton
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
 import android.graphics.Color
-import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -24,30 +20,24 @@ import android.view.ViewGroup
 import android.webkit.*
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.core.os.postDelayed
 import com.example.tappaybutton.R
 import com.google.gson.Gson
 import company.tap.tappaybutton.ApiService.BASE_URL_1
 import company.tap.tappaybutton.PayButtonConfiguration.Companion.payButonurlFormat
-import company.tap.tappaybutton.enums.SCHEMES
-import company.tap.tappaybutton.enums.TapRedirectStatusDelegate
-import company.tap.tappaybutton.enums.ThreeDsPayButtonType
-import company.tap.tappaybutton.enums.careemPayUrlHandler
 import company.tap.tappaybutton.enums.intentKey
-import company.tap.tappaybutton.enums.keyValueName
 import company.tap.tappaybutton.enums.operatorKey
 import company.tap.tappaybutton.enums.publicKeyToGet
 import company.tap.tappaybutton.models.CardRedirection
 import company.tap.tappaybutton.models.Redirection
 import company.tap.tappaybutton.paybuttonsdk.PayButtonPopupChromeClient
 import company.tap.tappaybutton.paybuttonsdk.decidePolicyFor
-import company.tap.tappaybutton.paybuttonsdk.isPasskeyNavigation
-import company.tap.tappaybutton.paybuttonsdk.startFidoAuthentication
 import company.tap.tappaybutton.threeDsWebview.ThreeDsWebViewActivityButton
+import company.tap.tappaybutton.utils.tapDisableZoom
+import company.tap.tappaybutton.views.CardNfcReader
+import company.tap.tappaybutton.views.CardScannerActivity
 import company.tap.tappaybutton.views.ThreeDSPasskeySession
 import okhttp3.Call
 import okhttp3.Callback
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -57,15 +47,12 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
-import java.net.URISyntaxException
 import java.util.*
 import kotlin.collections.HashMap
-import android.os.Message
 
 
 @SuppressLint("ViewConstructor")
 class PayButton : LinearLayout , ApplicationLifecycle {
-    lateinit var webviewStarterUrl: String
     internal var isBenefitPayUrlIntercepted = false
     // lateinit var webViewScheme: String
     var webViewScheme: String = "tapbuttonsdk://"
@@ -77,7 +64,6 @@ class PayButton : LinearLayout , ApplicationLifecycle {
     private var popupContainer: FrameLayout? = null
     lateinit var webViewFrame: FrameLayout
     lateinit var urlToBeloaded: String
-    var firstTimeOnReadyCallback = true
     lateinit var linearLayout: LinearLayout
     lateinit var dialog: Dialog
     lateinit var redirectConfiguration: java.util.HashMap<String, Any>
@@ -109,9 +95,11 @@ class PayButton : LinearLayout , ApplicationLifecycle {
     internal var threeDSPasskeySession: ThreeDSPasskeySession? = null
     private  val SAMSUNG_PAY_URL_PREFIX: String = "samsungpay"
     private  val SAMSUNG_APP_STORE_URL: String = "samsungapps://ProductDetail/com.samsung.android.spay"
-    private var paymentResultReceived = false
-    private var passkeyBrowserOpened = false
     companion object {
+
+        /** The smallest a pay button is allowed to be, in dp. Mirrors `minimumButtonHeight` */
+        internal const val MINIMUM_BUTTON_HEIGHT = 48
+
         /**
          * The redirection the shared buttons are currently authenticating for.
          *
@@ -127,15 +115,12 @@ class PayButton : LinearLayout , ApplicationLifecycle {
 
         internal lateinit var redirectWebView: WebView
 
-        lateinit var buttonTypeConfigured: ThreeDsPayButtonType
         fun cancel() {
             redirectWebView.loadUrl("javascript:window.cancel()")
         }
 
         fun generateTapAuthenticate(authIdPayerUrl: String) {
             redirectWebView.loadUrl("javascript:window.loadAuthentication('$authIdPayerUrl')")
-        } fun generateTapAuthenticater(authIdPayerUrl: String) {
-            redirectWebView.loadUrl("javascript:window.loadAuthernticate('$authIdPayerUrl')")
         }
 
         fun retrieve(value: String) {
@@ -190,8 +175,22 @@ class PayButton : LinearLayout , ApplicationLifecycle {
             }
         }
 
+        redirectWebView.tapDisableZoom()
+
         redirectWebView.setBackgroundColor(Color.TRANSPARENT)
         redirectWebView.setLayerType(LAYER_TYPE_SOFTWARE, null)
+
+        // 48 from the very first layout, not only once the form has reported something. Both a
+        // floor the host cannot go under and the starting height, which is what the iOS
+        // constraint gives by being a >= that starts at 48
+        minimumHeight = context.getDimensionsInDp(MINIMUM_BUTTON_HEIGHT)
+        post {
+            val params: ViewGroup.LayoutParams? = layoutParams
+            if (params != null && params.height < context.getDimensionsInDp(MINIMUM_BUTTON_HEIGHT)) {
+                params.height = context.getDimensionsInDp(MINIMUM_BUTTON_HEIGHT)
+                layoutParams = params
+            }
+        }
 
         webChrome = PayButtonPopupChromeClient(this)
         redirectWebView.webChromeClient = webChrome
@@ -300,8 +299,22 @@ class PayButton : LinearLayout , ApplicationLifecycle {
 
                             println("ButtonURL >> $urlToBeloaded")
 
+                            if (intentIdResponse.isNullOrEmpty()) {
+                                // Nothing to build a url out of. Saying nothing here leaves the
+                                // button never built and a configuration that never took effect,
+                                // with no sign of why
+                                Handler(Looper.getMainLooper()).post {
+                                    PayButtonDataConfiguration.getTapKnetListener()
+                                        ?.onPayButtonError("The intent came back without an id")
+                                }
+                            }
+
                         } else {
                             println("Intent SDK API returned errors >> $responseBody")
+                            Handler(Looper.getMainLooper()).post {
+                                PayButtonDataConfiguration.getTapKnetListener()
+                                    ?.onPayButtonError(responseBody.toString())
+                            }
                         }
 
                     } catch (ex: JSONException) {
@@ -416,6 +429,11 @@ class PayButton : LinearLayout , ApplicationLifecycle {
 
     fun init(configuraton: java.util.HashMap<String, Any>?, headers: Headers,_intentId : String?, _publickey:String?) {
 
+        // What is on screen belongs to the configuration being replaced, and the one replacing it
+        // cannot be built until the intent apis have answered. Left alone it stays up through both
+        // calls, so changing anything shows the old button for a moment first. It goes now
+        teardown()
+
         if (configuraton != null) {
             redirectConfiguration = configuraton
         }
@@ -488,45 +506,6 @@ class PayButton : LinearLayout , ApplicationLifecycle {
 
 
 
-        when (configuraton) {
-
-            // KnetConfiguration.MapConfigruation -> {
-
-            /* urlToBeloaded =
-                    "${webviewStarterUrl}${encodeConfigurationMapToUrl(KnetDataConfiguration.configurationsAsHashMap)}"*/
-            // knetWebView.loadUrl(urlToBeloaded)
-            // }
-
-
-        }
-        //    Log.e("urlToBeloaded",urlToBeloaded)
-
-    }
-
-    private fun initializePaymentData(buttonType: ThreeDsPayButtonType?) {
-        when (buttonType) {
-            ThreeDsPayButtonType.KNET -> applySchemes(SCHEMES.KNET)
-            ThreeDsPayButtonType.BENEFIT -> applySchemes(SCHEMES.BENEFIT)
-            ThreeDsPayButtonType.FAWRY -> applySchemes(SCHEMES.FAWRY)
-            ThreeDsPayButtonType.PAYPAL -> applySchemes(SCHEMES.PAYPAL)
-            ThreeDsPayButtonType.TABBY -> applySchemes(SCHEMES.TABBY)
-            ThreeDsPayButtonType.GOOGLEPAY -> applySchemes(SCHEMES.GOOGLE)
-            ThreeDsPayButtonType.CAREEMPAY -> applySchemes(SCHEMES.CAREEMPAY)
-            ThreeDsPayButtonType.SAMSUNGPAY -> applySchemes(SCHEMES.SAMSUNGPAY)
-            ThreeDsPayButtonType.VISA -> applySchemes(SCHEMES.VISA)
-            ThreeDsPayButtonType.AMERICANEXPRESS -> applySchemes(SCHEMES.AMERICANEXPRESS)
-            ThreeDsPayButtonType.MADA -> applySchemes(SCHEMES.MADA)
-            ThreeDsPayButtonType.MASTERCARD -> applySchemes(SCHEMES.MASTERCARD)
-            ThreeDsPayButtonType.CARD -> applySchemes(SCHEMES.CARD)
-
-
-            else -> {}
-        }
-    }
-
-    private fun applySchemes(scheme: SCHEMES) {
-        webviewStarterUrl = scheme.value.first
-        webViewScheme = scheme.value.second
     }
 
     inner class MyWebViewClient : WebViewClient() {
@@ -614,31 +593,6 @@ class PayButton : LinearLayout , ApplicationLifecycle {
                         request?.url.toString()
                     )
 
-                    /*
-                     * A passkey can navigate inside an iframe or a new browsing context, and
-                     * shouldOverrideUrlLoading is not called for those. This is the second
-                     * place it can be caught, and it must be caught .. a WebView has no
-                     * navigator.credentials, so letting the request through only ends in the
-                     * acs page failing in a way the payer can not act on
-                     */
-                    if (isPasskeyNavigation(request?.url.toString())) {
-                        val passkeyUrl: String = request?.url.toString()
-                        Log.d("PayButton", "a passkey request arrived, $passkeyUrl")
-
-                        view?.post {
-                            view.stopLoading()
-                            startFidoAuthentication(
-                                threeDsUrl = passkeyUrl,
-                                redirectUrl = lastCardRedirection?.redirectUrl
-                            )
-                        }
-
-                        // Answering it ourselves is what stops it loading in the web view
-                        return WebResourceResponse("text/plain", "UTF-8", null)
-                    }
-
-
-
                 }
             }
 
@@ -685,15 +639,6 @@ class PayButton : LinearLayout , ApplicationLifecycle {
         if (value == null) value = ""
         return Base64.encodeToString(value.trim { it <= ' ' }.toByteArray(), Base64.DEFAULT)
     }
-    fun decodeBase64(base64String: String): String? {
-        return try {
-            val decodedBytes = Base64.decode(base64String, Base64.DEFAULT)
-            String(decodedBytes, Charsets.UTF_8) // Convert bytes to string using UTF-8
-        } catch (e: IllegalArgumentException) {
-            println("Invalid Base64 input: ${e.message}")
-            null
-        }
-    }
     /** Takes the 3ds dialog down and puts the button page back where it belongs */
     internal fun dismissDialog() {
         if (::dialog.isInitialized) {
@@ -702,14 +647,6 @@ class PayButton : LinearLayout , ApplicationLifecycle {
             if (redirectWebView.parent == null) {
                 (webViewFrame as ViewGroup).addView(redirectWebView)
             }
-        }
-    }
-
-    private fun closePayment() {
-        if (successPayload.second) {
-            dismissDialog()
-            PayButtonDataConfiguration.getTapKnetListener()
-                ?.onPayButtonSuccess(successPayload.first)
         }
     }
 
@@ -752,24 +689,41 @@ class PayButton : LinearLayout , ApplicationLifecycle {
      * @param height The height in dp the web sdk reported
      */
     internal fun updateHeight(height: Int) {
-        if (!::webViewFrame.isInitialized) return
-        webViewFrame.post {
-            webViewFrame.layoutParams = webViewFrame.layoutParams.apply {
-                this.height = webViewFrame.context.getDimensionsInDp(height)
-            }
-            webViewFrame.requestLayout()
+        val apply = Runnable {
+            // Never smaller than a button, whatever the form reports. Mirrors
+            // max(PayButtonSdk.minimumButtonHeight, height)
+            val targetHeight: Int = maxOf(MINIMUM_BUTTON_HEIGHT, height)
+
+            // The button view carries the height, the way the iOS constraint sits on the view
+            // itself and its web view fills it
+            val params: ViewGroup.LayoutParams = layoutParams ?: return@Runnable
+            params.height = context.getDimensionsInDp(targetHeight)
+            layoutParams = params
+
+            // Laid out now, on the parent and on itself, which is what
+            // superview?.layoutIfNeeded() and layoutIfNeeded() do on the other side
+            (parent as? View)?.requestLayout()
+            requestLayout()
+            invalidate()
+
+            // Told after the height has been applied, and told the height that was applied
+            // rather than the one that was asked for
+            PayButtonDataConfiguration.getTapKnetListener()
+                ?.onPayButtonHeightChange(targetHeight.toString())
         }
+
+        // Applied in the turn the report arrives in, the way DispatchQueue.main.async applies it
+        // in the next turn of the run loop rather than a frame later
+        if (Looper.myLooper() == Looper.getMainLooper()) apply.run() else post(apply)
     }
 
     /** Gives the page the whole frame, for a flow that is a page rather than a button */
     internal fun expandToFullScreen() {
-        if (!::webViewFrame.isInitialized) return
-        webViewFrame.post {
-            webViewFrame.layoutParams = LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.MATCH_PARENT
-            )
-            webViewFrame.requestLayout()
+        post {
+            val params: ViewGroup.LayoutParams = layoutParams ?: return@post
+            params.height = LayoutParams.MATCH_PARENT
+            layoutParams = params
+            requestLayout()
         }
     }
 
@@ -793,6 +747,9 @@ class PayButton : LinearLayout , ApplicationLifecycle {
         post {
             dismissDialog()
             closePopupWebView()
+
+            CardScannerActivity.dismiss()
+            CardNfcReader.dismiss()
 
             // Closes the browser without telling the delegate, the payment it belonged to is over
             threeDSPasskeySession?.cancel()

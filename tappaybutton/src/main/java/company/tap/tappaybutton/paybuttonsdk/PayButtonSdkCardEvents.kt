@@ -35,10 +35,10 @@ internal fun PayButton.handleCardWebSdkCallback(url: Uri): Boolean {
             val reportedHeight: String = tapExtractDataFromUrl(url, shouldBase64Decode = false)
             val height: Int? = reportedHeight.toDoubleOrNull()?.toInt()
             if (height != null) {
-                // Resize ourselves, then tell the merchant the height we settled on
+                // Resizes the button and tells the merchant the height it settled on, in that
+                // order. Reporting from here instead would report the height that was asked
+                // for, before anything had been done with it
                 updateHeight(height)
-                PayButtonDataConfiguration.getTapKnetListener()
-                    ?.onPayButtonHeightChange(height.toString())
             } else {
                 Log.w(TAG, "the card form reported a height we can not read, $reportedHeight")
             }
@@ -53,11 +53,18 @@ internal fun PayButton.handleCardWebSdkCallback(url: Uri): Boolean {
 
         absoluteString.namesEvent(CallBackSchemeEnum.onScannerClick) -> {
             PayButtonDataConfiguration.getTapKnetListener()?.onPayButtonScannerClick()
+            // The sdk answers this itself rather than leaving the merchant to open a camera and
+            // find its way back into the form. The delegate is still told, for anyone who wants
+            // to know, or who would rather run their own and call fillScannedCard
+            scanCard()
             true
         }
 
         absoluteString.namesEvent(CallBackSchemeEnum.onNfcClick) -> {
             PayButtonDataConfiguration.getTapKnetListener()?.onPayButtonNfcClick()
+            // Answered here the same way the scanner is. The delegate is still told, for anyone
+            // who would rather read the card themselves and call fillScannedCard
+            readCardOverNfc()
             true
         }
 

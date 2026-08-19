@@ -2,6 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
+        The card form can ask for the camera to scan a card. Declared here, so it merges into the
+        host app, which is what lets the sdk answer that event itself the way Pay-Button-iOS does.
+        Nothing opens the camera unless the payer taps scan.
+    -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!--
+        The card form can also ask for a contactless read. Neither is required hardware .. a device
+        without nfc installs and runs fine, the event just reports that it cannot be served
+    -->
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-feature android:name="android.hardware.nfc" android:required="false" />
+
+    <!--
         Android 11 and up hide the installed apps from us unless we say what we are looking
         for. Without this the browser probe finds nothing, every device looks like it has no
         custom tabs, and the passkey is handed to the browser app instead of running in place.
@@ -67,6 +81,12 @@
             </intent-filter>
 
         </activity>
+
+        <activity
+            android:name="company.tap.tappaybutton.views.CardScannerActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.TapCardScanner" />
 
     </application>
 

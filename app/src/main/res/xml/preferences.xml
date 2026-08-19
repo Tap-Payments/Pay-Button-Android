@@ -14,7 +14,7 @@
             app:key="buttonKey"
             app:entries="@array/ButtonList"
             app:entryValues="@array/ButtonList"
-            app:defaultValue="1"
+            app:defaultValue="KNET"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
@@ -26,22 +26,6 @@
 
     <PreferenceCategory
         app:title="intent">
-
-        <!-- Whether the sdk creates the intent or the app hands it one it made itself -->
-        <DropDownPreference
-            app:key="intentSourceKey"
-            app:title="Created by"
-            app:entries="@array/IntentSource"
-            app:entryValues="@array/IntentSource"
-            app:defaultValue="the sdk creates it"
-            app:useSimpleSummaryProvider="true" />
-
-        <!-- Used when the app is the one creating the intent -->
-        <EditTextPreference
-            app:key="intentIdKey"
-            app:title="Intent id"
-            app:defaultValue=""
-            app:useSimpleSummaryProvider="true" />
 
         <DropDownPreference
             app:key="purposeKey"
@@ -93,7 +77,7 @@
             app:key="scopeKey"
             app:entries="@array/ScopeList"
             app:entryValues="@array/ScopeList"
-            app:defaultValue="1"
+            app:defaultValue="CHARGE"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
@@ -466,7 +450,7 @@
             app:title="@string/choose_language"
             app:entries="@array/Lanugages"
             app:entryValues="@array/LanugagesValues"
-            app:defaultValue="1"
+            app:defaultValue="en"
             app:useSimpleSummaryProvider="true" />
 
         <DropDownPreference
@@ -482,7 +466,7 @@
             app:title="Card Edges"
             app:entries="@array/Edges"
             app:entryValues="@array/Edges"
-            app:defaultValue="1"
+            app:defaultValue="circular"
             app:useSimpleSummaryProvider="true" />
 
         <!-- iOS has direction and card direction as two rows, and the payload has two
