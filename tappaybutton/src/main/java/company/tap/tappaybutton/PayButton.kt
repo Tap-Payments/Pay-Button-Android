@@ -58,6 +58,7 @@ import java.util.*
 import kotlin.collections.HashMap
 import android.os.Message
 
+
 @SuppressLint("ViewConstructor")
 class PayButton : LinearLayout , ApplicationLifecycle {
     lateinit var webviewStarterUrl: String
@@ -99,6 +100,8 @@ class PayButton : LinearLayout , ApplicationLifecycle {
 
         fun generateTapAuthenticate(authIdPayerUrl: String) {
             redirectWebView.loadUrl("javascript:window.loadAuthentication('$authIdPayerUrl')")
+        } fun generateTapAuthenticater(authIdPayerUrl: String) {
+            redirectWebView.loadUrl("javascript:window.loadAuthernticate('$authIdPayerUrl')")
         }
 
         fun retrieve(value: String) {
@@ -875,7 +878,8 @@ class PayButton : LinearLayout , ApplicationLifecycle {
             }
             val currentUrl = request?.url?.toString().orEmpty()
 
-            if (currentUrl.contains("passkey/redirect", ignoreCase = true)) {
+         /*   if ( request?.url.toString().contains("passkey/redirect", ignoreCase = true) ||
+                request?.url.toString().contains("/passkey/", ignoreCase = true)) {
 
                 // Prevent the passkey URL from loading inside our WebView
                 Log.d(
@@ -888,6 +892,20 @@ class PayButton : LinearLayout , ApplicationLifecycle {
                 //   openPasskeyWebView(currentUrl)
 
                 return true
+            }*/
+            if (request?.url.toString().contains(TapRedirectStatusDelegate.on3dsRedirect.name)) {
+                /**
+                 * navigate to 3ds Activity
+                 */
+                val queryParams =
+                    request?.url?.getQueryParameterFromUri(keyValueName).toString()
+                Log.e("data card", queryParams.toString())
+
+                threeDsResponseCardPayButtons = queryParams.getModelFromJson()
+                navigateTo3dsActivity(PaymentFlow.CARDPAY.name)
+                Log.e("data card", threeDsResponseCardPayButtons.toString())
+
+return true
             }
             if (request?.url.toString().startsWith(careemPayUrlHandler)) {
                 webViewFrame.layoutParams =
@@ -1281,42 +1299,24 @@ class PayButton : LinearLayout , ApplicationLifecycle {
                             "ThreeDS Passkey callback received: $redirectionUrl"
                         )
 
-                        redirectWebView?.post {
-                            redirectWebView?.visibility = View.VISIBLE
 
-                            val javascript =
-                                "window.loadAuthernticate(${JSONObject.quote(redirectionUrl)});"
 
-                            redirectWebView?.evaluateJavascript(
-                                "typeof window.loadAuthernticate"
-                            ) { typeResult ->
+                        redirectWebView?.stopLoading()
+                        PayButton.generateTapAuthenticater(redirectionUrl)
 
-                                Log.d(
-                                    "PayButton",
-                                    "window.loadAuthernticate type = $typeResult"
-                                )
+                            //   openPasskeyWebView(currentUrl)
 
-                                if (typeResult == "\"function\"") {
 
-                                    val javascript =
-                                        "window.loadAuthernticate(${JSONObject.quote(redirectionUrl)});"
 
-                                    redirectWebView?.evaluateJavascript(
-                                        javascript
-                                    ) { result ->
-                                        Log.d(
-                                            "PayButton",
-                                            "loadAuthernticate result = $result"
-                                        )
-                                    }
-                                } else {
-                                    Log.e(
-                                        "PayButton",
-                                        "window.loadAuthernticate is not available"
-                                    )
-                                }
+                      /*  redirectWebView?.post {
+                            if (redirectWebView?.parent == null && ::dialog.isInitialized && dialog.isShowing) {
+                                // Re-attach if lost during backgrounding
+                                linearLayout.addView(redinavirectWebView)
                             }
-                        }
+                            redirectWebView?.visibility = View.VISIBLE
+                            val javascript = "window.loadAuthernticate(${JSONObject.quote(redirectionUrl)});"
+                            redirectWebView?.evaluateJavascript(javascript, null)
+                        }*/
                     }
 
                     override fun onCanceled() {
@@ -1357,7 +1357,7 @@ class PayButton : LinearLayout , ApplicationLifecycle {
                     redirectWebView?.visibility = View.VISIBLE
 
                     val javascript =
-                        "window.loadAuthenticate(${org.json.JSONObject.quote(authUrl)});"
+                        "window.loadAuthernticate(${org.json.JSONObject.quote(authUrl)});"
 
                     redirectWebView?.evaluateJavascript(javascript) { result ->
 
@@ -1473,22 +1473,22 @@ class PayButton : LinearLayout , ApplicationLifecycle {
          */
         redirectWebView.visibility = View.GONE
 
-        PasskeyWebViewActivity.onAuthenticationCompleted = { authUrl ->
+       /* PasskeyWebViewActivity.onAuthenticationCompleted = { authUrl ->
 
             Log.d(
                 "PayButton",
                 "Passkey callback received: $authUrl"
             )
 
-            /*
+            *//*
              * Main PayButton WebView must be restored after
              * Passkey Activity is closed.
-             */
+             *//*
             redirectWebView.post {
 
                 redirectWebView.visibility = View.VISIBLE
 
-                /*
+                *//*
                  * Pass the FULL callback URL:
                  *
                  * https://sdk.dev.tap.company/?auth_payer=XXXX
@@ -1496,7 +1496,7 @@ class PayButton : LinearLayout , ApplicationLifecycle {
                  * into:
                  *
                  * window.loadAuthernticate(url)
-                 */
+                 *//*
                 val javascript =
                     "window.loadAuthenticate(${JSONObject.quote(authUrl)});"
 
@@ -1524,16 +1524,16 @@ class PayButton : LinearLayout , ApplicationLifecycle {
                 "Passkey authentication cancelled by user"
             )
 
-            /*
+            *//*
              * Restore the main PayButton WebView.
              *
              * IMPORTANT:
              * Do NOT call loadAuthernticate().
-             */
+             *//*
             redirectWebView.post {
                 redirectWebView.visibility = View.VISIBLE
             }
-        }
+        }*/
 
         val intent = Intent(
             context,

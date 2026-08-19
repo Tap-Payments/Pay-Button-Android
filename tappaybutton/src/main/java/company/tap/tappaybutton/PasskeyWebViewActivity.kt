@@ -1,264 +1,171 @@
 package company.tap.tappaybutton
 
-import android.annotation.SuppressLint
-import android.graphics.Bitmap
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import androidx.appcompat.app.AppCompatActivity
 
-class PasskeyWebViewActivity : AppCompatActivity() {
-
-    private lateinit var webView: WebView
-
-    private var callbackHandled = false
+class PasskeyWebViewActivity : Activity() {
 
     companion object {
 
-        const val EXTRA_URL = "passkey_url"
+        private const val TAG = "PasskeyWebViewActivity"
 
-        var onAuthenticationCompleted: ((String) -> Unit)? = null
+        const val EXTRA_URL =
+            "passkey_url"
 
-        var onAuthenticationCancelled: (() -> Unit)? = null
+        private const val CALLBACK_SCHEME =
+            "tapcardwebsdk"
+
+        private const val CALLBACK_HOST =
+            "onpasskeyredirect"
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private var callbackHandled = false
+
+    override fun onCreate(
+        savedInstanceState: Bundle?
+    ) {
         super.onCreate(savedInstanceState)
 
-        webView = WebView(this)
+        Log.d(
+            TAG,
+            "PasskeyWebViewActivity created"
+        )
 
-        setContentView(webView)
+        /*
+         * We don't need a WebView here.
+         *
+         * This Activity exists only to receive the
+         * browser callback.
+         */
+        handleIntent(intent)
+    }
 
-        with(webView.settings) {
-            javaScriptEnabled = true
-            domStorageEnabled = true
-            javaScriptCanOpenWindowsAutomatically = true
-            setSupportMultipleWindows(true)
-            allowContentAccess = true
-            allowFileAccess = false
-        }
+    override fun onNewIntent(
+        intent: Intent?
+    ) {
+        super.onNewIntent(intent)
 
-        webView.webViewClient = object : WebViewClient() {
+        setIntent(intent)
 
-            override fun shouldOverrideUrlLoading(
-                view: WebView,
-                request: WebResourceRequest
-            ): Boolean {
+        Log.d(
+            TAG,
+            "onNewIntent received: ${intent?.data}"
+        )
 
-                val url = request.url.toString()
+        handleIntent(intent)
+    }
 
-                Log.d(
-                    "PasskeyWebView",
-                    "Navigation URL: $url"
-                )
+    private fun handleIntent(
+        intent: Intent?
+    ) {
 
-                if (isAuthenticationCallback(url)) {
-
-                    handleAuthenticationCallback(url)
-
-                    return true
-                }
-
-                return false
-            }
-
-            override fun onPageStarted(
-                view: WebView,
-                url: String,
-                favicon: Bitmap?
-            ) {
-
-                Log.d(
-                    "PasskeyWebView",
-                    "Page started: $url"
-                )
-
-                if (isAuthenticationCallback(url)) {
-
-                    handleAuthenticationCallback(url)
-
-                    return
-                }
-
-                super.onPageStarted(view, url, favicon)
-            }
-        }
-
-        val passkeyUrl =
-            intent.getStringExtra(EXTRA_URL)
-
-        if (passkeyUrl.isNullOrBlank()) {
-
-            Log.e(
-                "PasskeyWebView",
-                "Passkey URL is empty"
-            )
-
-            finish()
+        if (callbackHandled) {
             return
         }
 
+        val callbackUri =
+            intent?.data
+
         Log.d(
-            "PasskeyWebView",
-            "Loading Passkey URL: $passkeyUrl"
+            TAG,
+            "Callback URI: $callbackUri"
         )
 
-        webView.loadUrl(passkeyUrl)
-    }
-
-    /**
-     * Checks only for the Tap authentication callback.
-     *
-     * Example:
-     *
-     * https://sdk.dev.tap.company/?auth_payer=auth_payer_sSMda2926157ogpi14tM7K734
-     */
-    private fun isAuthenticationCallback(url: String): Boolean {
-
-        return try {
-
-            val uri = android.net.Uri.parse(url)
-
-            uri.scheme.equals(
-                "https",
-                ignoreCase = true
-            ) &&
-                    uri.host.equals(
-                        "sdk.dev.tap.company",
-                        ignoreCase = true
-                    ) &&
-                    !uri.getQueryParameter("auth_payer")
-                        .isNullOrBlank()
-
-        } catch (e: Exception) {
+        if (callbackUri == null) {
 
             Log.e(
-                "PasskeyWebView",
-                "Unable to parse URL: $url",
-                e
+                TAG,
+                "Passkey callback URI is null."
             )
 
-            false
+            callbackHandled = true
+
+            ThreeDSPasskeySession.current
+                ?.onFailed(
+                    IllegalArgumentException(
+                        "Passkey callback URI is null"
+                    )
+                )
+
+            finish()
+
+            return
         }
-    }
 
-    /**
-     * Called exactly once when:
-     *
-     * https://sdk.dev.tap.company/?auth_payer=XXXX
-     *
-     * is reached.
-     */
-    private fun handleAuthenticationCallback(url: String) {
-
-        if (callbackHandled) {
-            Log.d(
-                "PasskeyWebView",
-                "Authentication callback already handled"
+        /*
+         * Validate that this is our callback.
+         */
+        if (
+            !callbackUri.scheme.equals(
+                CALLBACK_SCHEME,
+                ignoreCase = true
             )
+        ) {
+
+            Log.e(
+                TAG,
+                "Unexpected callback scheme: " +
+                        "${callbackUri.scheme}"
+            )
+
+            return
+        }
+
+        if (
+            !callbackUri.host.equals(
+                CALLBACK_HOST,
+                ignoreCase = true
+            )
+        ) {
+
+            Log.e(
+                TAG,
+                "Unexpected callback host: " +
+                        "${callbackUri.host}"
+            )
+
             return
         }
 
         callbackHandled = true
 
         Log.d(
-            "PasskeyWebView",
-            "AUTHENTICATION CALLBACK RECEIVED"
-        )
-
-        Log.d(
-            "PasskeyWebView",
-            "Callback URL: $url"
+            TAG,
+            "Valid Passkey callback received."
         )
 
         /*
-         * Stop the callback page from loading.
+         * ThreeDSPasskeySession will:
+         *
+         * 1. Decode the callback
+         * 2. Call onSucceeded()
+         * 3. Clear the current session
          */
-        webView.stopLoading()
+        ThreeDSPasskeySession.handleCallback(
+            callbackUri
+        )
 
         /*
-         * Send the FULL callback URL back to PayButton.
+         * IMPORTANT:
+         *
+         * Do not keep this Activity alive.
+         *
+         * The PayButton listener will restore the
+         * original WebView.
          */
-        onAuthenticationCompleted?.invoke(url)
         finish()
-        overridePendingTransition(0, 0)
-
-        /*
-         * Clear callback so it cannot be called again.
-         */
-        onAuthenticationCompleted = null
-        onAuthenticationCancelled = null
-
-        /*
-         * Close the Passkey WebView immediately.
-         */
-     //   finish()
-    }
-
-    /**
-     * User pressed Back.
-     *
-     * No authentication callback was received.
-     * Therefore DO NOT call loadAuthernticate().
-     */
-    override fun onBackPressed() {
-
-        if (!callbackHandled) {
-
-            Log.d(
-                "PasskeyWebView",
-                "Passkey WebView closed by user"
-            )
-
-            onAuthenticationCancelled?.invoke()
-        }
-
-        onAuthenticationCompleted = null
-        onAuthenticationCancelled = null
-
-        cleanupWebView()
-
-        super.onBackPressed()
     }
 
     override fun onDestroy() {
 
         Log.d(
-            "PasskeyWebView",
-            "Passkey WebView destroyed"
+            TAG,
+            "PasskeyWebViewActivity destroyed"
         )
 
-        cleanupWebView()
-
         super.onDestroy()
-    }
-
-    private fun cleanupWebView() {
-
-        try {
-
-            if (::webView.isInitialized) {
-
-                webView.stopLoading()
-
-                webView.webChromeClient = null
-               // webView.webViewClient = null
-
-                webView.removeAllViews()
-
-                webView.destroy()
-            }
-
-        } catch (e: Exception) {
-
-            Log.e(
-                "PasskeyWebView",
-                "Error destroying WebView",
-                e
-            )
-        }
     }
 }

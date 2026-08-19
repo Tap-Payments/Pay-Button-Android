@@ -8,32 +8,31 @@
         <activity
             android:name="company.tap.tappaybutton.threeDsWebview.ThreeDsWebViewActivityButton"
             android:exported="false"
+            android:enableOnBackInvokedCallback="true"
             android:theme="@style/Theme.Transparent" />
+
         <activity
             android:name="company.tap.tappaybutton.PasskeyWebViewActivity"
             android:exported="true"
-            android:theme="@style/Theme.Transparent"/>
-        <activity
-            android:name="company.tap.tappaybutton.PasskeyCallbackActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Transparent">
-
+            android:noHistory="true"
+            android:theme="@style/Theme.Transparent"
+            android:excludeFromRecents="true">
 
             <intent-filter>
+
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="tap-paybutton"
-                    android:host="passkey"
-                    android:pathPrefix="/callback" />
+                    android:scheme="tapcardwebsdk"
+                    android:host="onpasskeyredirect" />
 
             </intent-filter>
 
         </activity>
-
         <activity
             android:name="company.tap.tappaybutton.ThreeDSPasskeyRedirectActivity"
             android:exported="true"

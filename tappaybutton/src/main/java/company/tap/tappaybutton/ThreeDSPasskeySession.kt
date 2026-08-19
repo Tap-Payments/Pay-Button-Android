@@ -1,6 +1,5 @@
 package company.tap.tappaybutton
 
-
 import android.net.Uri
 import android.util.Base64
 import android.util.Log
@@ -15,6 +14,18 @@ class ThreeDSPasskeySession private constructor() {
         var current: ThreeDSPasskeySession? = null
             private set
 
+        /*
+         * IMPORTANT:
+         *
+         * Keep the last successful Passkey authentication URL even
+         * after the current session is cleared.
+         *
+         * This is used by ThreeDsWebViewActivityButton when the
+         * 3DS screen is opened/recreated.
+         */
+        @Volatile
+        private var lastAuthenticatedUrl: String? = null
+
         @Synchronized
         fun start(
             threeDsUrl: String,
@@ -24,14 +35,25 @@ class ThreeDSPasskeySession private constructor() {
         ): ThreeDSPasskeySession {
 
             current?.let {
+
                 Log.i(
                     TAG,
                     "A passkey authentication is already running. " +
-                            "Ignoring new authentication."
+                            "Updating listener."
                 )
+
+                it.listener = listener
 
                 return it
             }
+
+            /*
+             * New authentication session.
+             *
+             * Remove the URL from an old authentication so that
+             * the new 3DS flow cannot accidentally use an old URL.
+             */
+            lastAuthenticatedUrl = null
 
             val session = ThreeDSPasskeySession()
 
@@ -62,6 +84,61 @@ class ThreeDSPasskeySession private constructor() {
 
             return session
         }
+
+        /**
+         * Returns the URL received after Passkey authentication.
+         *
+         * Example:
+         * https://sdk.dev.tap.company/?auth_payer=XXXX
+         */
+        @JvmStatic
+        fun getLastAuthenticatedUrl(): String? {
+            return lastAuthenticatedUrl
+        }
+
+        /**
+         * Clears the stored authentication URL.
+         *
+         * Call this only after the URL has been consumed by
+         * the 3DS WebView.
+         */
+        @JvmStatic
+        fun clearLastAuthenticatedUrl() {
+            lastAuthenticatedUrl = null
+        }
+
+        /**
+         * Called by PasskeyWebViewActivity when the browser redirects
+         * back to:
+         *
+         * tapcardwebsdk://onpasskeyredirect/...
+         */
+        @JvmStatic
+        fun handleCallback(callback: Uri?) {
+
+            val session = current
+
+            if (session == null) {
+
+                Log.e(
+                    TAG,
+                    "Passkey callback received but no active session exists."
+                )
+
+                return
+            }
+
+            session.onCallback(callback)
+        }
+
+        /**
+         * Called when callback Activity is destroyed without
+         * receiving a callback.
+         */
+        @JvmStatic
+        fun cancelCurrent() {
+            current?.onCanceled()
+        }
     }
 
     interface Listener {
@@ -88,12 +165,6 @@ class ThreeDSPasskeySession private constructor() {
         authenticationIdentifier: String?
     ): String? {
 
-        /*
-         * Put your existing keyword logic here.
-         *
-         * Returning null is safer than inventing
-         * a query parameter.
-         */
         return null
     }
 
@@ -178,6 +249,16 @@ class ThreeDSPasskeySession private constructor() {
                     "Returning URL: $finalUrl"
         )
 
+        /*
+         * IMPORTANT:
+         *
+         * Save the authentication URL BEFORE clearing the session.
+         *
+         * ThreeDsWebViewActivityButton can now retrieve it even though
+         * current becomes null.
+         */
+        lastAuthenticatedUrl = finalUrl
+
         val callbackListener = listener
 
         clearCurrent()
@@ -248,7 +329,10 @@ class ThreeDSPasskeySession private constructor() {
                             Base64.NO_PADDING
                 )
 
-            String(decoded, Charsets.UTF_8)
+            String(
+                decoded,
+                Charsets.UTF_8
+            )
 
         } catch (e: IllegalArgumentException) {
 
@@ -270,23 +354,32 @@ class ThreeDSPasskeySession private constructor() {
             return false
         }
 
-        return value.startsWith("https://") ||
-                value.startsWith("http://")
+        return value.startsWith(
+            "https://",
+            ignoreCase = true
+        ) ||
+                value.startsWith(
+                    "http://",
+                    ignoreCase = true
+                )
     }
 
     private fun assumedReturnUrl(): String? {
 
-        val base = redirectUrl
-            ?.takeIf { it.isNotEmpty() }
-            ?: return null
+        val base =
+            redirectUrl
+                ?.takeIf { it.isNotEmpty() }
+                ?: return null
 
-        val key = keyword
-            ?.takeIf { it.isNotEmpty() }
-            ?: return null
+        val key =
+            keyword
+                ?.takeIf { it.isNotEmpty() }
+                ?: return null
 
-        val id = authenticationIdentifier
-            ?.takeIf { it.isNotEmpty() }
-            ?: return null
+        val id =
+            authenticationIdentifier
+                ?.takeIf { it.isNotEmpty() }
+                ?: return null
 
         return try {
 
@@ -314,7 +407,9 @@ class ThreeDSPasskeySession private constructor() {
 
     private fun clearCurrent() {
 
-        synchronized(ThreeDSPasskeySession::class.java) {
+        synchronized(
+            ThreeDSPasskeySession::class.java
+        ) {
 
             if (current === this) {
                 current = null
