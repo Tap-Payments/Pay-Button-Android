@@ -150,8 +150,9 @@ class SettingsActivity : AppCompatActivity(),SimpleSettingsConfig.PreferenceCall
         ) {
 
             val defaultHash = hashSetOf("DEBIT", "CREDIT")
-// Save a HashSet to SharedPreferences
-            val hashSet = getPrefs().getStringSet("supportedSchemesKey", defaultHash)
+            // Was reading supportedSchemesKey, so asking for the fund source handed back
+            // the card schemes instead
+            val hashSet = getPrefs().getStringSet("supportedFundSourceKey", defaultHash)
             editor.putStringSet("myKey", hashSet)
             editor.apply()
             // Retrieve the HashSet (stored as a Set<String>) from SharedPreferences

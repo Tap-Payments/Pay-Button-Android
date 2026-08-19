@@ -115,16 +115,44 @@ object PayButtonDataConfiguration {
 
 }
 
+/**
+ * The events the pay button reports back.
+ *
+ * Mirrors Pay-Button-iOS Logic/Shared/Public/PayButtonDelegate.swift. Every method there
+ * is optional, so every method here that is not already required carries a default body ..
+ * a new event added on the iOS side can be added here without breaking an integrator who
+ * has not implemented it yet.
+ */
 interface PayButtonStatusDelegate {
+    /** Fired whenever the charge is successful, carrying the charge as json */
     fun onPayButtonSuccess(data: String)
+    /** Fired whenever the button is rendered and loaded */
     fun onPayButtonReady(){}
+    /** Fired whenever the customer clicked the button */
     fun onPayButtonClick(){}
+    /** Fired whenever the order is created, carrying the order id */
     fun onPayButtonOrderCreated(data: String){}
+    /** Fired whenever the charge is created, carrying the charge as json */
     fun onPayButtonChargeCreated(data:String){}
+    /** Fired whenever there is an error related to the connectivity or the apis */
     fun onPayButtonError(error: String)
+    /** Fired whenever the customer cancels the payment */
     fun onPayButtoncancel(){}
+    /** Fired by the card based buttons whenever the rendered form changes its size */
     fun onPayButtonHeightChange(heightChange:String){}
+    /** Fired by the card based buttons once the brand of the typed card is identified */
     fun onPayButtonBindIdentification(data: String){}
+    /**
+     * Fired by the card form when the customer has to be authenticated on a 3ds page.
+     * The button runs the authentication itself, this is for integrators who drive their
+     * own ui from it. Mirrors `onThreeDSRedirect(data:)`
+     * @param data json describing the 3ds page to be displayed
+     */
+    fun onPayButtonThreeDSRedirect(data: String){}
+    /** Fired when the customer asks to scan a card. Present your card scanner from here */
+    fun onPayButtonScannerClick(){}
+    /** Fired when the customer asks to read a card over NFC. Start your NFC reader from here */
+    fun onPayButtonNfcClick(){}
 
 }
 
