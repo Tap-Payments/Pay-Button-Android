@@ -41,6 +41,37 @@ import java.math.BigDecimal
 class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
     lateinit var payButton: PayButton
 
+    /**
+     * A payload edited by hand in the json editor.
+     *
+     * Null until something is saved there, and from then on it is what configures the button
+     * and what the sdk creates the intent from .. the editor is not a preview
+     */
+    private var intentJsonOverride: JSONObject? = null
+
+    /** Everything the sdk has reported, newest first, the way the iOS example keeps it */
+    private val eventLog = StringBuilder()
+
+    /** Opens the json editor and takes back what was saved */
+    private val intentJsonEditor = registerForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val edited: String? = result.data?.getStringExtra(IntentJsonEditorActivity.EXTRA_JSON)
+        if (result.resultCode != RESULT_OK || edited.isNullOrBlank()) return@registerForActivityResult
+
+        intentJsonOverride = try {
+            JSONObject(edited)
+        } catch (error: JSONException) {
+            appendEvent("intent json rejected", error.message ?: "")
+            null
+        }
+
+        if (intentJsonOverride != null) {
+            appendEvent("intent json saved", "the button is being configured with it")
+            configureSdk(null)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,11 +80,106 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
       * If pre creating intent ****/
      //  callIntentAPI()
 
-        /*** If PASSING INTENT OBJECT **** /
+        /*
+         * Who creates the intent, from the settings screen's "Created by" row.
          *
+         * Either way it is built from the same payload: the sdk is handed the dictionary and
+         * posts it, or the app posts it here and hands the sdk the id that came back
          */
-       configureSdk(null)
+        val appCreatesTheIntent: Boolean = getPrefStringValue(
+            "intentSourceKey",
+            "the sdk creates it"
+        ) == "the app creates it"
 
+        val presetIntentId: String = getPrefStringValue("intentIdKey", "")
+
+        when {
+            // An intent the merchant already has, nothing to create
+            appCreatesTheIntent && presetIntentId.isNotBlank() -> configureSdk(presetIntentId)
+            // The app creates one, out of the same payload, then hands over its id
+            appCreatesTheIntent -> callIntentAPI()
+            // The sdk creates it out of the payload we hand it
+            else -> configureSdk(null)
+        }
+
+        findViewById<android.widget.Button>(R.id.options).setOnClickListener {
+            showOptions()
+        }
+    }
+
+    /**
+     * The Options menu from the iOS example, as an Android dialog.
+     *
+     * Same four things: take the log away with you, clear it, change the configuration, or
+     * edit the payload by hand
+     */
+    private fun showOptions() {
+        val actions = arrayOf(
+            getString(R.string.copy_logs),
+            getString(R.string.clear_logs),
+            getString(R.string.configs),
+            getString(R.string.edit_intent_json)
+        )
+
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setItems(actions) { _, which ->
+                when (which) {
+                    0 -> copyLogs()
+                    1 -> clearLogs()
+                    2 -> startActivity(android.content.Intent(this, SettingsActivity::class.java))
+                    3 -> editIntentJson()
+                }
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
+    }
+
+    private fun copyLogs() {
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.setPrimaryClip(ClipData.newPlainText("Pay Button logs", eventLog.toString()))
+        Toast.makeText(this, "Logs copied", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun clearLogs() {
+        eventLog.setLength(0)
+        findViewById<TextView>(R.id.text).text = ""
+    }
+
+    /** Opens the payload that is about to be used, so it can be changed before it is */
+    private fun editIntentJson() {
+        val editing: String = try {
+            currentIntentJson().toString(4)
+        } catch (error: JSONException) {
+            currentIntentJson().toString()
+        }
+
+        intentJsonEditor.launch(
+            android.content.Intent(this, IntentJsonEditorActivity::class.java)
+                .putExtra(IntentJsonEditorActivity.EXTRA_JSON, editing)
+        )
+    }
+
+    /**
+     * Records an event the way the iOS example does: newest first, each one separated, and
+     * nothing thrown away. The old screen replaced the text on every callback, so an event
+     * was only readable until the next one arrived
+     * @param name The callback that fired
+     * @param data Whatever it carried, pretty printed when it is json
+     */
+    private fun appendEvent(name: String, data: String = "") {
+        val body: String = if (data.isBlank()) "" else " " + prettyJson(data)
+        eventLog.insert(0, "\n\n========\n\n$name$body")
+
+        val textView = findViewById<TextView>(R.id.text)
+        textView.text = eventLog.toString()
+        textView.movementMethod = ScrollingMovementMethod()
+    }
+
+    /** Pretty prints a payload, or hands it back as it is when it is not json */
+    private fun prettyJson(data: String): String = try {
+        JSONObject(data).toString(4)
+    } catch (error: JSONException) {
+        data
     }
 
 
@@ -1372,12 +1498,18 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
 
         receipt.put(
             "email",
-            false
+            getPrefBooleanValue(
+                "receiptEmailKey",
+                false
+            )
         )
 
         receipt.put(
             "sms",
-            false
+            getPrefBooleanValue(
+                "receiptSmsKey",
+                false
+            )
         )
 
         jsonObject.put(
@@ -1660,12 +1792,18 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
 
         contactVisibility.put(
             "email",
-            true
+            getPrefBooleanValue(
+                "contactEmailKey",
+                true
+            )
         )
 
         contactVisibility.put(
             "number",
-            true
+            getPrefBooleanValue(
+                "contactNumberKey",
+                true
+            )
         )
 
         fieldVisibility.put(
@@ -1677,7 +1815,10 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
 
         shippingVisibility.put(
             "address",
-            true
+            getPrefBooleanValue(
+                "shippingAddressKey",
+                true
+            )
         )
 
         fieldVisibility.put(
@@ -1693,7 +1834,10 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
 
         interfaceObject.put(
             "user_experience",
-            "popup"
+            getPrefStringValue(
+                "userExperienceKey",
+                "popup"
+            )
         )
 
         interfaceObject.put(
@@ -1882,27 +2026,21 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
             )
         }
     }*/
-    fun configureSdk(intentId: String?) {
-
-        val publicKey = getPrefStringValue(
-            "publicKey",
-            "pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7"
-        )
-
-        /**
-         * Intent
-         */
-        val intentObj = HashMap<String, Any>()
-
-        if (intentId != null) {
-            intentObj["intent"] = intentId
-        }
+    /**
+     * The one place the intent payload is built.
+     *
+     * It was built in two places, here and in the demo's own callIntentAPI, and the two had
+     * drifted .. so the payload the button was configured with was not the payload the demo
+     * would have posted to create an intent. One builder now, and `currentIntentJson` is
+     * what every caller reads, including the json editor.
+     */
+    private fun buildIntentJson(): JSONObject {
 
         /**
          * Pay Button Configuration
          */
-        val configuration = LinkedHashMap<String, Any>()
         val jsonObject = JSONObject()
+
 
         // ============================================================
         // BASIC INFORMATION
@@ -2846,12 +2984,18 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
 
         receipt.put(
             "email",
-            false
+            getPrefBooleanValue(
+                "receiptEmailKey",
+                false
+            )
         )
 
         receipt.put(
             "sms",
-            false
+            getPrefBooleanValue(
+                "receiptSmsKey",
+                false
+            )
         )
 
         jsonObject.put(
@@ -3152,10 +3296,12 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
 
         val fieldVisibility = JSONObject()
 
+        // Its own row now. `name` and `card.cardholder` are separate rows on iOS, and both
+        // were reading the card holder toggle here
         fieldVisibility.put(
             "name",
             getPrefBooleanValue(
-                "displayHoldernameKey",
+                "fieldNameKey",
                 true
             )
         )
@@ -3197,12 +3343,18 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
 
         contactVisibility.put(
             "email",
-            true
+            getPrefBooleanValue(
+                "contactEmailKey",
+                true
+            )
         )
 
         contactVisibility.put(
             "number",
-            true
+            getPrefBooleanValue(
+                "contactNumberKey",
+                true
+            )
         )
 
         fieldVisibility.put(
@@ -3214,7 +3366,10 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
 
         shippingVisibility.put(
             "address",
-            true
+            getPrefBooleanValue(
+                "shippingAddressKey",
+                true
+            )
         )
 
         fieldVisibility.put(
@@ -3230,7 +3385,10 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
 
         interfaceObject.put(
             "user_experience",
-            "popup"
+            getPrefStringValue(
+                "userExperienceKey",
+                "popup"
+            )
         )
 
         interfaceObject.put(
@@ -3241,10 +3399,12 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
             )
         )
 
+        // Its own row now. This and card_direction were both reading the card direction,
+        // so the two payload fields could never hold different values
         interfaceObject.put(
             "direction",
             getPrefStringValue(
-                "selectedcardirectKey",
+                "selecteddirectionKey",
                 "dynamic"
             )
         )
@@ -3277,7 +3437,8 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
             "color_style",
             getPrefStringValue(
                 "selectedcolorstyleKey",
-                "coloured"
+                // Was "coloured", which is not one of the values the list offers
+                "colored"
             )
         )
 
@@ -3289,10 +3450,12 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
             )
         )
 
-        // No preference exists for powered.
         interfaceObject.put(
             "powered",
-            true
+            getPrefBooleanValue(
+                "poweredKey",
+                true
+            )
         )
 
         // ============================================================
@@ -3386,7 +3549,10 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
 
         checkout.put(
             "auto",
-            true
+            getPrefBooleanValue(
+                "checkoutAutoKey",
+                true
+            )
         )
 
         val checkoutMetadata = JSONObject()
@@ -3411,20 +3577,35 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
             checkout
         )
 
-        // ============================================================
-        // CONVERT JSON TO HASHMAP
-        // ============================================================
+        return jsonObject
+    }
 
-        val intentObjc: HashMap<String, Any> = Gson().fromJson(
-            jsonObject.toString(),
-            object : TypeToken<HashMap<String?, Any?>?>() {}.type
+    /**
+     * The payload every caller uses.
+     *
+     * Whatever was saved in the json editor wins, so what the editor shows is exactly what
+     * goes on to create the intent. With nothing saved it is the payload the settings screen
+     * describes
+     */
+    private fun currentIntentJson(): JSONObject = intentJsonOverride ?: buildIntentJson()
+
+    /**
+     * Hands the button the payload and lets the sdk create the intent from it
+     * @param intentId An intent the app made itself, or null to have the sdk create one
+     */
+    fun configureSdk(intentId: String?) {
+
+        val publicKey = getPrefStringValue(
+            "publicKey",
+            "pk_test_YhUjg9PNT8oDlKJ1aE2fMRz7"
         )
 
-        // ============================================================
-        // CONFIGURE PAY BUTTON
-        // ============================================================
-
         if (intentId == null) {
+
+            val intentObjc: HashMap<String, Any> = Gson().fromJson(
+                currentIntentJson().toString(),
+                object : TypeToken<HashMap<String?, Any?>?>() {}.type
+            )
 
             PayButtonConfiguration.configureWithPayButtonDictionary(
                 this,
@@ -3448,503 +3629,96 @@ class MainActivity : AppCompatActivity() ,PayButtonStatusDelegate{
         }
     }
 
+    /*
+     * Every callback the sdk fires, recorded into the same log the iOS example keeps.
+     *
+     * They used to replace the text view, so an event was readable only until the next one
+     * arrived .. which for a payment that reports charge created, then 3ds, then success
+     * meant the interesting part was already gone by the time you looked.
+     */
+
     override fun onPayButtonReady() {
-        findViewById<TextView>(R.id.text).text = ""
-        findViewById<TextView>(R.id.text).text = "onReady"
-        Toast.makeText(this, "onReady", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onPayButtonSuccess(data: String) {
-
-        Log.i("onSuccess", data)
-
-        val formattedJson = try {
-            JSONObject(data).toString(4)
-        } catch (e: JSONException) {
-            // In case the callback doesn't contain valid JSON
-            data
-        }
-
-        val textView = findViewById<TextView>(R.id.text)
-
-        textView.text = "onPayButtonSuccess>>"+"\n"+formattedJson
-        textView.movementMethod = ScrollingMovementMethod()
-
-        // Copy formatted JSON to clipboard
-        val clipboard =
-            getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-
-        val clip = ClipData.newPlainText(
-            "Pay Button Success JSON",
-            formattedJson
-        )
-
-        clipboard.setPrimaryClip(clip)
-
-        Toast.makeText(
-            this,
-            "Success JSON copied to clipboard",
-            Toast.LENGTH_SHORT
-        ).show()
+        appendEvent("onReady")
     }
 
     override fun onPayButtonClick() {
-        Toast.makeText(this, "onClick", Toast.LENGTH_SHORT).show()
-        findViewById<TextView>(R.id.text).text = ""
-        findViewById<TextView>(R.id.text).text = "onClick "
-
+        appendEvent("onClicked")
     }
 
+    override fun onPayButtonSuccess(data: String) {
+        Log.i("onSuccess", data)
+        appendEvent("onSuccess", data)
+
+        // Kept from before: the payload is usually wanted somewhere else
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.setPrimaryClip(
+            ClipData.newPlainText("Pay Button Success JSON", prettyJson(data))
+        )
+        Toast.makeText(this, "Success JSON copied to clipboard", Toast.LENGTH_SHORT).show()
+    }
 
     override fun onPayButtonChargeCreated(data: String) {
-        Log.e("data",data.toString())
-        val formattedJson = try {
-            JSONObject(data).toString(4)
-        } catch (e: JSONException) {
-            // In case the callback doesn't contain valid JSON
-            data
-        }
-        findViewById<TextView>(R.id.text).text = ""
-        findViewById<TextView>(R.id.text).text = "onChargeCreated"+"\n"+formattedJson
-        Toast.makeText(this, "onChargeCreated $data", Toast.LENGTH_SHORT).show()
-
+        Log.i("onChargeCreated", data)
+        appendEvent("onChargeCreated", data)
     }
 
     override fun onPayButtonOrderCreated(data: String) {
-        val formattedJson = try {
-            JSONObject(data).toString(4)
-        } catch (e: JSONException) {
-            // In case the callback doesn't contain valid JSON
-            data
-        }
-        findViewById<TextView>(R.id.text).text = ""
-        findViewById<TextView>(R.id.text).text = "onOrderCreated >>"+"\n"+formattedJson
-        Log.e("mainactv", "onPayButtonOrderCreated: "+data )
-        Toast.makeText(this, "onOrderCreated $data", Toast.LENGTH_SHORT).show()
+        Log.i("onOrderCreated", data)
+        appendEvent("onOrderCreated", data)
     }
 
     override fun onPayButtoncancel() {
-        Toast.makeText(this, "Cancel ", Toast.LENGTH_SHORT).show()
+        appendEvent("onCanceled")
     }
 
     override fun onPayButtonError(error: String) {
-        Log.e("error",error.toString())
-        findViewById<TextView>(R.id.text).text = ""
-        findViewById<TextView>(R.id.text).text = "onError $error"
-        Toast.makeText(this, "onError received $error ", Toast.LENGTH_SHORT).show()
-
+        Log.e("onError", error)
+        appendEvent("onError", error)
     }
 
-    private fun callIntentAPI(){
+    override fun onPayButtonThreeDSRedirect(data: String) {
+        Log.i("onThreeDSRedirect", data)
+        appendEvent("onThreeDSRedirect", data)
+    }
+
+    override fun onPayButtonScannerClick() {
+        // The card form asks, the host app owns the camera
+        appendEvent("onScannerClick")
+    }
+
+    override fun onPayButtonNfcClick() {
+        // The card form asks, the host app owns the nfc reader
+        appendEvent("onNfcClick")
+    }
+
+    override fun onPayButtonBindIdentification(data: String) {
+        appendEvent("onBinIdentification", data)
+    }
+
+    override fun onPayButtonHeightChange(heightChange: String) {
+        // The button resizes itself. This is only worth implementing when the host layout
+        // pins it to a fixed height, which this one does not
+        appendEvent("onHeightChange", heightChange)
+    }
+
+    /**
+     * Creates the intent from the app side, then hands the sdk the id it came back with.
+     *
+     * It used to build a payload of its own, ~400 lines duplicating buildIntentJson and
+     * already drifted apart from it .. different purpose, a hardcoded reference, none of the
+     * receipt or checkout settings. So the payload you configured on the settings screen and
+     * the payload this posted were two different things. It reads the one builder now, which
+     * also means a payload edited in the json editor is the one the intent is created from.
+     */
+    private fun callIntentAPI() {
         val builder: OkHttpClient.Builder = OkHttpClient().newBuilder()
         val interceptor = HttpLoggingInterceptor()
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         builder.addInterceptor(interceptor)
 
         val okHttpClient: OkHttpClient = builder.build()
-        val mediaType = "application/json".toMediaType()
-        val scope =intent.getStringExtra("scopeKey")
-        val charge =intent.getStringExtra("scopeKey")
 
-
-
-        val jsonObject = JSONObject()
-        jsonObject.put("scope", scope)
-        jsonObject.put("purpose", charge)
-        jsonObject.put("statement_descriptor", "statement_descriptor")
-        jsonObject.put("description", "sd")
-        jsonObject.put("reference","uuid_testabcdfgkgdgd121992")
-        jsonObject.put("customer_initiated", true)
-        jsonObject.put("hash_string", "")
-        jsonObject.put("idempotent", "")
-
-
-        val merchant = JSONObject()
-        val terminal = JSONObject()
-        terminal.put("id","")
-        val terminaldevice = JSONObject()
-        terminaldevice.put("id","")
-        terminal.put("terminal_device",terminaldevice)
-
-        val medata = JSONObject()
-        medata.put("uud","qq")
-        medata.put("uud2","222")
-
-        val operator = JSONObject()
-        operator.put("id","")
-        val device= JSONObject()
-        device.put("id","")
-        operator.put("device",device)
-        merchant.put("id",intent.getStringExtra("merchantId"))
-        merchant.put("terminal",terminal)
-        merchant.put("operator",operator)
-        val paymentprovider = JSONObject()
-        val technology= JSONObject()
-        technology.put("id","")
-
-        val institution= JSONObject()
-        institution.put("id","")
-
-        paymentprovider.put("technology",technology)
-        paymentprovider.put("institution",institution)
-
-        val ddevelopmenthouse= JSONObject()
-        ddevelopmenthouse.put("id","")
-
-        val platform= JSONObject()
-        platform.put("id","")
-
-       // merchant.put("payment_provider",paymentprovider)
-      //  merchant.put("institution",institution)
-        merchant.put("development_house",ddevelopmenthouse)
-        merchant.put("platform",platform)
-
-        jsonObject.put("merchant", merchant)
-
-        val authenticate = JSONObject()
-        authenticate.put("id","")
-        authenticate.put("required",true)
-
-        jsonObject.put("authenticate", authenticate)
-        val transaction = JSONObject()
-        val cardholderlogin = JSONObject()
-        cardholderlogin.put("type", "GUEST")
-        cardholderlogin.put("timestamp", "123213213")
-
-        val payment_agreement  = JSONObject()
-
-        val contract = JSONObject()
-        contract.put("id","")
-        payment_agreement.put("id","")
-        payment_agreement.put("contract",contract)
-
-        transaction.put("card_holder_login",cardholderlogin)
-        transaction.put("metadata",medata)
-        transaction.put("reference","TEST")
-        transaction.put("payment_agreement",payment_agreement)
-
-        jsonObject.put("transaction", transaction)
-
-        val invoice = JSONObject()
-        invoice.put("id","")
-        jsonObject.put("invoice", invoice)
-
-
-        val descriptiom = JSONObject()
-        descriptiom.put("text", "name ")
-        descriptiom.put( "lang", "en ")
-
-        val reference = JSONObject()
-        reference.put("sku", "stock keeping unit ")
-        reference.put( "gtin", "global trade item number ")
-        reference.put("code", "00dfd ")
-        reference.put("financial_code", "0022343 ")
-
-
-        val descArray = JSONArray()
-        descArray.put(descriptiom)
-
-        val product = JSONObject()
-        product.put("id","")
-        product.put("amount",intent.getStringExtra("amountKey")?.toDouble())
-        product.put("name",descArray)
-        product.put("description",descArray)
-        product.put("metadata",medata)
-        product.put("category","PHYSICAL_GOODS")
-        product.put("reference",reference)
-        val  itemsList = JSONObject()
-        itemsList.put("id", " ")
-        itemsList.put("quantity", 1)
-        itemsList.put("pickup", false)
-        itemsList.put("product", product)
-
-        val itemsArry =  JSONArray()
-        itemsArry.put(itemsList)
-        val items = JSONObject()
-        items.put("count",1)
-        items.put("list",itemsArry)
-
-
-
-        val order = JSONObject()
-        order.put("amount",(intent.getStringExtra("amountKey")?.toDouble()))
-        // order.put("amount",3)
-        order.put("currency",intent.getStringExtra("orderCurrencyKey"))
-        order.put("description",descArray)
-        order.put("reference",intent.getStringExtra("orderRefrenceKey"))
-        order.put("items",items)
-
-        val discount = JSONObject()
-        discount.put("type","F")
-        discount.put("value",1)
-
-        val tax = JSONObject()
-        tax.put( "name", "VAT")
-        tax.put( "description", "test")
-        tax.put( "type", "F")
-        tax.put( "value", 1)
-
-        val taxarry= JSONArray()
-        taxarry.put(tax)
-
-
-        val adddress = JSONObject()
-        adddress.put("type","home ")
-        adddress.put("line1", "sdfghjk ")
-        adddress.put("line2", "oiuytr ")
-        adddress.put("line3", "line3 ")
-        adddress.put("line4","line4 ")
-        adddress.put( "apartment", " ")
-        adddress.put("building", " ")
-        adddress.put("street", " ")
-        adddress.put("avenue", " ")
-        adddress.put("block", " ")
-        adddress.put("area"," ")
-        adddress.put("city", "salmyia")
-        adddress.put("state", "kuwait")
-        adddress.put("country", "KW")
-        adddress.put("zip_code","30003")
-        adddress.put("postal_code", " ")
-
-        val provider = JSONObject()
-        provider.put("id","")
-
-
-
-        val shippigobject = JSONObject()
-        shippigobject.put("amount",1)
-        shippigobject.put("description",descArray)
-        shippigobject.put("recipient_name",descArray)
-        shippigobject.put("address",adddress)
-        shippigobject.put("provider",provider)
-        shippigobject.put("metadata",medata)
-
-        // order.put("tax",taxarry)
-        // order.put("discount",discount)
-      //  order.put("shipping",shippigobject)
-        order.put("metadata",medata)
-
-
-        jsonObject.put("order",order)
-
-        val name = JSONObject()
-        name.put("first", "OSAMA ")
-        name.put("last", "Ahmed ")
-        name.put("middle", " ")
-        name.put("title","MR ")
-
-        val nameList = JSONArray()
-        nameList.put(name)
-
-        val nameCard = JSONObject()
-        nameCard.put("content", "OSAMA AHMED ")
-        nameCard.put("editable",true)
-
-        val phone = JSONObject()
-        phone.put("country_code","965")
-        phone.put("number","55683784")
-
-        val contact = JSONObject()
-        contact.put("email","tap.test@company")
-        contact.put("phone",phone)
-
-        val customer = JSONObject()
-        customer.put("id",intent.getStringExtra("customerIdKey"))
-        customer.put("name",nameList)
-        customer.put("name_on_card",nameCard)
-        customer.put("contact",contact)
-
-
-
-
-        customer.put("address",adddress)
-
-        jsonObject.put("customer",customer)
-        val receipt = JSONObject()
-        receipt.put("email", false)
-        receipt.put("sms", false)
-
-        jsonObject.put("receipt", receipt)
-
-
-        val configOb = JSONObject()
-        configOb.put("initiator","CHECKOUT")
-        configOb.put("type","BUTTON")
-        val features = JSONObject()
-        features.put("acceptance_badge",true)
-        features.put("order",true)
-        features.put("multiple_currencies",true)
-
-        val currency_conversions = JSONObject()
-        currency_conversions.put("dynamic", true)
-        currency_conversions.put("location", true)
-        currency_conversions.put("payment", true)
-        currency_conversions.put("cobadge", true)
-
-        val alternative_card_inputs = JSONObject()
-        alternative_card_inputs.put("card_scanner", true)
-        alternative_card_inputs.put("card_nfc ", true)
-
-        val customer_cards = JSONObject()
-        customer_cards.put("save_card", true)
-        customer_cards.put("auto_save_card", true)
-        customer_cards.put("display_saved_cards", true)
-
-
-        val payments = JSONObject()
-        payments.put("card", true)
-        payments.put("device", true)
-        payments.put("wallet", true)
-        payments.put("bnpl", true)
-        payments.put("mobile", true)
-        payments.put("cash", true)
-        payments.put("redirect", true)
-
-        features.put("currency_conversions",currency_conversions)
-        features.put("payments",payments)
-        features.put("alternative_card_inputs",alternative_card_inputs)
-        features.put("customer_cards",customer_cards)
-
-        val acceptance = JSONObject()
-        val supported_regions = JSONArray()
-        supported_regions.put("LOCAL")
-        supported_regions.put("REGIONAL")
-        supported_regions.put("GLOBAL")
-
-        val supported_countries = JSONArray()
-        supported_countries.put("AE")
-        supported_countries.put("SA")
-        supported_countries.put("KW")
-        supported_countries.put("EG")
-
-        val supported_currencies = JSONArray()
-        supported_currencies.put("KWD")
-        supported_currencies.put( "SAR")
-        supported_currencies.put("AED")
-        supported_currencies.put("OMR")
-        supported_currencies.put("QAR")
-        supported_currencies.put("BHD")
-        supported_currencies.put("EGP")
-        supported_currencies.put("GBP")
-        supported_currencies.put("USD")
-        supported_currencies.put("EUR")
-        supported_currencies.put("AED")
-
-
-
-        val supported_payment_methods = JSONArray()
-        supported_payment_methods.put("BENEFITPAY")
-
-        /*val supported_payment_types = JSONArray()
-        // supported_payment_methods.put ("CARD")
-        supported_payment_types.put("DEVICE")
-        supported_payment_types.put("WEB")*/
-
-        val supported_schemes = JSONArray()
-        // supported_schemes.put("CARD")
-        supported_schemes.put( "MADA")
-        supported_schemes.put("OMANNET")
-        supported_schemes.put("VISA")
-        supported_schemes.put( "MASTERCARD")
-        supported_schemes.put("AMEX")
-        supported_schemes.put("BENEFIT_CARD" )
-        val defaultHash = hashSetOf("VISA","AMEX","MASTERCARD","BENEFIT_CARD","OMANNET","MADA")
-        val defaultFundHash = hashSetOf("CREDIT","DEBIT")
-
-        println("defaultHash"+defaultHash)
-
-        val supported_fund_source = JSONArray()
-        // supported_fund_source.put("CARD")
-        supported_fund_source.put("DEBIT")
-        supported_fund_source.put("CREDIT")
-        val supported_payment_flows = JSONArray()
-        //supported_payment_flows.put("CARD")
-        supported_payment_flows.put("POPUP")
-        supported_payment_flows.put( "PAGE")
-
-        val supported_payment_authentications = JSONArray()
-        supported_payment_authentications.put("3DS")
-        supported_payment_authentications.put( "EMV")
-        supported_payment_authentications.put( "PASSKEY")
-
-       // acceptance.put("supported_regions",supported_regions)
-       // acceptance.put("supported_countries",supported_countries)
-       // acceptance.put("supported_payment_types",supported_payment_types)
-       // acceptance.put("supported_currencies",supported_currencies)
-
-        val paymethods = getPrefStringValue("buttonKey","KNET")
-
-        val arry = JSONArray()
-        arry.put(paymethods)
-
-        acceptance.put("supported_payment_methods",arry)
-
-
-        acceptance.put("supported_schemes",
-            JSONArray(getPrefs().getStringSet("supportedSchemesKey", defaultHash.toHashSet()))
-        )
-        acceptance.put("supported_fund_source",
-            JSONArray(getPrefs().getStringSet("supportedFundSourceKey", defaultFundHash.toHashSet()))
-        )
-        acceptance.put("supported_payment_authentications",supported_payment_authentications)
-        acceptance.put("supported_payment_flows",supported_payment_flows)
-
-        val interfacee = JSONObject()
-        interfacee.put("locale",intent.getStringExtra("selectedlangKey") ?: "EN")
-        interfacee.put("theme",intent.getStringExtra("selectedthemeKey") ?: "LIGHT")
-        interfacee.put("edges",intent.getStringExtra("selectedcardedgeKey") ?: "CURVED")
-        interfacee.put("color_style",intent.getStringExtra("selectedcolorstyleKey") ?:"COLORED")
-        interfacee.put("user_experience","POPUP")
-        interfacee.put("card_direction","DYNAMIC")
-        interfacee.put("loader", true)
-        interfacee.put("powered", true)
-
-
-        val fieldvisibility = JSONObject()
-
-        val card  = JSONObject()
-        card.put( "number",true)
-        card.put("expiry",true)
-        card.put("cvv",true)
-        card.put("cardholder", true)
-
-        val conatct = JSONObject()
-        conatct.put("email", true)
-        conatct.put("number", true)
-
-        val shipping  = JSONObject()
-        shipping.put("address", true)
-
-        fieldvisibility.put("name",true)
-        fieldvisibility.put("card",card)
-        fieldvisibility.put("contact",conatct)
-      //  fieldvisibility.put("shipping",shipping)
-
-        configOb.put("features",features)
-        configOb.put("acceptance",acceptance)
-        configOb.put("field_visibility",fieldvisibility)
-        configOb.put("interface",interfacee)
-
-
-
-        val checkout = JSONObject()
-        checkout.put("auto", true)
-        checkout.put("metadata", medata)
-
-        val post = JSONObject()
-        post.put("url","osama.cm")
-
-        val redirect = JSONObject()
-        redirect.put("url","osama.cm")
-
-        val domain = JSONObject()
-        domain.put("url","demo.tap.PayButtonSDK")
-
-        jsonObject.put("config", configOb)
-        jsonObject.put("domain",domain)
-        jsonObject.put("redirect",redirect)
-        jsonObject.put("post",post)
-        jsonObject.put("checkout",checkout)
+        val jsonObject: JSONObject = currentIntentJson()
 
         val body = jsonObject.toString().toRequestBody("application/json".toMediaTypeOrNull())
 
