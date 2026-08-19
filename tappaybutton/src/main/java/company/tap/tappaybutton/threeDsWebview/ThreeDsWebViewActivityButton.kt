@@ -1,6 +1,7 @@
 package company.tap.tappaybutton.threeDsWebview
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -35,7 +36,7 @@ class ThreeDsWebViewActivityButton : AppCompatActivity() {
     private lateinit var webView: WebView
 
     private var shouldShowBottomSheet = false
-
+    var authenticationUrl=""
     /*
      * ONLY Passkey authentication URL.
      *
@@ -414,107 +415,10 @@ class ThreeDsWebViewActivityButton : AppCompatActivity() {
             return false
         }
 
-        override fun onPageFinished(
-            view: WebView,
-            url: String
-        ) {
-
-            super.onPageFinished(
-                view,
-                url
-            )
-
-            Log.d(
-                "3DS",
-                "onPageFinished = $url"
-            )
-
-            /*
-             * -----------------------------------------------------
-             * PASSKEY AUTHENTICATION
-             * -----------------------------------------------------
-             *
-             * The ORIGINAL 3DS page is loaded.
-             *
-             * Now inject:
-             *
-             * window.loadAuthernticate(
-             *     "https://sdk.dev.tap.company/?auth_payer=XXXX"
-             * )
-             */
-            if (
-                !passkeyAuthenticationUrl.isNullOrBlank() &&
-                !passkeyAuthenticationLoaded
-            ) {
-
-                passkeyAuthenticationLoaded =
-                    true
-
-                val authenticationUrl =
-                    passkeyAuthenticationUrl!!
-
-                Log.d(
-                    "3DS",
-                    "Injecting Passkey URL = $authenticationUrl"
-                )
-
-                val javascript =
-                    "window.loadAuthernticate(" +
-                            JSONObject.quote(
-                                authenticationUrl
-                            ) +
-                            ");"
-
-                view.evaluateJavascript(
-                    javascript
-                ) { result ->
-
-                    Log.d(
-                        "3DS",
-                        "loadAuthernticate result = $result"
-                    )
-
-                    /*
-                     * Do NOT clear the session here if the
-                     * BottomSheet still needs to read it.
-                     *
-                     * ThreeDsBottomSheetFragmentButton owns the
-                     * final consumption/clearing of the session.
-                     */
-                }
-            }
-
-            /*
-             * -----------------------------------------------------
-             * SHOW BOTTOM SHEET
-             * -----------------------------------------------------
-             */
-            doAfterSpecificTime(
-                time = delayTime
-            ) {
-
-                if (
-                    isFinishing ||
-                    isDestroyed
-                ) {
-                    return@doAfterSpecificTime
-                }
-
-                if (
-                    lifecycle.currentState.isAtLeast(
-                        androidx.lifecycle.Lifecycle.State.RESUMED
-                    )
-                ) {
-
-                    showThreeDsBottomSheet()
-
-                } else {
-
-                    shouldShowBottomSheet =
-                        true
-                }
-            }
-        }
+        val javascript =
+            "window.loadAuthernticate(" +
+                    JSONObject.quote(authenticationUrl) +
+                    ");"
 
         override fun onReceivedError(
             view: WebView,
@@ -553,24 +457,127 @@ class ThreeDsWebViewActivityButton : AppCompatActivity() {
             "onPostResume()"
         )
 
+        /*
+         * ---------------------------------------------------------
+         * GET PASSKEY CALLBACK
+         * ---------------------------------------------------------
+         *
+         * Example:
+         *
+         * tapcardwebsdk://onPasskeyRedirect?data=Imh0dHA6Ly9zZGsu...
+         */
+        val passkeySessionUrl =
+            ThreeDSPasskeySession.getLastAuthenticatedUrl()
+
         Log.d(
             "3DS",
-            "Current WebView URL = ${webView.url}"
+            "Current Passkey Session URL = $passkeySessionUrl"
         )
 
-        /*
-         * IMPORTANT:
-         *
-         * No last3DsUrl.
-         * No saved URL.
-         * No WebView restore.
-         * No reload.
-         */
+        if (!passkeySessionUrl.isNullOrBlank()) {
 
+             authenticationUrl =
+                 extractAuthenticationUrl(
+                     passkeySessionUrl
+                 ).toString()
+
+            if (!authenticationUrl.isNullOrBlank()) {
+
+                Log.d(
+                    "3DS",
+                    "========================================"
+                )
+
+                Log.d(
+                    "3DS",
+                    "PASSKEY AUTHENTICATION URL EXTRACTED"
+                )
+
+                Log.d(
+                    "3DS",
+                    "Authentication URL = $authenticationUrl"
+                )
+
+                /*
+                 * Call JavaScript on the CURRENT 3DS WebView.
+                 *
+                 * IMPORTANT:
+                 *
+                 * Do NOT call:
+                 *
+                 * webView.loadUrl(authenticationUrl)
+                 *
+                 * We call the JS function from the Mastercard
+                 * 3DS page instead.
+                 */
+                webView.post {
+
+                    try {
+
+                        val javascript =
+                            "window.loadAuthernticate(" +
+                                    JSONObject.quote(
+                                        authenticationUrl
+                                    ) +
+                                    ");"
+
+                        Log.d(
+                            "3DS",
+                            "Calling loadAuthernticate()"
+                        )
+
+                        Log.d(
+                            "3DS",
+                            "JavaScript = $javascript"
+                        )
+
+                        webView.evaluateJavascript(
+                            javascript
+                        ) { result ->
+
+                            Log.d(
+                                "3DS",
+                                "loadAuthernticate result = $result"
+                            )
+                        }
+
+                    } catch (e: Exception) {
+
+                        Log.e(
+                            "3DS",
+                            "Failed to call loadAuthernticate()",
+                            e
+                        )
+                    }
+                }
+
+                /*
+                 * Authentication URL has now been consumed.
+                 *
+                 * Clear the tapcardwebsdk:// callback so that
+                 * onPostResume() does not inject it again.
+                 */
+                ThreeDSPasskeySession.clearLastAuthenticatedUrl()
+
+                Log.d(
+                    "3DS",
+                    "Passkey session cleared after injection"
+                )
+            } else {
+
+                Log.e(
+                    "3DS",
+                    "Unable to extract authentication URL from Passkey session"
+                )
+            }
+        }
+
+        /*
+         * Existing BottomSheet behavior.
+         */
         if (shouldShowBottomSheet) {
 
-            shouldShowBottomSheet =
-                false
+            shouldShowBottomSheet = false
 
             showThreeDsBottomSheet()
         }
@@ -597,6 +604,102 @@ class ThreeDsWebViewActivityButton : AppCompatActivity() {
                 supportFragmentManager,
                 "3DS_BOTTOM_SHEET"
             )
+        }
+    }
+    private fun extractAuthenticationUrl(
+        passkeySessionUrl: String
+    ): String? {
+
+        return try {
+
+            val uri = Uri.parse(
+                passkeySessionUrl
+            )
+
+            /*
+             * Extract:
+             *
+             * ?data=XXXX
+             */
+            val encodedData =
+                uri.getQueryParameter("data")
+
+            if (encodedData.isNullOrBlank()) {
+
+                Log.e(
+                    "3DS",
+                    "Passkey session does not contain data parameter"
+                )
+
+                return null
+            }
+
+            Log.d(
+                "3DS",
+                "Passkey encoded data = $encodedData"
+            )
+
+            /*
+             * Decode Base64.
+             */
+            val decodedBytes =
+                android.util.Base64.decode(
+                    encodedData,
+                    android.util.Base64.DEFAULT
+                )
+
+            val decodedValue =
+                String(
+                    decodedBytes,
+                    Charsets.UTF_8
+                )
+
+            Log.d(
+                "3DS",
+                "Passkey decoded value = $decodedValue"
+            )
+
+            /*
+             * Your decoded value is:
+             *
+             * "https://sdk.dev.tap.company/?auth_payer=XXXX"
+             *
+             * Notice the extra quotes.
+             *
+             * JSONObject(String) removes those JSON-string quotes
+             * correctly.
+             */
+            val authenticationUrl =
+                if (
+                    decodedValue.startsWith("\"") &&
+                    decodedValue.endsWith("\"")
+                ) {
+
+                    JSONObject(
+                        "{\"url\":$decodedValue}"
+                    ).getString("url")
+
+                } else {
+
+                    decodedValue
+                }
+
+            Log.d(
+                "3DS",
+                "Final Authentication URL = $authenticationUrl"
+            )
+
+            authenticationUrl
+
+        } catch (e: Exception) {
+
+            Log.e(
+                "3DS",
+                "Failed to extract Passkey authentication URL",
+                e
+            )
+
+            null
         }
     }
 }
