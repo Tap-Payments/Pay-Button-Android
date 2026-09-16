@@ -98,11 +98,13 @@
     <string name="merchantTitle">Merchant</string>
 
     <string-array name="ScopeList">
-        <item>charge</item>
-        <item>authorize</item>
-        <item>taptoken</item>
-        <item>googlepaytoken</item>
-
+        <item>CHARGE</item>
+        <item>AUTHORIZE</item>
+        <item>TOKEN</item>
+        <item>APPLE_PAY_TOKEN</item>
+        <item>GOOGLE_PAY_TOKEN</item>
+        <item>SAMSUNG_PAY_TOKEN</item>
+        <item>CLICK_TO_PAY_TOKEN</item>
     </string-array>
 
 
@@ -191,13 +193,15 @@
     </string-array>
 
     <string-array name="Edges">
-        <item>flat</item>
+        <item>straight</item>
+        <item>curved</item>
         <item>circular</item>
     </string-array>
 
     <string-array name="Direction">
-        <item>dynamic</item>
         <item>ltr</item>
+        <item>rtl</item>
+        <item>dynamic</item>
     </string-array>
 
 
@@ -279,6 +283,7 @@
         <item>MASTERCARD</item>
         <item>AMEX</item>
         <item>BENEFIT_CARD</item>
+        <item>MEEZA</item>
     </string-array>
 
 
@@ -323,12 +328,49 @@
     -->
 
     <string-array name="SupportedPaymentTypes">
+        <item>DEVICE</item>
+        <item>CARD</item>
+        <item>BNPL</item>
+        <item>MOBILE</item>
+        <item>WALLET</item>
+        <item>WEB / REDIRECT</item>
     </string-array>
 
+    <!-- Mirrors the iOS demo's "Created by" row -->
+    <string-array name="IntentSource">
+        <item>the sdk creates it</item>
+        <item>the app creates it</item>
+    </string-array>
 
+    <!-- Mirrors the iOS "user experience" row -->
+    <string-array name="UserExperience">
+        <item>popup</item>
+        <item>page</item>
+    </string-array>
 
+    <!-- The order currency is a fixed list on iOS, not free text -->
+    <string-array name="OrderCurrencies">
+        <item>KWD</item>
+        <item>SAR</item>
+        <item>AED</item>
+        <item>OMR</item>
+        <item>QAR</item>
+        <item>BHD</item>
+        <item>EGP</item>
+        <item>GBP</item>
+        <item>USD</item>
+        <item>EUR</item>
+    </string-array>
 
-
-
-
+    <!-- The demo's own chrome, mirroring the iOS example -->
+    <string name="options">Options</string>
+    <string name="refresh">Refresh</string>
+    <string name="copy_logs">Copy logs</string>
+    <string name="clear_logs">Clear logs</string>
+    <string name="configs">Configs</string>
+    <string name="edit_intent_json">Edit intent JSON</string>
+    <string name="intent_json">Intent JSON</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="json_editor_hint">Edit any field, then Save. Save also validates the json.</string>
 </resources>

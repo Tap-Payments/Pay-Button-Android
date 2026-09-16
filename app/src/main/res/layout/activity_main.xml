@@ -1,28 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Mirrors the iOS demo's main screen: the button up top, an Options button beside it, and
+    everything the sdk reports filling the rest of the screen.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-
-    <company.tap.tappaybutton.PayButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:id="@+id/redirect_pay"
-        />
-
-    <TextView
+    <!-- The iOS screen puts Options in the top right corner -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/refresh"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/refresh"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/options"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/options" />
+
+    </LinearLayout>
+
+    <company.tap.tappaybutton.PayButton
+        android:id="@+id/redirect_pay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp" />
+
+    <!--
+        The event log. It fills what is left and scrolls, because the sdk reports a lot and
+        the iOS screen keeps all of it. Monospace so a pretty printed payload lines up.
+    -->
+    <TextView
         android:id="@+id/text"
-        android:layout_marginTop="150dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="20dp"
+        android:padding="8dp"
+        android:background="#11000000"
+        android:fontFamily="monospace"
+        android:textSize="12sp"
+        android:textIsSelectable="true"
         android:scrollbars="vertical"
-        tools:text="Hello guys"
-        />
+        tools:text="onReady" />
 
     <TextView
+        android:id="@+id/auth_token"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -30,13 +67,6 @@
         android:textColor="@color/black_color"
         android:layout_marginTop="10dp"
         android:text="@string/generate_authenticate_token"
-        android:id="@+id/auth_token"
-        android:visibility="gone"
-        />
-
-
-
-
-
+        android:visibility="gone" />
 
 </LinearLayout>

@@ -80,6 +80,9 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation("androidx.appcompat:appcompat:1.6.1")
+    // Chrome Custom Tabs, which is what runs a passkey in app rather than handing the payer
+    // to the browser app. The Android answer to ASWebAuthenticationSession
+    implementation("androidx.browser:browser:1.8.0")
     implementation("com.google.android.material:material:1.11.0")
 
     testImplementation("junit:junit:4.13.2")

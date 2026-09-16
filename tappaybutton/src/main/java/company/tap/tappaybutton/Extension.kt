@@ -24,7 +24,6 @@ import com.bumptech.glide.Glide
 import com.example.tappaybutton.R
 import com.google.gson.Gson
 import company.tap.tappaybutton.enums.rawFolderRefrence
-import company.tap.tappaybutton.models.ThreeDsResponseCardPayButtons
 
 
 
@@ -77,9 +76,17 @@ fun Context.getAssetFile(filename: String): Int {
     )
 }
 
-fun String.getModelFromJson(): ThreeDsResponseCardPayButtons {
-    return Gson().fromJson(this, ThreeDsResponseCardPayButtons::class.java)
-}
+/**
+ * Was the only way a redirection payload got decoded, and it threw on anything that was
+ * not the exact shape. Use `CardRedirection.fromJson` / `Redirection.fromJson` instead,
+ * which report a payload they can not read rather than throwing out of a web view callback
+ */
+@Deprecated(
+    "Decode with CardRedirection.fromJson, which reports a bad payload instead of throwing",
+    ReplaceWith("company.tap.tappaybutton.models.CardRedirection.fromJson(this)")
+)
+fun String.getModelFromJson(): company.tap.tappaybutton.models.CardRedirection? =
+    company.tap.tappaybutton.models.CardRedirection.fromJson(this)
 
 fun getRandomNumbers(length: Int): String {
 //    val allowedChars = ('A'..'Z') + ('0'..'9')
@@ -102,15 +109,17 @@ fun <T> List<T>?.jointToStringForUrl(): String? {
 }
 
 /**
- * function to get query data and decode it
+ * Was how every payload was read off a url, and it threw straight out of
+ * shouldOverrideUrlLoading on anything that was not base64. Use `tapExtractDataFromUrl`,
+ * the mirror of the iOS helper, which hands back an empty string instead
  */
+@Deprecated(
+    "Use tapExtractDataFromUrl, which hands back an empty string rather than throwing",
+    ReplaceWith("company.tap.tappaybutton.utils.tapExtractDataFromUrl(this, keyValue)")
+)
 @RequiresApi(Build.VERSION_CODES.O)
-fun Uri.getQueryParameterFromUri(keyValue: String): String {
-    val decodedBytes = String(Base64.getDecoder().decode(this.getQueryParameter(keyValue).toString()))
-
-    return decodedBytes
-}
-
+fun Uri.getQueryParameterFromUri(keyValue: String): String =
+    company.tap.tappaybutton.utils.tapExtractDataFromUrl(this, keyValue)
 
  fun encodeConfigurationMapToUrl(configuraton: HashMap<String,Any>?): String? {
     val gson = Gson()
