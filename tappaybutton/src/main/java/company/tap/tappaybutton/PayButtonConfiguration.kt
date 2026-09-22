@@ -181,6 +181,10 @@ class PayButtonConfiguration {
                 val appLifecycleObserver = AppLifecycleObserver()
                 androidx.lifecycle.ProcessLifecycleOwner.get().lifecycle.addObserver(appLifecycleObserver)
 
+                // The observer was being registered without anything to report to, so the
+                // button never learned whether the app was in front of the payer
+                PayButtonDataConfiguration.addAppLifeCycle(tapRedirectViewWeb)
+
                 addOperatorHeaderField(
                     tapRedirectViewWeb,
                     context,

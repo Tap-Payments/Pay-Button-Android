@@ -46,4 +46,10 @@ jCsvASLGz+cfRrj2swIDAQAB
     <string name="back">Back</string>
     <string name="msg_dismiss">dismiss</string>
     <string name="msg_ok">ok</string>
+    <string name="scanner_close">Close the scanner</string>
+    <string name="nfc_title">Tap your card</string>
+    <string name="nfc_description">Hold your card flat against the back of your phone, near the top.</string>
+    <string name="nfc_reading_title">Reading your card</string>
+    <string name="nfc_reading_description">Keep it still for a moment.</string>
+    <string name="nfc_retry_description">That did not read. Hold the card flat and keep it still.</string>
 </resources>

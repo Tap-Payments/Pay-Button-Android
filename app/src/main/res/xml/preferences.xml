@@ -14,7 +14,7 @@
             app:key="buttonKey"
             app:entries="@array/ButtonList"
             app:entryValues="@array/ButtonList"
-            app:defaultValue="1"
+            app:defaultValue="KNET"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
@@ -77,7 +77,7 @@
             app:key="scopeKey"
             app:entries="@array/ScopeList"
             app:entryValues="@array/ScopeList"
-            app:defaultValue="1"
+            app:defaultValue="CHARGE"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
@@ -118,8 +118,10 @@
             app:title="@string/amount"
             app:useSimpleSummaryProvider="true" />
 
-        <EditTextPreference
+        <DropDownPreference
             app:key="orderCurrencyKey"
+            app:entries="@array/OrderCurrencies"
+            app:entryValues="@array/OrderCurrencies"
             app:defaultValue="KWD"
             app:title="@string/order_curr"
             app:useSimpleSummaryProvider="true" />
@@ -270,7 +272,6 @@
             app:title="supportedPaymentTypes"
             android:entries="@array/SupportedPaymentTypes"
             android:entryValues="@array/SupportedPaymentTypes"
-            app:isPreferenceVisible="false"
             app:useSimpleSummaryProvider="true" />
 
 
@@ -302,17 +303,63 @@
     <!-- ========================================================= -->
 
     <PreferenceCategory
-        app:title="@string/fields"
-        app:isPreferenceVisible="false">
+        app:title="@string/fields">
 
         <CheckBoxPreference
-            app:key="displayHoldernameKey"
-            app:title="Card Holder"
+            app:key="fieldNameKey"
+            app:title="name"
             android:defaultValue="true" />
 
         <CheckBoxPreference
+            app:key="displayHoldernameKey"
+            app:title="card holder"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            app:key="contactEmailKey"
+            app:title="contact email"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            app:key="contactNumberKey"
+            app:title="contact number"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            app:key="shippingAddressKey"
+            app:title="shipping address"
+            android:defaultValue="true" />
+
+        <!-- Not on the iOS screen, kept because the payload still carries it -->
+        <CheckBoxPreference
             app:key="displayCVVKey"
             app:title="@string/card_cvv"
+            android:defaultValue="true"
+            app:isPreferenceVisible="false" />
+
+    </PreferenceCategory>
+
+
+    <!-- ========================================================= -->
+    <!-- RECEIPT & CHECKOUT -->
+    <!-- ========================================================= -->
+
+    <PreferenceCategory
+        app:title="receipt &amp; checkout">
+
+        <CheckBoxPreference
+            app:key="receiptEmailKey"
+            app:title="receipt email"
+            android:defaultValue="false" />
+
+        <CheckBoxPreference
+            app:key="receiptSmsKey"
+            app:title="receipt sms"
+            android:defaultValue="false" />
+
+        <CheckBoxPreference
+            app:key="checkoutAutoKey"
+            app:title="checkout auto"
             android:defaultValue="true" />
 
     </PreferenceCategory>
@@ -403,7 +450,7 @@
             app:title="@string/choose_language"
             app:entries="@array/Lanugages"
             app:entryValues="@array/LanugagesValues"
-            app:defaultValue="1"
+            app:defaultValue="en"
             app:useSimpleSummaryProvider="true" />
 
         <DropDownPreference
@@ -419,7 +466,17 @@
             app:title="Card Edges"
             app:entries="@array/Edges"
             app:entryValues="@array/Edges"
-            app:defaultValue="1"
+            app:defaultValue="circular"
+            app:useSimpleSummaryProvider="true" />
+
+        <!-- iOS has direction and card direction as two rows, and the payload has two
+             fields. One row was driving both, so they could never differ -->
+        <DropDownPreference
+            app:key="selecteddirectionKey"
+            app:title="Direction"
+            app:entries="@array/Direction"
+            app:entryValues="@array/Direction"
+            app:defaultValue="dynamic"
             app:useSimpleSummaryProvider="true" />
 
         <DropDownPreference
@@ -427,8 +484,7 @@
             app:title="Card Direction"
             app:entries="@array/Direction"
             app:entryValues="@array/Direction"
-            app:defaultValue="dynamic"
-            app:isPreferenceVisible="false"
+            app:defaultValue="ltr"
             app:useSimpleSummaryProvider="true" />
 
         <DropDownPreference
@@ -439,11 +495,23 @@
             app:defaultValue="colored"
             app:useSimpleSummaryProvider="true" />
 
+        <DropDownPreference
+            app:key="userExperienceKey"
+            app:title="User Experience"
+            app:entries="@array/UserExperience"
+            app:entryValues="@array/UserExperience"
+            app:defaultValue="popup"
+            app:useSimpleSummaryProvider="true" />
+
         <CheckBoxPreference
             app:key="loaderKey"
             app:title="Loader"
-            android:defaultValue="true"
-            app:isPreferenceVisible="false" />
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            app:key="poweredKey"
+            app:title="Powered by Tap"
+            android:defaultValue="true" />
 
     </PreferenceCategory>
 

@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!--
+        The card form can ask for the camera to scan a card. Declared here, so it merges into the
+        host app, which is what lets the sdk answer that event itself the way Pay-Button-iOS does.
+        Nothing opens the camera unless the payer taps scan.
+    -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!--
+        The card form can also ask for a contactless read. Neither is required hardware .. a device
+        without nfc installs and runs fine, the event just reports that it cannot be served
+    -->
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-feature android:name="android.hardware.nfc" android:required="false" />
+
+    <!--
+        Android 11 and up hide the installed apps from us unless we say what we are looking
+        for. Without this the browser probe finds nothing, every device looks like it has no
+        custom tabs, and the passkey is handed to the browser app instead of running in place.
+    -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.support.customtabs.action.CustomTabsService" />
+        </intent>
+    </queries>
+
     <application
         android:supportsRtl="true"
         android:hardwareAccelerated="true">
@@ -11,33 +40,30 @@
             android:enableOnBackInvokedCallback="true"
             android:theme="@style/Theme.Transparent" />
 
+        <!--
+            The one component claiming the passkey callback scheme.
+
+            It replaces PasskeyWebViewActivity and ThreeDSPasskeyRedirectActivity, which both
+            declared this exact filter. Two activities can win the same intent, and which one
+            did was decided by the order the manifests happened to merge in .. so the callback
+            sometimes reached the activity that knew what to do with it and sometimes the one
+            that did not.
+
+            singleTask keeps this to one instance, so a duplicate callback does not stack a
+            second copy. It does NOT take the custom tab down .. singleTask only clears the
+            activities above it when it is reusing an instance already in the task, and the one
+            the browser launches is always new. What ends the tab is this activity relaunching
+            the screen the passkey started from with CLEAR_TOP, in ThreeDSPasskeySession.
+
+            Exported because the browser is what sends it here. It reads nothing out of the
+            url itself, it only hands it to the running ThreeDSPasskeySession, and a callback
+            with no session running is dropped.
+        -->
         <activity
-            android:name="company.tap.tappaybutton.PasskeyWebViewActivity"
-            android:exported="true"
-            android:noHistory="true"
-            android:theme="@style/Theme.Transparent"
-            android:excludeFromRecents="true">
-
-            <intent-filter>
-
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="tapcardwebsdk"
-                    android:host="onpasskeyredirect" />
-
-            </intent-filter>
-
-        </activity>
-        <activity
-            android:name="company.tap.tappaybutton.ThreeDSPasskeyRedirectActivity"
+            android:name="company.tap.tappaybutton.ThreeDSPasskeyCallbackActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:noHistory="true"
+            android:excludeFromRecents="true"
             android:theme="@android:style/Theme.NoDisplay">
 
             <intent-filter>
@@ -56,7 +82,11 @@
 
         </activity>
 
-
+        <activity
+            android:name="company.tap.tappaybutton.views.CardScannerActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.TapCardScanner" />
 
     </application>
 

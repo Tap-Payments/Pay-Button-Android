@@ -32,6 +32,13 @@
             android:exported="true">
 
         </activity>
+        <!-- Edits the payload the sdk creates the intent from -->
+        <activity
+            android:name=".IntentJsonEditorActivity"
+            android:label="@string/intent_json"
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    The 3ds page inside the sheet.
 
+    The web area used to sit in a ScrollView whose child was wrap_content. A web view asking for
+    match_parent inside that gets measured with no bound at all, so it collapsed to whatever the
+    page had painted so far .. which for a page that had not painted yet was nothing. The web view
+    scrolls its own content, so there is no reason for a scroller around it.
+
+    It takes the height with a weight rather than match_parent, so it gets exactly what is left
+    after the bar rather than competing with it. The negative margin is kept so the page still
+    overlaps the bar's lower edge and no seam shows between them.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -8,41 +19,18 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehaviour"
     android:orientation="vertical">
 
-
     <company.tap.tappaybutton.TapBrandView
         android:id="@+id/tab_brand_view"
         android:layout_width="match_parent"
-        android:layoutDirection="locale"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layoutDirection="locale" />
 
-        />
-
-
-
-    <ScrollView android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="-25dp"
-        >
     <LinearLayout
-        android:layout_width="match_parent"
         android:id="@+id/webLinear"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
-
-<!--            <WebView-->
-<!--                android:id="@+id/webview3ds"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="@dimen/_600sdp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-</LinearLayout>
-    </ScrollView>
-
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="-25dp"
+        android:orientation="vertical" />
 
 </LinearLayout>
